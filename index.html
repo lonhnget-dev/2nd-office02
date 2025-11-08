@@ -6,6 +6,7 @@
   <title>Office02</title>
   <link rel="stylesheet" href="style.css">
 </head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <body>
   <!-- Navigation Bar -->
   <nav class="navbar">
@@ -35,7 +36,10 @@
         <option>100</option>
         <option>All</option>
       </select>
-      <input type="search" placeholder="ស្វែងរកឯកសារ...">
+      <div class="table-controls">
+  <input type="search" placeholder="Search documents...">
+  <button id="exportExcelBtn">📥 Export to Excel</button>
+</div>
     </div>
   </div>
 
@@ -282,6 +286,23 @@ searchInput.addEventListener("input", async () => {
   }
 });
   window.addEventListener('DOMContentLoaded', fetchDocument);
+  // 📤 Export Table to Excel
+document.getElementById("exportExcelBtn").addEventListener("click", () => {
+  // Get table data
+  const table = document.querySelector("table");
+  const rows = Array.from(table.querySelectorAll("tr"));
+  const data = rows.map(row =>
+    Array.from(row.querySelectorAll("th, td")).map(cell => cell.innerText)
+  );
+
+  // Convert to Excel
+  const wb = XLSX.utils.book_new();
+  const ws = XLSX.utils.aoa_to_sheet(data);
+  XLSX.utils.book_append_sheet(wb, ws, "Documents");
+
+  // Download as Excel file
+  XLSX.writeFile(wb, "documents.xlsx");
+});
 </script>
 </body>
 </html>
