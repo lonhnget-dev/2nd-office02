@@ -149,17 +149,7 @@
 
 
 
-  function viewDocument(id, name, description, date) {
-  document.getElementById('vId').textContent = id;
-  document.getElementById('vName').textContent = name;
-  document.getElementById('vDesc').textContent = description;
-  document.getElementById('vDate').textContent = date;
-  document.getElementById('viewPopup').style.display = 'flex';
-}
-
-function closeView() {
-  document.getElementById('viewPopup').style.display = 'none';
-}
+ 
   // === Open / Close Form ===
   openBtn.onclick = () => {
     formModal.style.display = 'block';
@@ -280,6 +270,19 @@ function closeView() {
     XLSX.utils.book_append_sheet(wb, ws, "Documents");
     XLSX.writeFile(wb, "documents.xlsx");
   };
+
+
+   function viewDocument(id, name, description, date) {
+  document.getElementById('vId').textContent = id;
+  document.getElementById('vName').textContent = name;
+  document.getElementById('vDesc').textContent = description;
+  document.getElementById('vDate').textContent = date;
+  document.getElementById('viewPopup').style.display = 'flex';
+}
+
+function closeView() {
+  document.getElementById('viewPopup').style.display = 'none';
+}
 
   window.addEventListener("DOMContentLoaded", fetchDocument);
   </script>
