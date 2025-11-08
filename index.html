@@ -242,7 +242,45 @@
       alert("មានបញ្ហាក្នុងការតភ្ជាប់ម៉ាស៊ីនមេ!");
     }
   });
+// 🔍 Search Function
+const searchInput = document.querySelector('input[type="search"]');
 
+searchInput.addEventListener("input", async () => {
+  const query = searchInput.value.toLowerCase();
+  try {
+    const res = await fetch("http://localhost:4000/doc");
+    const data = await res.json();
+    const docs = data.date || [];
+
+    const filteredDocs = docs.filter((doc) =>
+      [doc.no, doc.ir, doc.source, doc.doc, doc.officer]
+        .some((field) => field?.toLowerCase().includes(query))
+    );
+
+    // Display filtered results
+    tableBody.innerHTML = "";
+    filteredDocs.forEach((doc) => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${doc.no}</td>
+        <td>${doc.ir}</td>
+        <td>${doc.outNo}</td>
+        <td>${doc.submitDate}</td>
+        <td>${doc.source}</td>
+        <td>${doc.doc}</td>
+        <td>${doc.officer || '-'}</td>
+        <td>${doc.status || '-'}</td>
+        <td>
+          <button class="editBtn" data-id="${doc.id}">Edit</button>
+          <button class="deleteBtn" data-id="${doc.id}">Delete</button>
+        </td>
+      `;
+      tableBody.appendChild(row);
+    });
+  } catch (err) {
+    console.error("Search error:", err);
+  }
+});
   window.addEventListener('DOMContentLoaded', fetchDocument);
 </script>
 </body>
