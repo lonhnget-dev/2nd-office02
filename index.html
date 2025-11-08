@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Office02</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <img src="https://1000logos.net/wp-content/uploads/2017/02/Facebook-Logosu.png" alt="Logo">
+    <div>
+      <ul>
+        <li>Home</li>
+        <li>Search</li>
+        <li>Document</li>
+        <li>Map</li>
+      </ul>
+    </div>
+    <div class="login">
+      <a href="#">Login</a>
+    </div>
+  </nav>
+
+  <!-- Add Document -->
+  <div class="add-document">
+    <button id="openForm">បញ្ចូលឯកសារ</button>
+    <div class="filter-section">
+      <label>បង្ហាញចំនួន:</label>
+      <select>
+        <option>15</option>
+        <option>30</option>
+        <option>60</option>
+        <option>100</option>
+        <option>All</option>
+      </select>
+      <input type="search" placeholder="ស្វែងរកឯកសារ...">
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>លេខចូល</th>
+          <th>លេខលិខិត(IR)</th>
+          <th>លេខចេញ</th>
+          <th>ថ្ងៃខែ</th>
+          <th>អង្គភាព</th>
+          <th>ប្រភេទឯកសារ</th>
+          <th>មន្រ្តីទទួល</th>
+          <th>ស្ថានភាព</th>
+          <th>សកម្មភាព</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+
+  <!-- Overlay -->
+  <div id="overlay"></div>
+
+  <!-- Form Modal -->
+  <div id="myForm">
+    <h2 class="form-title">បញ្ចូលឯកសារ</h2>
+
+    <form id="contactForm" class="styled-form">
+      <div class="form-group">
+        <label>លេខចូល</label>
+        <input type="text" name="no" placeholder="បញ្ចូលលេខចូល" required>
+      </div>
+
+      <div class="form-group">
+        <label>លេខលិខិត(IR)</label>
+        <input type="text" name="ir" placeholder="បញ្ចូលលេខលិខិត" required>
+      </div>
+
+      <div class="form-group">
+        <label>លេខចេញ</label>
+        <input type="text" name="outNo" placeholder="បញ្ចូលលេខចេញ">
+      </div>
+
+      <div class="form-group">
+        <label>ថ្ងៃខែ</label>
+        <input type="date" name="submitDate">
+      </div>
+
+      <div class="form-group">
+        <label>អង្គភាព</label>
+        <input type="text" name="source" placeholder="បញ្ចូលអង្គភាព">
+      </div>
+
+      <div class="form-group">
+        <label>ប្រភេទឯកសារ</label>
+        <input type="text" name="doc" placeholder="ឧទាហរណ៍: លិខិតជាផ្លូវការ">
+      </div>
+
+      <div class="form-group">
+        <label>មន្រ្តីទទួល</label>
+        <input type="text" name="officer" placeholder="ឈ្មោះមន្រ្តី">
+      </div>
+
+      <div class="form-group">
+        <label>ស្ថានភាព</label>
+        <select name="status">
+          <option value="">ជ្រើសរើសស្ថានភាព</option>
+          <option value="កំពុងដំណើរការ">កំពុងដំណើរការ</option>
+          <option value="បានបញ្ចប់">បានបញ្ចប់</option>
+          <option value="មិនទាន់ចាប់ផ្តើម">មិនទាន់ចាប់ផ្តើម</option>
+        </select>
+      </div>
+
+      <div class="form-buttons">
+        <button type="submit" class="btn-submit">រក្សាទុក</button>
+        <button type="button" id="closeForm" class="btn-close">បិទ</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+  const openBtn = document.getElementById('openForm');
+  const closeBtn = document.getElementById('closeForm');
+  const formModal = document.getElementById('myForm');
+  const overlay = document.getElementById('overlay');
+  const tableBody = document.getElementById('tableBody');
+  const form = document.getElementById('contactForm');
+
+  let editingId = null; // 🔹 Track which document is being edited
+
+  // Show & Hide form
+  openBtn.onclick = () => {
+    formModal.style.display = 'block';
+    overlay.style.display = 'block';
+    editingId = null; // new document mode
+    form.reset();
+  };
+  closeBtn.onclick = overlay.onclick = () => {
+    formModal.style.display = 'none';
+    overlay.style.display = 'none';
+  };
+
+  // Fetch documents
+  async function fetchDocument() {
+    try {
+      const res = await fetch("http://localhost:4000/doc");
+      const data = await res.json();
+      const docs = data.date || [];
+      tableBody.innerHTML = "";
+
+      docs.forEach((doc) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${doc.no}</td>
+          <td>${doc.ir}</td>
+          <td>${doc.outNo}</td>
+          <td>${doc.submitDate}</td>
+          <td>${doc.source}</td>
+          <td>${doc.doc}</td>
+          <td>${doc.officer || '-'}</td>
+          <td>${doc.status || '-'}</td>
+          <td>
+            <button class="editBtn" data-id="${doc.id}">Edit</button>
+            <button class="deleteBtn" data-id="${doc.id}">Delete</button>
+          </td>
+        `;
+
+        // 🗑️ Delete Function
+        row.querySelector(".deleteBtn").addEventListener("click", async () => {
+          if (confirm("តើអ្នកពិតជាចង់លុបឯកសារនេះមែនទេ?")) {
+            try {
+              const res = await fetch(`http://localhost:4000/doc/${doc.id}`, {
+                method: "DELETE",
+              });
+              const data = await res.json();
+              if (res.ok) {
+                alert(data.message);
+                fetchDocument();
+              } else {
+                alert("លុបបរាជ័យ!");
+              }
+            } catch (err) {
+              console.error("Delete error:", err);
+              alert("មានបញ្ហាក្នុងការតភ្ជាប់ម៉ាស៊ីនមេ!");
+            }
+          }
+        });
+
+        // ✏️ Edit Function
+        row.querySelector(".editBtn").addEventListener("click", () => {
+          editingId = doc.id;
+          formModal.style.display = 'block';
+          overlay.style.display = 'block';
+
+          // Fill form with data
+          form.no.value = doc.no || '';
+          form.ir.value = doc.ir || '';
+          form.outNo.value = doc.outNo || '';
+          form.submitDate.value = doc.submitDate ? doc.submitDate.split('T')[0] : '';
+          form.source.value = doc.source || '';
+          form.doc.value = doc.doc || '';
+          form.officer.value = doc.officer || '';
+          form.status.value = doc.status || '';
+        });
+
+        tableBody.appendChild(row);
+      });
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }
+
+  // 🧾 Submit form (Create or Update)
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = Object.fromEntries(new FormData(form));
+    const method = editingId ? "PUT" : "POST";
+    const url = editingId
+      ? `http://localhost:4000/doc/${editingId}`
+      : "http://localhost:4000/doc";
+
+    try {
+      const res = await fetch(url, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (res.ok) {
+        const msg = editingId ? "បានកែប្រែឯកសាររួចរាល់!" : "បានរក្សាទុកឯកសារថ្មី!";
+        alert(msg);
+        form.reset();
+        formModal.style.display = 'none';
+        overlay.style.display = 'none';
+        fetchDocument();
+      } else {
+        alert("មានបញ្ហាក្នុងការរក្សាទុកឯកសារ!");
+      }
+    } catch (err) {
+      console.error("Save error:", err);
+      alert("មានបញ្ហាក្នុងការតភ្ជាប់ម៉ាស៊ីនមេ!");
+    }
+  });
+
+  window.addEventListener('DOMContentLoaded', fetchDocument);
+</script>
+</body>
+</html>
