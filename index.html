@@ -3,49 +3,47 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Office02</title>
+  <title>Office Management System</title>
   <link rel="stylesheet" href="style.css">
+
+  <!-- Excel Export Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <body>
   <!-- Navigation Bar -->
   <nav class="navbar">
     <img src="https://1000logos.net/wp-content/uploads/2017/02/Facebook-Logosu.png" alt="Logo">
-    <div>
-      <ul>
-        <li>Home</li>
-        <li>Search</li>
-        <li>Document</li>
-        <li>Map</li>
-      </ul>
-    </div>
-    <div class="login">
-      <a href="#">Login</a>
-    </div>
+    <ul>
+      <li>Home</li>
+      <li>Search</li>
+      <li>Documents</li>
+      <li>Map</li>
+    </ul>
+    <div class="login"><a href="#">Login</a></div>
   </nav>
 
-  <!-- Add Document -->
-  <div class="add-document">
-    <button id="openForm">បញ្ចូលឯកសារ</button>
+  <!-- Add Document + Filter Section -->
+  <section class="add-document">
+    <button id="openForm">➕ បញ្ចូលឯកសារ</button>
+
     <div class="filter-section">
       <label>បង្ហាញចំនួន:</label>
-      <select>
-        <option>15</option>
-        <option>30</option>
-        <option>60</option>
-        <option>100</option>
-        <option>All</option>
+      <select id="showCount">
+        <option value="15">15</option>
+        <option value="30">30</option>
+        <option value="60">60</option>
+        <option value="100">100</option>
+        <option value="all">All</option>
       </select>
-      <div class="table-controls">
-  <input type="search" placeholder="Search documents...">
-  <button id="exportExcelBtn">📥 Export to Excel</button>
-</div>
+
+      <input type="search" id="searchBox" placeholder="ស្វែងរកឯកសារ...">
+      <button id="exportExcelBtn">📥 ទាញយក Excel</button>
     </div>
-  </div>
+  </section>
 
   <!-- Table -->
   <div class="table-container">
-    <table>
+    <table id="documentTable">
       <thead>
         <tr>
           <th>លេខចូល</th>
@@ -124,105 +122,85 @@
   </div>
 
   <script>
-  const openBtn = document.getElementById('openForm');
-  const closeBtn = document.getElementById('closeForm');
-  const formModal = document.getElementById('myForm');
-  const overlay = document.getElementById('overlay');
-  const tableBody = document.getElementById('tableBody');
-  const form = document.getElementById('contactForm');
+  const API_URL = "http://localhost:4000/doc";
+  const form = document.getElementById("contactForm");
+  const tableBody = document.getElementById("tableBody");
+  const formModal = document.getElementById("myForm");
+  const overlay = document.getElementById("overlay");
+  const openBtn = document.getElementById("openForm");
+  const closeBtn = document.getElementById("closeForm");
+  const searchInput = document.getElementById("searchBox");
+  let editingId = null;
+  let allDocs = [];
 
-  let editingId = null; // 🔹 Track which document is being edited
-
-  // Show & Hide form
+  // === Open / Close Form ===
   openBtn.onclick = () => {
     formModal.style.display = 'block';
     overlay.style.display = 'block';
-    editingId = null; // new document mode
     form.reset();
+    editingId = null;
   };
   closeBtn.onclick = overlay.onclick = () => {
     formModal.style.display = 'none';
     overlay.style.display = 'none';
   };
 
-  // Fetch documents
+  // === Fetch Documents ===
   async function fetchDocument() {
     try {
-      const res = await fetch("http://localhost:4000/doc");
+      const res = await fetch(API_URL);
       const data = await res.json();
-      const docs = data.date || [];
-      tableBody.innerHTML = "";
-
-      docs.forEach((doc) => {
-        const row = document.createElement("tr");
-        row.innerHTML = `
-          <td>${doc.no}</td>
-          <td>${doc.ir}</td>
-          <td>${doc.outNo}</td>
-          <td>${doc.submitDate}</td>
-          <td>${doc.source}</td>
-          <td>${doc.doc}</td>
-          <td>${doc.officer || '-'}</td>
-          <td>${doc.status || '-'}</td>
-          <td>
-            <button class="editBtn" data-id="${doc.id}">Edit</button>
-            <button class="deleteBtn" data-id="${doc.id}">Delete</button>
-          </td>
-        `;
-
-        // 🗑️ Delete Function
-        row.querySelector(".deleteBtn").addEventListener("click", async () => {
-          if (confirm("តើអ្នកពិតជាចង់លុបឯកសារនេះមែនទេ?")) {
-            try {
-              const res = await fetch(`http://localhost:4000/doc/${doc.id}`, {
-                method: "DELETE",
-              });
-              const data = await res.json();
-              if (res.ok) {
-                alert(data.message);
-                fetchDocument();
-              } else {
-                alert("លុបបរាជ័យ!");
-              }
-            } catch (err) {
-              console.error("Delete error:", err);
-              alert("មានបញ្ហាក្នុងការតភ្ជាប់ម៉ាស៊ីនមេ!");
-            }
-          }
-        });
-
-        // ✏️ Edit Function
-        row.querySelector(".editBtn").addEventListener("click", () => {
-          editingId = doc.id;
-          formModal.style.display = 'block';
-          overlay.style.display = 'block';
-
-          // Fill form with data
-          form.no.value = doc.no || '';
-          form.ir.value = doc.ir || '';
-          form.outNo.value = doc.outNo || '';
-          form.submitDate.value = doc.submitDate ? doc.submitDate.split('T')[0] : '';
-          form.source.value = doc.source || '';
-          form.doc.value = doc.doc || '';
-          form.officer.value = doc.officer || '';
-          form.status.value = doc.status || '';
-        });
-
-        tableBody.appendChild(row);
-      });
+      allDocs = data.date || [];
+      renderTable(allDocs);
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.error("Fetch Error:", error);
     }
   }
 
-  // 🧾 Submit form (Create or Update)
-  form.addEventListener('submit', async (e) => {
+  // === Render Table ===
+  function renderTable(docs) {
+    tableBody.innerHTML = "";
+    docs.forEach((doc) => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${doc.no}</td>
+        <td>${doc.ir}</td>
+        <td>${doc.outNo}</td>
+        <td>${doc.submitDate?.split("T")[0] || ""}</td>
+        <td>${doc.source}</td>
+        <td>${doc.doc}</td>
+        <td>${doc.officer || '-'}</td>
+        <td>${doc.status || '-'}</td>
+        <td>
+          <button class="editBtn">Edit</button>
+          <button class="deleteBtn">Delete</button>
+        </td>
+      `;
+
+      // Edit
+      row.querySelector(".editBtn").onclick = () => openEditForm(doc);
+      // Delete
+      row.querySelector(".deleteBtn").onclick = () => deleteDoc(doc.id);
+      tableBody.appendChild(row);
+    });
+  }
+
+  // === Search Function ===
+  searchInput.addEventListener("input", () => {
+    const q = searchInput.value.toLowerCase();
+    const filtered = allDocs.filter((d) =>
+      [d.no, d.ir, d.source, d.doc, d.officer]
+        .some(v => v?.toLowerCase().includes(q))
+    );
+    renderTable(filtered);
+  });
+
+  // === Submit Form ===
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
     const formData = Object.fromEntries(new FormData(form));
     const method = editingId ? "PUT" : "POST";
-    const url = editingId
-      ? `http://localhost:4000/doc/${editingId}`
-      : "http://localhost:4000/doc";
+    const url = editingId ? `${API_URL}/${editingId}` : API_URL;
 
     try {
       const res = await fetch(url, {
@@ -230,79 +208,52 @@
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
-
       if (res.ok) {
-        const msg = editingId ? "បានកែប្រែឯកសាររួចរាល់!" : "បានរក្សាទុកឯកសារថ្មី!";
-        alert(msg);
-        form.reset();
+        alert(editingId ? "បានកែប្រែឯកសារ!" : "បានរក្សាទុកឯកសារថ្មី!");
         formModal.style.display = 'none';
         overlay.style.display = 'none';
         fetchDocument();
-      } else {
-        alert("មានបញ្ហាក្នុងការរក្សាទុកឯកសារ!");
-      }
+      } else alert("បញ្ហាក្នុងការរក្សាទុកឯកសារ!");
     } catch (err) {
-      console.error("Save error:", err);
-      alert("មានបញ្ហាក្នុងការតភ្ជាប់ម៉ាស៊ីនមេ!");
+      console.error("Save Error:", err);
     }
   });
-// 🔍 Search Function
-const searchInput = document.querySelector('input[type="search"]');
 
-searchInput.addEventListener("input", async () => {
-  const query = searchInput.value.toLowerCase();
-  try {
-    const res = await fetch("http://localhost:4000/doc");
-    const data = await res.json();
-    const docs = data.date || [];
-
-    const filteredDocs = docs.filter((doc) =>
-      [doc.no, doc.ir, doc.source, doc.doc, doc.officer]
-        .some((field) => field?.toLowerCase().includes(query))
-    );
-
-    // Display filtered results
-    tableBody.innerHTML = "";
-    filteredDocs.forEach((doc) => {
-      const row = document.createElement("tr");
-      row.innerHTML = `
-        <td>${doc.no}</td>
-        <td>${doc.ir}</td>
-        <td>${doc.outNo}</td>
-        <td>${doc.submitDate}</td>
-        <td>${doc.source}</td>
-        <td>${doc.doc}</td>
-        <td>${doc.officer || '-'}</td>
-        <td>${doc.status || '-'}</td>
-        <td>
-          <button class="editBtn" data-id="${doc.id}">Edit</button>
-          <button class="deleteBtn" data-id="${doc.id}">Delete</button>
-        </td>
-      `;
-      tableBody.appendChild(row);
+  // === Edit ===
+  function openEditForm(doc) {
+    editingId = doc.id;
+    formModal.style.display = 'block';
+    overlay.style.display = 'block';
+    Object.keys(form.elements).forEach((key) => {
+      if (form.elements[key]?.name) {
+        form.elements[key].value = doc[form.elements[key].name] || "";
+      }
     });
-  } catch (err) {
-    console.error("Search error:", err);
   }
-});
-  window.addEventListener('DOMContentLoaded', fetchDocument);
-  // 📤 Export Table to Excel
-document.getElementById("exportExcelBtn").addEventListener("click", () => {
-  // Get table data
-  const table = document.querySelector("table");
-  const rows = Array.from(table.querySelectorAll("tr"));
-  const data = rows.map(row =>
-    Array.from(row.querySelectorAll("th, td")).map(cell => cell.innerText)
-  );
 
-  // Convert to Excel
-  const wb = XLSX.utils.book_new();
-  const ws = XLSX.utils.aoa_to_sheet(data);
-  XLSX.utils.book_append_sheet(wb, ws, "Documents");
+  // === Delete ===
+  async function deleteDoc(id) {
+    if (!confirm("តើអ្នកពិតជាចង់លុបឯកសារនេះមែនទេ?")) return;
+    try {
+      const res = await fetch(`${API_URL}/${id}`, { method: "DELETE" });
+      const data = await res.json();
+      alert(data.message);
+      fetchDocument();
+    } catch (err) {
+      console.error("Delete Error:", err);
+    }
+  }
 
-  // Download as Excel file
-  XLSX.writeFile(wb, "documents.xlsx");
-});
-</script>
+  // === Export to Excel ===
+  document.getElementById("exportExcelBtn").onclick = () => {
+    const table = document.getElementById("documentTable");
+    const ws = XLSX.utils.table_to_sheet(table);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Documents");
+    XLSX.writeFile(wb, "documents.xlsx");
+  };
+
+  window.addEventListener("DOMContentLoaded", fetchDocument);
+  </script>
 </body>
 </html>
