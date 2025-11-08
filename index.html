@@ -189,7 +189,7 @@
         <td>${doc.officer || '-'}</td>
         <td>${doc.status || '-'}</td>
 <td>
-  <button onclick="viewDocument(1, 'Factory Report', 'Summary of production data', '2025-11-09')">View</button>
+<button onclick="viewDocument('${doc.id}', '${doc.doc}', '${doc.source}', '${doc.submitDate?.split("T")[0] || ""}')">View</button>
   <button class="editBtn">Edit</button>
   <button class="deleteBtn">Delete</button>
 </td>
