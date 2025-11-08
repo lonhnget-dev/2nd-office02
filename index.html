@@ -120,14 +120,17 @@
       </div>
     </form>
   </div>
-  <!-- ===== View Document Modal ===== -->
-<div id="viewModal">
-  <div class="view-content">
+  <!-- View Popup -->
+<div id="viewPopup" class="popup">
+  <div class="popup-content">
+    <span class="close" onclick="closeView()">&times;</span>
     <h2>Document Summary</h2>
-    <div id="viewDetails"></div>
-    <button id="closeViewBtn">Close</button>
+    <p><strong>ID:</strong> <span id="vId"></span></p>
+    <p><strong>Name:</strong> <span id="vName"></span></p>
+    <p><strong>Description:</strong> <span id="vDesc"></span></p>
+    <p><strong>Date:</strong> <span id="vDate"></span></p>
   </div>
-</div>
+</div>div>
 
   <script>
   const API_URL = "http://localhost:4000/doc";
@@ -141,6 +144,22 @@
   let editingId = null;
   let allDocs = [];
 
+  
+
+
+
+
+  function viewDocument(id, name, description, date) {
+  document.getElementById('vId').textContent = id;
+  document.getElementById('vName').textContent = name;
+  document.getElementById('vDesc').textContent = description;
+  document.getElementById('vDate').textContent = date;
+  document.getElementById('viewPopup').style.display = 'flex';
+}
+
+function closeView() {
+  document.getElementById('viewPopup').style.display = 'none';
+}
   // === Open / Close Form ===
   openBtn.onclick = () => {
     formModal.style.display = 'block';
@@ -180,9 +199,9 @@
         <td>${doc.officer || '-'}</td>
         <td>${doc.status || '-'}</td>
 <td>
-  <button class="viewBtn" data-id="${doc.id}">View</button>
-  <button class="editBtn" data-id="${doc.id}">Edit</button>
-  <button class="deleteBtn" data-id="${doc.id}">Delete</button>
+  <button onclick="viewDocument(1, 'Factory Report', 'Summary of production data', '2025-11-09')">View</button>
+  <button class="editBtn">Edit</button>
+  <button class="deleteBtn">Delete</button>
 </td>
       `;
 
