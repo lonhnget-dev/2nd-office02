@@ -120,6 +120,14 @@
       </div>
     </form>
   </div>
+  <!-- ===== View Document Modal ===== -->
+<div id="viewModal">
+  <div class="view-content">
+    <h2>Document Summary</h2>
+    <div id="viewDetails"></div>
+    <button id="closeViewBtn">Close</button>
+  </div>
+</div>
 
   <script>
   const API_URL = "http://localhost:4000/doc";
@@ -171,10 +179,11 @@
         <td>${doc.doc}</td>
         <td>${doc.officer || '-'}</td>
         <td>${doc.status || '-'}</td>
-        <td>
-          <button class="editBtn">Edit</button>
-          <button class="deleteBtn">Delete</button>
-        </td>
+<td>
+  <button class="viewBtn" data-id="${doc.id}">View</button>
+  <button class="editBtn" data-id="${doc.id}">Edit</button>
+  <button class="deleteBtn" data-id="${doc.id}">Delete</button>
+</td>
       `;
 
       // Edit
@@ -243,6 +252,44 @@
       console.error("Delete Error:", err);
     }
   }
+  // ===== View Document Function =====
+document.addEventListener("click", async (e) => {
+  if (e.target.classList.contains("viewBtn")) {
+    const id = e.target.getAttribute("data-id");
+
+    try {
+      const res = await fetch(`http://localhost:4000/doc/${id}`);
+      const data = await res.json();
+
+      if (data.doc) {
+        const d = data.doc;
+        const viewDetails = document.getElementById("viewDetails");
+        viewDetails.innerHTML = `
+          <p><strong>លេខចូល:</strong> ${d.no}</p>
+          <p><strong>លេខលិខិត (IR):</strong> ${d.ir}</p>
+          <p><strong>លេខចេញ:</strong> ${d.outNo || '-'}</p>
+          <p><strong>ថ្ងៃខែ:</strong> ${d.submitDate ? new Date(d.submitDate).toLocaleDateString() : '-'}</p>
+          <p><strong>អង្គភាព:</strong> ${d.source || '-'}</p>
+          <p><strong>ប្រភេទឯកសារ:</strong> ${d.doc || '-'}</p>
+          <p><strong>មន្រ្តីទទួល:</strong> ${d.officer || '-'}</p>
+          <p><strong>ស្ថានភាព:</strong> ${d.status || '-'}</p>
+        `;
+
+        document.getElementById("viewModal").style.display = "flex";
+      } else {
+        alert("Document not found.");
+      }
+    } catch (err) {
+      console.error("View error:", err);
+      alert("Failed to fetch document details.");
+    }
+  }
+});
+
+// ===== Close View Modal =====
+document.getElementById("closeViewBtn").addEventListener("click", () => {
+  document.getElementById("viewModal").style.display = "none";
+});
 
   // === Export to Excel ===
   document.getElementById("exportExcelBtn").onclick = () => {
