@@ -67,43 +67,35 @@
   <!-- Form Modal -->
   <div id="myForm">
     <h2 class="form-title">បញ្ចូលឯកសារ</h2>
-
     <form id="contactForm" class="styled-form">
       <div class="form-group">
         <label>លេខចូល</label>
         <input type="text" name="no" placeholder="បញ្ចូលលេខចូល" required>
       </div>
-
       <div class="form-group">
         <label>លេខលិខិត(IR)</label>
         <input type="text" name="ir" placeholder="បញ្ចូលលេខលិខិត" required>
       </div>
-
       <div class="form-group">
         <label>លេខចេញ</label>
         <input type="text" name="outNo" placeholder="បញ្ចូលលេខចេញ">
       </div>
-
       <div class="form-group">
         <label>ថ្ងៃខែ</label>
         <input type="date" name="submitDate">
       </div>
-
       <div class="form-group">
         <label>អង្គភាព</label>
         <input type="text" name="source" placeholder="បញ្ចូលអង្គភាព">
       </div>
-
       <div class="form-group">
         <label>ប្រភេទឯកសារ</label>
         <input type="text" name="doc" placeholder="ឧទាហរណ៍: លិខិតជាផ្លូវការ">
       </div>
-
       <div class="form-group">
         <label>មន្រ្តីទទួល</label>
         <input type="text" name="officer" placeholder="ឈ្មោះមន្រ្តី">
       </div>
-
       <div class="form-group">
         <label>ស្ថានភាព</label>
         <select name="status">
@@ -113,178 +105,169 @@
           <option value="មិនទាន់ចាប់ផ្តើម">មិនទាន់ចាប់ផ្តើម</option>
         </select>
       </div>
-
       <div class="form-buttons">
         <button type="submit" class="btn-submit">រក្សាទុក</button>
         <button type="button" id="closeForm" class="btn-close">បិទ</button>
       </div>
     </form>
   </div>
+
   <!-- View Popup -->
-<div id="viewPopup" class="popup">
-  <div class="popup-content">
-    <span class="close" onclick="closeView()">&times;</span>
-    <h2>Document Summary</h2>
-    <p><strong>ID:</strong> <span id="vId"></span></p>
-    <p><strong>Name:</strong> <span id="vName"></span></p>
-    <p><strong>Description:</strong> <span id="vDesc"></span></p>
-    <p><strong>Date:</strong> <span id="vDate"></span></p>
+  <div id="viewPopup" class="popup">
+    <div class="popup-content">
+      <span class="close" onclick="closeView()">&times;</span>
+      <h2>Document Summary</h2>
+      <p><strong>ID:</strong> <span id="vId"></span></p>
+      <p><strong>Name:</strong> <span id="vName"></span></p>
+      <p><strong>Description:</strong> <span id="vDesc"></span></p>
+      <p><strong>Date:</strong> <span id="vDate"></span></p>
+    </div>
   </div>
-</div>
 
   <script>
-  const API_URL = "http://localhost:4000/doc";
-  const form = document.getElementById("contactForm");
-  const tableBody = document.getElementById("tableBody");
-  const formModal = document.getElementById("myForm");
-  const overlay = document.getElementById("overlay");
-  const openBtn = document.getElementById("openForm");
-  const closeBtn = document.getElementById("closeForm");
-  const searchInput = document.getElementById("searchBox");
-  let editingId = null;
-  let allDocs = [];
+    const API_URL = "http://localhost:4000/doc";
+    const form = document.getElementById("contactForm");
+    const tableBody = document.getElementById("tableBody");
+    const formModal = document.getElementById("myForm");
+    const overlay = document.getElementById("overlay");
+    const openBtn = document.getElementById("openForm");
+    const closeBtn = document.getElementById("closeForm");
+    const searchInput = document.getElementById("searchBox");
+    let editingId = null;
+    let allDocs = [];
 
-  
+    // === Open / Close Form ===
+    openBtn.onclick = () => {
+      formModal.style.display = 'block';
+      overlay.style.display = 'block';
+      form.reset();
+      editingId = null;
+    };
+    closeBtn.onclick = overlay.onclick = () => {
+      formModal.style.display = 'none';
+      overlay.style.display = 'none';
+    };
 
-
-
-
- 
-  // === Open / Close Form ===
-  openBtn.onclick = () => {
-    formModal.style.display = 'block';
-    overlay.style.display = 'block';
-    form.reset();
-    editingId = null;
-  };
-  closeBtn.onclick = overlay.onclick = () => {
-    formModal.style.display = 'none';
-    overlay.style.display = 'none';
-  };
-
-  // === Fetch Documents ===
-  async function fetchDocument() {
-    try {
-      const res = await fetch(API_URL);
-      const data = await res.json();
-      allDocs = data.date || [];
-      renderTable(allDocs);
-    } catch (error) {
-      console.error("Fetch Error:", error);
+    // === Fetch Documents ===
+    async function fetchDocument() {
+      try {
+        const res = await fetch(API_URL);
+        const data = await res.json();
+        allDocs = data.date || [];
+        renderTable(allDocs);
+      } catch (error) {
+        console.error("Fetch Error:", error);
+      }
     }
-  }
 
-  // === Render Table ===
-  function renderTable(docs) {
-    tableBody.innerHTML = "";
-    docs.forEach((doc) => {
-      const row = document.createElement("tr");
-      row.innerHTML = `
-        <td>${doc.no}</td>
-        <td>${doc.ir}</td>
-        <td>${doc.outNo}</td>
-        <td>${doc.submitDate?.split("T")[0] || ""}</td>
-        <td>${doc.source}</td>
-        <td>${doc.doc}</td>
-        <td>${doc.officer || '-'}</td>
-        <td>${doc.status || '-'}</td>
-<td>
-<button onclick="viewDocument('${doc.id}', '${doc.doc}', '${doc.source}', '${doc.submitDate?.split("T")[0] || ""}')">View</button>
-  <button class="editBtn">Edit</button>
-  <button class="deleteBtn">Delete</button>
-</td>
-      `;
+    // === Render Table ===
+    function renderTable(docs) {
+      tableBody.innerHTML = "";
+      docs.forEach((doc) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${doc.no}</td>
+          <td>${doc.ir}</td>
+          <td>${doc.outNo}</td>
+          <td>${doc.submitDate?.split("T")[0] || ""}</td>
+          <td>${doc.source}</td>
+          <td>${doc.doc}</td>
+          <td>${doc.officer || '-'}</td>
+          <td>${doc.status || '-'}</td>
+          <td>
+            <button onclick="viewDocument('${doc.id}', '${doc.doc}', '${doc.source}', '${doc.submitDate?.split("T")[0] || ""}')">View</button>
+            <button class="editBtn">Edit</button>
+            <button class="deleteBtn">Delete</button>
+          </td>
+        `;
 
-      // Edit
-      row.querySelector(".editBtn").onclick = () => openEditForm(doc);
-      // Delete
-      row.querySelector(".deleteBtn").onclick = () => deleteDoc(doc.id);
-      tableBody.appendChild(row);
-    });
-  }
-
-  // === Search Function ===
-  searchInput.addEventListener("input", () => {
-    const q = searchInput.value.toLowerCase();
-    const filtered = allDocs.filter((d) =>
-      [d.no, d.ir, d.source, d.doc, d.officer]
-        .some(v => v?.toLowerCase().includes(q))
-    );
-    renderTable(filtered);
-  });
-
-  // === Submit Form ===
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const formData = Object.fromEntries(new FormData(form));
-    const method = editingId ? "PUT" : "POST";
-    const url = editingId ? `${API_URL}/${editingId}` : API_URL;
-
-    try {
-      const res = await fetch(url, {
-        method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        // Edit
+        row.querySelector(".editBtn").onclick = () => openEditForm(doc);
+        // Delete
+        row.querySelector(".deleteBtn").onclick = () => deleteDoc(doc.id);
+        tableBody.appendChild(row);
       });
-      if (res.ok) {
-        alert(editingId ? "បានកែប្រែឯកសារ!" : "បានរក្សាទុកឯកសារថ្មី!");
-        formModal.style.display = 'none';
-        overlay.style.display = 'none';
-        fetchDocument();
-      } else alert("បញ្ហាក្នុងការរក្សាទុកឯកសារ!");
-    } catch (err) {
-      console.error("Save Error:", err);
     }
-  });
 
-  // === Edit ===
-  function openEditForm(doc) {
-    editingId = doc.id;
-    formModal.style.display = 'block';
-    overlay.style.display = 'block';
-    Object.keys(form.elements).forEach((key) => {
-      if (form.elements[key]?.name) {
-        form.elements[key].value = doc[form.elements[key].name] || "";
+    // === Search Function ===
+    searchInput.addEventListener("input", () => {
+      const q = searchInput.value.toLowerCase();
+      const filtered = allDocs.filter((d) =>
+        [d.no, d.ir, d.source, d.doc, d.officer].some(v => v?.toLowerCase().includes(q))
+      );
+      renderTable(filtered);
+    });
+
+    // === Submit Form ===
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const formData = Object.fromEntries(new FormData(form));
+      const method = editingId ? "PUT" : "POST";
+      const url = editingId ? `${API_URL}/${editingId}` : API_URL;
+
+      try {
+        const res = await fetch(url, {
+          method,
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData),
+        });
+        if (res.ok) {
+          alert(editingId ? "បានកែប្រែឯកសារ!" : "បានរក្សាទុកឯកសារថ្មី!");
+          formModal.style.display = 'none';
+          overlay.style.display = 'none';
+          fetchDocument();
+        } else alert("បញ្ហាក្នុងការរក្សាទុកឯកសារ!");
+      } catch (err) {
+        console.error("Save Error:", err);
       }
     });
-  }
 
-  // === Delete ===
-  async function deleteDoc(id) {
-    if (!confirm("តើអ្នកពិតជាចង់លុបឯកសារនេះមែនទេ?")) return;
-    try {
-      const res = await fetch(`${API_URL}/${id}`, { method: "DELETE" });
-      const data = await res.json();
-      alert(data.message);
-      fetchDocument();
-    } catch (err) {
-      console.error("Delete Error:", err);
+    // === Edit ===
+    function openEditForm(doc) {
+      editingId = doc.id;
+      formModal.style.display = 'block';
+      overlay.style.display = 'block';
+      Object.keys(form.elements).forEach((key) => {
+        if (form.elements[key]?.name) {
+          form.elements[key].value = doc[form.elements[key].name] || "";
+        }
+      });
     }
-  }
 
-  // === Export to Excel ===
-  document.getElementById("exportExcelBtn").onclick = () => {
-    const table = document.getElementById("documentTable");
-    const ws = XLSX.utils.table_to_sheet(table);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Documents");
-    XLSX.writeFile(wb, "documents.xlsx");
-  };
+    // === Delete ===
+    async function deleteDoc(id) {
+      if (!confirm("តើអ្នកពិតជាចង់លុបឯកសារនេះមែនទេ?")) return;
+      try {
+        const res = await fetch(`${API_URL}/${id}`, { method: "DELETE" });
+        const data = await res.json();
+        alert(data.message);
+        fetchDocument();
+      } catch (err) {
+        console.error("Delete Error:", err);
+      }
+    }
 
+    // === Export to Excel ===
+    document.getElementById("exportExcelBtn").onclick = () => {
+      const ws = XLSX.utils.json_to_sheet(allDocs);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Documents");
+      XLSX.writeFile(wb, "documents.xlsx");
+    };
 
-   function viewDocument(id, name, description, date) {
-  document.getElementById('vId').textContent = id;
-  document.getElementById('vName').textContent = name;
-  document.getElementById('vDesc').textContent = description;
-  document.getElementById('vDate').textContent = date;
-  document.getElementById('viewPopup').style.display = 'flex';
-}
+    // === View Popup ===
+    function viewDocument(id, name, description, date) {
+      document.getElementById('vId').textContent = id;
+      document.getElementById('vName').textContent = name;
+      document.getElementById('vDesc').textContent = description;
+      document.getElementById('vDate').textContent = date;
+      document.getElementById('viewPopup').style.display = 'flex';
+    }
+    function closeView() {
+      document.getElementById('viewPopup').style.display = 'none';
+    }
 
-function closeView() {
-  document.getElementById('viewPopup').style.display = 'none';
-}
-
-  window.addEventListener("DOMContentLoaded", fetchDocument);
+    window.addEventListener("DOMContentLoaded", fetchDocument);
   </script>
 </body>
 </html>
