@@ -46,15 +46,24 @@
     <table id="documentTable">
       <thead>
         <tr>
-          <th>លេខចូល</th>
-          <th>លេខលិខិត(IR)</th>
-          <th>លេខចេញ</th>
-          <th>ថ្ងៃខែ</th>
-          <th>អង្គភាព</th>
-          <th>ប្រភេទឯកសារ</th>
-          <th>មន្រ្តីទទួល</th>
-          <th>ស្ថានភាព</th>
-          <th>សកម្មភាព</th>
+          <th> 1 លេខចូល</th> 
+          <th> 2 លេខលិខិត(IR)</th>
+          <th> 3 លេខចេញ</th>
+          <th> 4 ថ្ងៃ.ខែ. លិខិតចូល/ចេញ</th>
+          <th>5 អង្គភាព/ប្រភពលិខិត</th>
+          <th>6 ប្រភេទឯកសារ</th>
+          <th>7 ថ្ងៃ.ខែ.ឆ្នាំមុខការិ.២</th>
+          <th>8 មន្រ្តីទទួលមុខការ</th>
+          <th>8 ថ្ងៃ.ខែ.ឆ្នាំទទួល</th>
+          <th>0 មិនទាន់ធ្វើចេញ/បានធ្វើចេញរួចរាល់</th>
+          <th>11 ចំនួនថ្ងៃទាន់បានធ្វើចេញ</th>
+          <th>12 ចូលប្រធានការិ.</th>
+          <th>13 ចូលអនុ.នាយកដ្ឋាន (លោក ព្រំ សុវណ្ណាក់)</th>
+          <th>14ចូលប្រធាននាយកដ្ឋាន</th>
+          <th>15 ថ្ងៃ.ខែ.ឆ្នាំចេញលិខិត</th>
+          <th>16 "ចេញបញ្ជិកា/ មិនទាន់ចេញបញ្ជិកា"/th>
+          <th>17 មូលហេតុ/ផ្សេងៗ</th>
+          <th>18 សកម្មភាព</th>
         </tr>
       </thead>
       <tbody id="tableBody"></tbody>
@@ -165,33 +174,55 @@
   }
 
   // === Render Table ===
-  function renderTable(docs) {
-    tableBody.innerHTML = "";
-    docs.forEach((doc) => {
-      const row = document.createElement("tr");
-      row.innerHTML = `
-        <td>${doc.no}</td>
-        <td>${doc.ir}</td>
-        <td>${doc.outNo}</td>
-        <td>${doc.submitDate?.split("T")[0] || ""}</td>
-        <td>${doc.source}</td>
-        <td>${doc.doc}</td>
-        <td>${doc.officer || '-'}</td>
-        <td>${doc.status || '-'}</td>
-        <td>
-          <button onclick="viewDocument('${doc.id}', '${doc.doc}', '${doc.source}', '${doc.submitDate?.split("T")[0] || ""}')">View</button>
-          <button class="editBtn">Edit</button>
-          <button class="deleteBtn">Delete</button>
-        </td>
-      `;
+// === Render Table ===
+function renderTable(docs) {
+  tableBody.innerHTML = "";
+  docs.forEach((doc) => {
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td>${doc.no || ""}</td>
+      <td>${doc.ir || ""}</td>
+      <td>${doc.outNo || ""}</td>
+      <td>${doc.submitDate || ""}</td>
+      <td>${doc.source || ""}</td>
+      <td>${doc.doc || ""}</td>
+      <td>${doc.officeDate2 || ""}</td>
+      <td>${doc.officer || ""}</td>
+      <td>${doc.receiveDate || ""}</td>
+      <td>${doc.progress || ""}</td>
+      <td>${doc.duration || ""}</td>
+      <td>${doc.toChiefOffice || ""}</td>
+      <td>${doc.toDeputy || ""}</td>
+      <td>${doc.toHeadDept || ""}</td>
+      <td>${doc.outDate || ""}</td>
+      <td>${doc.registryStatus || ""}</td>
+      <td>${doc.reason || ""}</td>
+      <td>
+        <button class="viewBtn">👁️ View</button>
+        <button class="editBtn">✏️ Edit</button>
+        <button class="deleteBtn">🗑️ Delete</button>
+      </td>
+    `;
 
-      // Edit
-      row.querySelector(".editBtn").onclick = () => openEditForm(doc);
-      // Delete
-      row.querySelector(".deleteBtn").onclick = () => deleteDoc(doc.id);
-      tableBody.appendChild(row);
-    });
-  }
+    // View button
+    row.querySelector(".viewBtn").onclick = () => {
+      viewDocument(
+        doc.id,
+        doc.doc,
+        doc.source,
+        doc.submitDate || "",
+      );
+    };
+
+    // Edit button
+    row.querySelector(".editBtn").onclick = () => openEditForm(doc);
+
+    // Delete button
+    row.querySelector(".deleteBtn").onclick = () => deleteDoc(doc.id);
+
+    tableBody.appendChild(row);
+  });
+}
 
   // === Search Function ===
   searchInput.addEventListener("input", () => {
