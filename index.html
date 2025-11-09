@@ -193,7 +193,7 @@
     searchInput.addEventListener("input", () => {
       const q = searchInput.value.toLowerCase();
       const filtered = allDocs.filter((d) =>
-        [d.no, d.ir, d.source, d.doc, d.officer].some(v => v?.toLowerCase().includes(q))
+        [d.no, d.ir, d.source, d.doc, d.officer, d.status].some(v => v?.toLowerCase().includes(q))
       );
       renderTable(filtered);
     });
