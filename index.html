@@ -75,52 +75,32 @@
 
   <!-- Form Modal -->
   <div id="myForm">
-    <h2 class="form-title">បញ្ចូលឯកសារ</h2>
-    <form id="contactForm" class="styled-form">
-      <div class="form-group">
-        <label>លេខចូល</label>
-        <input type="text" name="no" placeholder="បញ្ចូលលេខចូល" required>
-      </div>
-      <div class="form-group">
-        <label>លេខលិខិត(IR)</label>
-        <input type="text" name="ir" placeholder="បញ្ចូលលេខលិខិត" required>
-      </div>
-      <div class="form-group">
-        <label>លេខចេញ</label>
-        <input type="text" name="outNo" placeholder="បញ្ចូលលេខចេញ">
-      </div>
-      <div class="form-group">
-        <label>ថ្ងៃខែ</label>
-        <input type="date" name="submitDate">
-      </div>
-      <div class="form-group">
-        <label>អង្គភាព</label>
-        <input type="text" name="source" placeholder="បញ្ចូលអង្គភាព">
-      </div>
-      <div class="form-group">
-        <label>ប្រភេទឯកសារ</label>
-        <input type="text" name="doc" placeholder="ឧទាហរណ៍: លិខិតជាផ្លូវការ">
-      </div>
-      <div class="form-group">
-        <label>មន្រ្តីទទួល</label>
-        <input type="text" name="officer" placeholder="ឈ្មោះមន្រ្តី">
-      </div>
-      <div class="form-group">
-        <label>ស្ថានភាព</label>
-        <select name="status">
-          <option value="">ជ្រើសរើសស្ថានភាព</option>
-          <option value="កំពុងដំណើរការ">កំពុងដំណើរការ</option>
-          <option value="បានបញ្ចប់">បានបញ្ចប់</option>
-          <option value="មិនទាន់ចាប់ផ្តើម">មិនទាន់ចាប់ផ្តើម</option>
-        </select>
-      </div>
-      <div class="form-buttons">
-        <button type="submit" class="btn-submit">រក្សាទុក</button>
-        <button type="button" id="closeForm" class="btn-close">បិទ</button>
-      </div>
-    </form>
-  </div>
+  <h2 class="form-title">បញ្ចូលឯកសារ</h2>
+  <form id="contactForm" class="styled-form">
+    <div class="form-group"><label>1. លេខចូល</label><input type="text" name="no" required></div>
+    <div class="form-group"><label>2. លេខលិខិត(IR)</label><input type="text" name="ir"></div>
+    <div class="form-group"><label>3. លេខចេញ</label><input type="text" name="outNo"></div>
+    <div class="form-group"><label>4. ថ្ងៃខែលិខិតចូល/ចេញ</label><input type="date" name="submitDate"></div>
+    <div class="form-group"><label>5. អង្គភាព/ប្រភពលិខិត</label><input type="text" name="source"></div>
+    <div class="form-group"><label>6. ប្រភេទឯកសារ</label><input type="text" name="doc"></div>
+    <div class="form-group"><label>7. ថ្ងៃខែមុខការិ.២</label><input type="date" name="officeDate2"></div>
+    <div class="form-group"><label>8. មន្រ្តីទទួលមុខការ</label><input type="text" name="officer"></div>
+    <div class="form-group"><label>9. ថ្ងៃខែឆ្នាំទទួល</label><input type="date" name="receiveDate"></div>
+    <div class="form-group"><label>10. មិនទាន់ធ្វើចេញ/បានធ្វើចេញរួចរាល់</label><input type="text" name="progress"></div>
+    <div class="form-group"><label>11. ចំនួនថ្ងៃទាន់បានធ្វើចេញ</label><input type="text" name="duration"></div>
+    <div class="form-group"><label>12. ចូលប្រធានការិ.</label><input type="text" name="toChiefOffice"></div>
+    <div class="form-group"><label>13. ចូលអនុ.នាយកដ្ឋាន</label><input type="text" name="toDeputy"></div>
+    <div class="form-group"><label>14. ចូលប្រធាននាយកដ្ឋាន</label><input type="text" name="toHeadDept"></div>
+    <div class="form-group"><label>15. ថ្ងៃខែឆ្នាំចេញលិខិត</label><input type="date" name="outDate"></div>
+    <div class="form-group"><label>16. ចេញបញ្ជិកា/មិនទាន់ចេញបញ្ជិកា</label><input type="text" name="registryStatus"></div>
+    <div class="form-group"><label>17. មូលហេតុ/ផ្សេងៗ</label><textarea name="reason" rows="2"></textarea></div>
 
+    <div class="form-buttons">
+      <button type="submit" class="btn-submit">រក្សាទុក</button>
+      <button type="button" id="closeForm" class="btn-close">បិទ</button>
+    </div>
+  </form>
+</div>
   <!-- View Popup -->
   <div id="viewPopup" class="popup">
     <div class="popup-content">
@@ -235,53 +215,53 @@ function renderTable(docs) {
 
   // === Submit Form ===
   form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const formData = Object.fromEntries(new FormData(form));
-    const method = editingId ? "PUT" : "POST";
-    const url = editingId ? `${API_URL}/${editingId}` : API_URL;
+  e.preventDefault();
 
-    try {
-      const res = await fetch(url, {
-        method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-      if (res.ok) {
-        alert(editingId ? "បានកែប្រែឯកសារ!" : "បានរក្សាទុកឯកសារថ្មី!");
-        formModal.style.display = 'none';
-        overlay.style.display = 'none';
+  // Collect all form data
+  const formData = Object.fromEntries(new FormData(form).entries());
 
-        // If new, add it to top
-        const result = await res.json();
-        if (!editingId) {
-          allDocs.unshift(result.doc); // Add new doc to the beginning
-        } else {
-          // Update existing doc in list
-          const index = allDocs.findIndex(d => d.id === editingId);
-          if (index !== -1) allDocs[index] = result.doc;
-        }
+  const method = editingId ? "PUT" : "POST";
+  const url = editingId ? `${API_URL}/${editingId}` : API_URL;
 
-        renderTable(allDocs);
+  try {
+    const res = await fetch(url, {
+      method,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    });
+
+    const result = await res.json();
+
+    if (res.ok) {
+      alert(editingId ? "បានកែប្រែឯកសារ!" : "បានរក្សាទុកឯកសារថ្មី!");
+      formModal.style.display = "none";
+      overlay.style.display = "none";
+
+      // Update table data
+      if (editingId) {
+        const i = allDocs.findIndex((d) => d.id === editingId);
+        if (i !== -1) allDocs[i] = result.doc;
       } else {
-        alert("បញ្ហាក្នុងការរក្សាទុកឯកសារ!");
+        allDocs.unshift(result.doc);
       }
-    } catch (err) {
-      console.error("Save Error:", err);
-    }
-  });
 
+      renderTable(allDocs);
+    } else {
+      alert("បញ្ហាក្នុងការរក្សាទុកឯកសារ!");
+    }
+  } catch (err) {
+    console.error("Save Error:", err);
+  }
+});
   // === Edit ===
   function openEditForm(doc) {
-    editingId = doc.id;
-    formModal.style.display = 'block';
-    overlay.style.display = 'block';
-    Object.keys(form.elements).forEach((key) => {
-      if (form.elements[key]?.name) {
-        form.elements[key].value = doc[form.elements[key].name] || "";
-      }
-    });
+  editingId = doc.id;
+  formModal.style.display = 'block';
+  overlay.style.display = 'block';
+  for (const element of form.elements) {
+    if (element.name) element.value = doc[element.name] || "";
   }
-
+}
   // === Delete ===
   async function deleteDoc(id) {
     if (!confirm("តើអ្នកពិតជាចង់លុបឯកសារនេះមែនទេ?")) return;
