@@ -1,4 +1,4 @@
-* ===== Global Styles ===== */
+/* ===== Global Styles ===== */
 body {
   font-family: 'Noto Sans Khmer', Arial, sans-serif;
   margin: 0;
@@ -211,6 +211,7 @@ tr:hover {
   z-index: 500;
   backdrop-filter: blur(3px);
 }
+
 /* ===== Form Modal ===== */
 #myForm {
   display: none;
