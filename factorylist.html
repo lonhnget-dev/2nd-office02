@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>បញ្ជីរោងចក្រ | Office 2</title>
+  <link rel="stylesheet" href="factorylist.css" />
+</head>
+<body>
+    <div id="navbar"></div>
+    
+  <!-- Factory List Section -->
+  <section class="factory-section">
+    <h2>បញ្ជីរោងចក្រ / Factory List</h2>
+    
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="ស្វែងរកឈ្មោះសហគ្រាស..." />
+    </div>
+
+    <table id="factoryTable">
+      <thead>
+        <tr>
+          <th>ល.រ</th>
+          <th>នាមករណ៍សហគ្រាស (ខ្មែរ)</th>
+          <th>នាមករណ៍សហគ្រាស (អង់គ្លេស)</th>
+          <th>វិស័យ</th>
+          <th>ភូមិ</th>
+          <th>ឃុំ/សង្កាត់</th>
+          <th>ស្រុក/ក្រុង/ខណ្ឌ</th>
+          <th>រាជធានី/ខេត្ត</th>
+          <th>កម្មករសរុប</th>
+          <th>(ស្រី)</th>
+          <th>ឈ្មោះរដ្ឋបាល</th>
+          <th>លេខរដ្ឋបាល</th>
+          <th>MAP</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>សហគ្រាស វីសិន</td>
+          <td>Vision Factory</td>
+          <td>វាស់វែង</td>
+          <td>ភូមិទួលសង្កែ</td>
+          <td>សង្កាត់ទួលសង្កែ</td>
+          <td>ខណ្ឌរលាប្អៀរ</td>
+          <td>ភ្នំពេញ</td>
+          <td>250</td>
+          <td>160</td>
+          <td>សុខ ចាន់នី</td>
+          <td>012345678</td>
+          <td><button class="map-btn">View Map</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <script src="factory-list.js"></script>
+</body>
+<script>
+     fetch('navbar.html')
+    .then(response => response.text())
+    .then(data => {
+      document.getElementById('navbar').innerHTML = data;
+
+      // Highlight current page
+      const currentPage = window.location.pathname.split("/").pop();
+      const links = document.querySelectorAll(".navbar a");
+
+      links.forEach(link => {
+        if (link.getAttribute("href") === currentPage) {
+          link.classList.add("active");
+        }
+      });
+    });
+</script>
+</html>

@@ -9,23 +9,7 @@
 <body>
 
   <!-- ===== NAVBAR (same as your design) ===== -->
-  <nav class="navbar">
-    <div class="nav-left">
-      <img src="https://1000logos.net/wp-content/uploads/2017/02/Facebook-Logosu.png" alt="Logo">
-      <span class="brand-name">Office 2</span>
-    </div>
-
-    <ul class="nav-links">
-      <li><a href="./index.html">Home</a></li>
-      <li><a href="./user.html">User</a></li>
-      <li><a href="#">Documents</a></li>
-      <li><a href="#">Map</a></li>
-    </ul>
-
-    <div class="nav-login">
-      <a href="./log-in.html" class="login-btn">Login</a>
-    </div>
-  </nav>
+  <div id="navbar"></div>
 
   <!-- ===== USER MANAGEMENT SECTION ===== -->
   <div class="user-container">
@@ -95,6 +79,22 @@
     </div>
   </div>
 
-  <script src="user.js"></script>
+ <script>
+  fetch('navbar.html')
+    .then(response => response.text())
+    .then(data => {
+      document.getElementById('navbar').innerHTML = data;
+
+      // Highlight current page
+      const currentPage = window.location.pathname.split("/").pop();
+      const links = document.querySelectorAll(".navbar a");
+
+      links.forEach(link => {
+        if (link.getAttribute("href") === currentPage) {
+          link.classList.add("active");
+        }
+      });
+    });
+</script>
 </body>
 </html>
