@@ -4,7 +4,6 @@ body {
   margin: 0;
   background-color: #f5f6fa;
   color: #333;
-  line-height: 1.5;
 }
 
 /* ===== Navbar ===== */
@@ -89,7 +88,7 @@ body {
   transform: scale(1.05);
 }
 
-/* ===== Filter Section ===== */
+/* ===== Filter Section (Dropdown + Search) ===== */
 .filter-section {
   display: flex;
   align-items: center;
@@ -118,7 +117,7 @@ body {
   box-shadow: 0 0 4px rgba(59, 89, 152, 0.4);
 }
 
-/* ===== Search Box ===== */
+/* ===== Improved Search Box ===== */
 .filter-section input[type="search"] {
   padding: 9px 14px;
   border-radius: 20px;
@@ -157,19 +156,16 @@ table {
 th, td {
   padding: 12px 15px;
   text-align: center;
-  vertical-align: middle;
 }
 
 th {
   background-color: #3b5998;
   color: #fff;
   font-weight: 600;
-  font-size: 14px;
 }
 
 td {
   border-bottom: 1px solid #e0e0e0;
-  font-size: 14px;
 }
 
 tr:hover {
@@ -227,28 +223,23 @@ tr:hover {
   padding: 25px 30px;
   border-radius: 12px;
   width: 80%;
-  max-width: 800px;
+  max-width: 750px;
   box-shadow: 0 10px 25px rgba(0,0,0,0.2);
   animation: fadeIn 0.3s ease forwards;
-  overflow-y: auto;
-  max-height: 85vh;
 }
 
 .form-title {
   text-align: center;
-  font-size: 22px;
+  font-size: 24px;
   color: #2b3d52;
   margin-bottom: 20px;
   font-weight: bold;
-  border-bottom: 2px solid #4a69bd;
-  padding-bottom: 6px;
 }
 
-/* ===== Form Layout ===== */
 .styled-form {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
-  gap: 15px 20px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px 25px;
 }
 
 .form-group {
@@ -258,39 +249,35 @@ tr:hover {
 
 .form-group label {
   font-weight: 600;
-  margin-bottom: 5px;
-  font-size: 14px;
+  margin-bottom: 6px;
 }
 
 .form-group input,
-.form-group select,
-.form-group textarea {
-  padding: 9px 12px;
+.form-group select {
+  padding: 10px 12px;
   border: 1px solid #ccc;
   border-radius: 8px;
-  font-size: 14px;
+  font-size: 15px;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus {
+.form-group select:focus {
   outline: none;
   border-color: #007bff;
   box-shadow: 0 0 4px rgba(0,123,255,0.4);
 }
 
-/* ===== Buttons ===== */
 .form-buttons {
   grid-column: 1 / -1;
   display: flex;
-  justify-content: center;
-  gap: 12px;
-  margin-top: 20px;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 15px;
 }
 
 .btn-submit, .btn-close {
-  padding: 10px 22px;
+  padding: 10px 18px;
   border: none;
   border-radius: 8px;
   font-weight: bold;
@@ -303,6 +290,7 @@ tr:hover {
   background-color: #007bff;
   color: white;
 }
+
 .btn-submit:hover {
   background-color: #0056b3;
   transform: scale(1.05);
@@ -312,6 +300,7 @@ tr:hover {
   background-color: #ccc;
   color: #333;
 }
+
 .btn-close:hover {
   background-color: #999;
   transform: scale(1.05);
@@ -329,41 +318,6 @@ tr:hover {
   }
 }
 
-/* ===== Popup (confirmation) ===== */
-.popup {
-  display: none;
-  position: fixed;
-  z-index: 700;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.6);
-  justify-content: center;
-  align-items: center;
-}
-
-.popup-content {
-  background: white;
-  padding: 25px;
-  border-radius: 12px;
-  width: 320px;
-  text-align: center;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-  animation: fadeIn 0.3s ease;
-}
-
-.close {
-  float: right;
-  font-size: 20px;
-  cursor: pointer;
-  color: #555;
-}
-
-.close:hover {
-  color: #000;
-}
-
 /* ===== Responsive ===== */
 @media (max-width: 600px) {
   .styled-form {
@@ -378,9 +332,31 @@ tr:hover {
   .filter-section input[type="search"] {
     width: 100%;
   }
+}
 
-  #myForm {
-    width: 95%;
-    padding: 20px;
-  }
+.popup {
+  display: none;
+  position: fixed;
+  z-index: 10;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-content {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  width: 300px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.close {
+  float: right;
+  font-size: 20px;
+  cursor: pointer;
 }
