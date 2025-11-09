@@ -10,10 +10,10 @@ body {
 .navbar {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 40px; /* Tightens spacing */
   background: linear-gradient(90deg, #3b5998, #4a69bd);
   color: white;
-  padding: 10px 25px;
+  padding: 12px 30px;
   position: fixed;
   width: 100%;
   top: 0;
@@ -22,44 +22,62 @@ body {
   z-index: 100;
 }
 
-.navbar img {
-  width: 45px;
-  border-radius: 8px;
-}
-
-.navbar ul {
+/* Left Section */
+.nav-left {
   display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav-left img {
+  width: 42px;
+  border-radius: 10px;
+}
+
+.brand-name {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/* Center Menu */
+.nav-links {
+  display: flex;
+  gap: 28px;
   list-style: none;
-  padding: 0;
   margin: 0;
-  gap: 25px;
+  padding: 0;
 }
 
-.navbar li {
-  cursor: pointer;
+.nav-links li a {
+  color: white;
+  text-decoration: none;
   font-weight: 500;
-  transition: color 0.3s, transform 0.2s;
+  transition: 0.3s ease;
 }
 
-.navbar li:hover {
+.nav-links li a:hover {
   color: #ffd700;
   transform: translateY(-2px);
 }
 
-.navbar .login a {
-  color: #fff;
+/* Login Button (Right) */
+.login-btn {
+  margin-left: auto; /* ✅ Pushes just enough, no huge gap */
+  background: white;
+  color: #3b5998;
+  padding: 9px 18px;
+  border-radius: 8px;
   text-decoration: none;
-  background: #2d4373;
-  padding: 8px 15px;
-  border-radius: 6px;
-  transition: background 0.3s, transform 0.2s;
+  font-weight: 600;
+  transition: 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.15);
 }
 
-.navbar .login a:hover {
-  background: #1f3058;
-  transform: scale(1.05);
+.login-btn:hover {
+  background: #ffd700;
+  color: #2d4373;
+  transform: translateY(-2px);
 }
-
 /* ===== Add Document Section ===== */
 .add-document {
   padding: 25px;

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Office Management System</title>
+  <title>Office 02</title>
   <link rel="stylesheet" href="style.css">
 
   <!-- Excel Export Library -->
@@ -11,16 +11,23 @@
 </head>
 <body>
   <!-- Navigation Bar -->
-  <nav class="navbar">
+ <nav class="navbar">
+  <div class="nav-left">
     <img src="https://1000logos.net/wp-content/uploads/2017/02/Facebook-Logosu.png" alt="Logo">
-    <ul>
-      <li>Home</li>
-      <li>Search</li>
-      <li>Documents</li>
-      <li>Map</li>
-    </ul>
-    <div class="login"><a href="#">Login</a></div>
-  </nav>
+    <span class="brand-name">Office 2</span>
+  </div>
+
+  <ul class="nav-links">
+    <li><a href="./index.html">Home</a></li>
+    <li><a href="./user.html">User</a></li>
+    <li><a href="#">Documents</a></li>
+    <li><a href="#">Map</a></li>
+  </ul>
+
+  <div class="nav-login">
+    <a href="./log-in.html" class="login-btn">Login</a>
+  </div>
+</nav>
 
   <!-- Add Document + Filter Section -->
   <section class="add-document">
