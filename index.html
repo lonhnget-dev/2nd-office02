@@ -227,12 +227,13 @@
       try {
         const res = await fetch(API_URL);
         const data = await res.json();
-        allDocs = data.date || [];
+        allDocs = data.data || [];
         renderTable(allDocs);
       } catch (error) {
         console.error("Fetch Error:", error);
       }
     }
+    
 
     // === Render Table ===
     function renderTable(docs) {
@@ -240,7 +241,7 @@
       docs.forEach((doc) => {
         const row = document.createElement("tr");
         row.innerHTML = `
-     <td>${doc.no || '-'}</td> <!-- 1. លេខចូល -->
+          <td>${doc.no || '-'}</td> <!-- 1. លេខចូល -->
           <td>${doc.ir || '-'}</td> <!-- 2. លេខលិខិត(IR) -->
           <td>${doc.outNo || '-'}</td> <!-- 3. លេខចេញ -->
           <td>${doc.submitDate?.split("T")[0] || ''}</td> <!-- 4. ថ្ងៃខែលិខិតចូល/ចេញ -->
