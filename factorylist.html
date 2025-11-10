@@ -32,7 +32,8 @@
           <th>(ស្រី)</th>
           <th>ឈ្មោះរដ្ឋបាល</th>
           <th>លេខរដ្ឋបាល</th>
-          <th>MAP</th>
+
+          <th>ACTION</th>
         </tr>
       </thead>
       <tbody>
@@ -51,15 +52,15 @@
           <td>012345678</td>
           <td>
               <div>
-                <button class="map-btn">View Map</button>
+                <button class="view-btn">View</button>
                 <a href="EditingFactory.html" id="services-link" class="btn-link" target="_blank">Editing Link</a>
               </div>
           </td>
         </tr>
           <tr>
             <td>2</td>
-            <td>សហគ្រាស វីសិន</td>
-            <td>Vision Factory</td>
+            <td>ឡូស៊ីដា</td>
+            <td>Lucida</td>
             <td>កាត់ដេរ</td>
             <td>ភូមិទួលសង្កែ</td>
             <td>សង្កាត់ទួលសង្កែ</td>
@@ -71,7 +72,7 @@
             <td>012345678</td>
             <td>
                 <div>
-                  <button class="map-btn">View Map</button>
+                  <button class="view-btn">View</button>
                   <a href="EditingFactory.html" id="services-link" class="btn-link" target="_blank">Editing Link</a>
                 </div>
             </td>
@@ -79,6 +80,16 @@
       </tbody>
     </table>
   </section>
+
+<!-- Factory Detail Modal -->
+<div id="factoryModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn">&times;</span>
+    <h3>ព័ត៌មានរោងចក្រ / Factory Details</h3>
+    <div id="factoryDetail"></div>
+  </div>
+</div>
+
 
   <script src="factory-list.js"></script>
 </body>
@@ -98,5 +109,33 @@
         }
       });
     });
+
+/// View button functionality
+document.addEventListener("click", function(e) {
+  if (e.target.classList.contains("view-btn")) {
+    const row = e.target.closest("tr");
+    const cells = row.querySelectorAll("td");
+
+    const factoryInfo = `
+      <p><strong>ឈ្មោះសហគ្រាស (ខ្មែរ):</strong> ${cells[1].textContent}</p>
+      <p><strong>ឈ្មោះសហគ្រាស (អង់គ្លេស):</strong> ${cells[2].textContent}</p>
+      <p><strong>វិស័យ:</strong> ${cells[3].textContent}</p>
+      <p><strong>ទីតាំង:</strong> ${cells[4].textContent}, ${cells[5].textContent}, ${cells[6].textContent}, ${cells[7].textContent}</p>
+      <p><strong>កម្មករសរុប:</strong> ${cells[8].textContent} (ស្រី: ${cells[9].textContent})</p>
+      <p><strong>អ្នកទំនាក់ទំនង:</strong> ${cells[10].textContent} (${cells[11].textContent})</p>
+    `;
+
+    document.getElementById("factoryDetail").innerHTML = factoryInfo;
+    document.getElementById("factoryModal").style.display = "block";
+  }
+});
+
+// Close modal
+document.addEventListener("click", function(e) {
+  if (e.target.classList.contains("close-btn") || e.target.id === "factoryModal") {
+    document.getElementById("factoryModal").style.display = "none";
+  }
+});
+
 </script>
 </html>
