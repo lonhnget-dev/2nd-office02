@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="km">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Factory Management System</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+  <!-- XLSX Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+  <style>
+    :root {
+      --primary-color: #3498db;
+    }
+
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f8f9fa;
+      color: #2c3e50;
+      line-height: 1.6;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .page-header {
+      background: #fff;
+      color: #2c3e50;
+      padding: 30px;
+      border-radius: 10px;
+      margin-bottom: 25px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+      border: 1px solid #e1e5e9;
+    }
+
+    /* Statistics Cards */
+    .stats-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-bottom: 25px;
+    }
+
+    .stat-card {
+      background: #fff;
+      padding: 25px;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+      border: 1px solid #e1e5e9;
+    }
+
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--primary-color);
+      margin-bottom: 5px;
+    }
+
+    .stat-label {
+      font-size: 0.9rem;
+      color: #6c757d;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .stat-icon {
+      font-size: 2rem;
+      color: var(--primary-color);
+      margin-bottom: 10px;
+    }
+
+    .control-section {
+      background: #fff;
+      padding: 25px;
+      border-radius: 10px;
+      margin-bottom: 25px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+      border: 1px solid #e1e5e9;
+    }
+
+    .table-container {
+      background: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 25px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+      border: 1px solid #e1e5e9;
+    }
+
+    .table-wrapper {
+      overflow-x: auto;
+    }
+
+    .loading {
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(52, 152, 219, 0.3);
+      border-radius: 50%;
+      border-top-color: var(--primary-color);
+      animation: spin 1s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Worker stats in table */
+    .worker-stats {
+      font-size: 0.85rem;
+      color: #6c757d;
+    }
+
+    .worker-total {
+      font-weight: 600;
+      color: #2c3e50;
+    }
+
+    .worker-female {
+      color: #e83e8c;
+    }
+
+    /* Progress bar for worker ratio */
+    .worker-progress {
+      height: 6px;
+      background: #e9ecef;
+      border-radius: 3px;
+      overflow: hidden;
+      margin-top: 5px;
+    }
+
+    .worker-progress-fill {
+      height: 100%;
+      background: var(--primary-color);
+      border-radius: 3px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container-fluid">
+
+    <!-- Factories Section -->
+    <section id="factories-section">
+      <header class="page-header">
+        <h1 class="mb-2"><i class="bi bi-building"></i> ប្រព័ន្ធគ្រប់គ្រងរោងចក្រ</h1>
+        <p class="text-muted mb-0">Factory Management System</p>
+      </header>
+
+      <!-- Statistics Cards -->
+      <div class="stats-container">
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="bi bi-building"></i>
+          </div>
+          <div class="stat-number" id="totalFactories">0</div>
+          <div class="stat-label">រោងចក្រសរុប</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="bi bi-people"></i>
+          </div>
+          <div class="stat-number" id="totalWorkers">0</div>
+          <div class="stat-label">កម្មករសរុប</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="bi bi-gender-female"></i>
+          </div>
+          <div class="stat-number" id="totalFemaleWorkers">0</div>
+          <div class="stat-label">កម្មករស្រី</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="bi bi-percent"></i>
+          </div>
+          <div class="stat-number" id="femalePercentage">0%</div>
+          <div class="stat-label">ភាគរយកម្មករស្រី</div>
+        </div>
+      </div>
+
+      <!-- Import Section -->
+      <div class="import-section bg-white p-3 rounded mb-3 shadow-sm border">
+        <div
+          class="import-header d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mb-3">
+          <h5 class="mb-0"><i class="bi bi-upload"></i> នាំចូលទិន្នន័យរោងចក្រ</h5>
+          <div class="import-controls d-flex flex-wrap gap-2">
+            <button class="btn btn-sm btn-outline-secondary" id="selectFileBtn">
+              <i class="bi bi-folder"></i> ជ្រើសរើសឯកសារ
+            </button>
+            <button class="btn btn-sm btn-outline-secondary" id="downloadTemplateBtn">
+              <i class="bi bi-download"></i> ទាញយកគំរូ
+            </button>
+            <button class="btn btn-sm btn-primary" id="importBtn" disabled>
+              <i class="bi bi-upload"></i> នាំចូល
+            </button>
+          </div>
+        </div>
+        <input type="file" id="fileInput" class="d-none" accept=".xlsx,.xls,.csv">
+        <div class="file-info d-none alert alert-info py-2" id="fileInfo" role="alert">
+          <strong>ឯកសារ:</strong> <span id="fileName">-</span> |
+          <strong>ទំហំ:</strong> <span id="fileSize">-</span>
+        </div>
+      </div>
+
+      <div class="control-section d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+        <button class="btn btn-primary" id="openFactoryForm">
+          <i class="bi bi-plus-circle"></i> បញ្ចូលរោងចក្រថ្មី
+        </button>
+        <div class="d-flex flex-wrap gap-2 align-items-center">
+          <input type="search" class="form-control" id="factorySearch" placeholder="ស្វែងរករោងចក្រ..."
+            style="width: auto;">
+          <button class="btn btn-outline-secondary" id="exportFactoryExcel">
+            <i class="bi bi-download"></i> ទាញយក Excel
+          </button>
+        </div>
+      </div>
+
+      <div class="table-container">
+        <div class="table-wrapper">
+          <table class="table table-hover mb-0" id="factoryTable">
+            <thead class="table-light">
+              <tr>
+                <th>#</th>
+                <th>លេខចូល</th>
+                <th>ឈ្មោះរោងចក្រ</th>
+                <th>Sector</th>
+                <th>ទីតាំង</th>
+                <th>កម្មករ</th>
+                <th>រដ្ឋបាល</th>
+                <th>សកម្មភាព</th>
+              </tr>
+            </thead>
+            <tbody id="factoryTableBody">
+              <tr>
+                <td colspan="8" class="text-center text-muted py-4">
+                  <div class="loading"></div> កំពុងផ្ទុកទិន្នន័យ...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Factory Modal -->
+  <div class="modal fade" id="factoryModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header bg-light">
+          <h5 class="modal-title" id="factoryModalTitle">បញ្ចូលរោងចក្រថ្មី</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="factoryForm">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label">លេខចូល *</label>
+                <input type="text" class="form-control" name="no" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">ឈ្មោះរោងចក្រ *</label>
+                <input type="text" class="form-control" name="factoryname" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">ឈ្មោះរោងចក្រ (EN) *</label>
+                <input type="text" class="form-control" name="factoryname_en" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Sector *</label>
+                <input type="text" class="form-control" name="sector" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">ភូមិ *</label>
+                <input type="text" class="form-control" name="village" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">ឃុំ *</label>
+                   <select class="form-select" name="commune" id="communeSelect" required disabled>
+                <option value="">-- ជ្រើសរើសឃុំ --</option>
+              </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">ស្រុក *</label>
+                <select class="form-select" name="district" id="districtSelect" required disabled>
+                <option value="">-- ជ្រើសរើសស្រុក --</option>
+              </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">ខេត្ត *</label>
+                <select class="form-select" name="province" id="provinceSelect" required>
+                  <option value="">-- ជ្រើសរើសខេត្ត --</option>
+                </select>
+              </div>
+              <div class="col-12">
+                <label class="form-label">អាសយដ្ឋាន *</label>
+                <input type="text" class="form-control" name="address" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">កម្មករសរុប *</label>
+                <input type="number" class="form-control" name="total_workers" required min="0">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">កម្មករស្រី *</label>
+                <input type="number" class="form-control" name="female_workers" required min="0">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">ឈ្មោះអ្នកគ្រប់គ្រង *</label>
+                <input type="text" class="form-control" name="admin_name" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">លេខទូរស័ព្ទ *</label>
+                <input type="text" class="form-control" name="admin_phone" required>
+              </div>
+            </div>
+            <div class="modal-footer mt-4">
+              <button type="submit" class="btn btn-primary" id="factorySubmitBtn">
+                <i class="bi bi-save"></i> រក្សាទុក
+              </button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">បិទ</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Message Modal -->
+  <div class="modal fade" id="messageModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header bg-light">
+          <h5 class="modal-title" id="messageTitle">Information</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p id="messageText"></p>
+        </div>
+        <div class="modal-footer" id="messageButtons">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- JavaScript for Factories -->
+  <script>
+    // Configuration
+    const FACTORY_API = "http://localhost:4000/fac";
+    const PROVICE_API = "http://localhost:4000/provinces";
+
+    this.provinces = [];
+    this.districts = [];
+    this.communes = [];
+
+    // Global variables
+    let allFactories = [];
+    let currentEditingId = null;
+    let selectedFile = null;
+
+    // Utility functions
+    function showMessage(message, title = 'Information') {
+      const messageModal = new bootstrap.Modal(document.getElementById('messageModal'));
+      document.getElementById('messageTitle').textContent = title;
+      document.getElementById('messageText').textContent = message;
+      messageModal.show();
+    }
+
+    function formatFileSize(bytes) {
+      if (bytes === 0) return '0 Bytes';
+      const k = 1024;
+      const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+
+    function formatNumber(num) {
+      return new Intl.NumberFormat().format(num);
+    }
+
+    // Factories functionality
+    class FactoriesManager {
+      constructor() {
+        this.allFactories = [];
+      }
+
+      init() {
+        this.bindEvents();
+        this.fetchFactories();
+      }
+
+      bindEvents() {
+        // Add factory button
+        document.getElementById('openFactoryForm').addEventListener('click', () => {
+          this.openFactoryForm();
+        });
+
+        // Export button
+        document.getElementById('exportFactoryExcel').addEventListener('click', () => {
+          this.exportToExcel();
+        });
+
+        // Import buttons
+        document.getElementById('selectFileBtn').addEventListener('click', () => {
+          document.getElementById('fileInput').click();
+        });
+
+        document.getElementById('downloadTemplateBtn').addEventListener('click', () => {
+          this.downloadTemplate();
+        });
+
+        document.getElementById('importBtn').addEventListener('click', () => {
+          this.importData();
+        });
+
+        // File input change
+        document.getElementById('fileInput').addEventListener('change', (e) => {
+          this.handleFileSelect(e);
+        });
+
+        // Search functionality
+        document.getElementById('factorySearch').addEventListener('input', (e) => {
+          this.searchFactories(e.target.value);
+        });
+
+        // Form submission
+        document.getElementById('factoryForm').addEventListener('submit', (e) => {
+          this.handleFormSubmit(e);
+        });
+
+        // Event delegation for action buttons
+        document.getElementById('factoryTableBody').addEventListener('click', (e) => {
+          const row = e.target.closest('tr');
+          if (!row) return;
+
+          const id = row.getAttribute('data-id');
+          if (!id) return;
+
+          if (e.target.closest('.btn-outline-primary')) {
+            this.viewFactory(id);
+          } else if (e.target.closest('.btn-outline-secondary')) {
+            this.editFactory(id);
+          } else if (e.target.closest('.btn-outline-danger')) {
+            this.deleteFactoryConfirm(id);
+          }
+        });
+      }
+
+      async fetchFactories() {
+        try {
+          const token = localStorage.getItem("token");
+
+          if (!token) {
+            showMessage("សូមទាក់ទងទៅលោក ឡូញ ង៉ែត", "Error");
+            return;
+          }
+
+          const res = await fetch(FACTORY_API, {
+            method: "GET",
+            headers: {
+              "Authorization": `Bearer ${token}`,     // 👈 send token
+              "Content-Type": "application/json"
+            }
+          });
+
+          const data = await res.json();
+
+          if (!res.ok) {
+            showMessage(data.message || "Failed to fetch factories.", "Error");
+            return;
+          }
+
+          this.allFactories = data.data || [];
+          this.renderFactories(this.allFactories);
+          this.updateStatistics();
+
+        } catch (error) {
+          console.error("Factory fetch error:", error);
+          showMessage("Failed to fetch factories from server.", "Error");
+        }
+      }
+
+      updateStatistics() {
+        const totalFactories = this.allFactories.length;
+        const totalWorkers = this.allFactories.reduce((sum, factory) =>
+          sum + (parseInt(factory.total_workers) || 0), 0);
+        const totalFemaleWorkers = this.allFactories.reduce((sum, factory) =>
+          sum + (parseInt(factory.female_workers) || 0), 0);
+        const femalePercentage = totalWorkers > 0 ?
+          Math.round((totalFemaleWorkers / totalWorkers) * 100) : 0;
+
+        // Update statistics cards
+        document.getElementById('totalFactories').textContent = formatNumber(totalFactories);
+        document.getElementById('totalWorkers').textContent = formatNumber(totalWorkers);
+        document.getElementById('totalFemaleWorkers').textContent = formatNumber(totalFemaleWorkers);
+        document.getElementById('femalePercentage').textContent = femalePercentage + '%';
+      }
+
+      renderFactories(factories) {
+        const tbody = document.getElementById('factoryTableBody');
+
+        if (factories.length === 0) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="8" class="text-center text-muted py-4">
+                មិនមានទិន្នន័យ
+              </td>
+            </tr>
+          `;
+          return;
+        }
+
+        tbody.innerHTML = factories.map((factory, index) => {
+          const totalWorkers = parseInt(factory.total_workers) || 0;
+          const femaleWorkers = parseInt(factory.female_workers) || 0;
+          const femalePercentage = totalWorkers > 0 ?
+            Math.round((femaleWorkers / totalWorkers) * 100) : 0;
+
+          return `
+          <tr data-id="${factory.id}">
+            <td class="text-muted">${index + 1}</td>
+            <td>${factory.no || ''}</td>
+            <td>
+              <div class="fw-semibold">${factory.factoryname || ''}</div>
+              <div class="text-muted small">${factory.factoryname_en || ''}</div>
+            </td>
+            <td>${factory.sector || ''}</td>
+            <td>
+              <div class="small">
+                <div>${factory.village || ''}</div>
+                <div>${factory.commune.name || ''}, ${factory.district.name || ''}</div>
+                <div>${factory.province.name || ''}</div>
+              </div>
+            </td>
+            <td>
+              <div class="worker-stats">
+                <div>
+                  <span class="worker-total">${formatNumber(totalWorkers)}</span> នាក់
+                  <span class="worker-female">(${formatNumber(femaleWorkers)} ស្រី)</span>
+                </div>
+                <div class="worker-progress">
+                  <div class="worker-progress-fill" style="width: ${femalePercentage}%"></div>
+                </div>
+                <div class="small text-muted">${femalePercentage}% ស្រី</div>
+              </div>
+            </td>
+            <td>
+              <div class="small">
+                <div><strong>ឈ្មោះ:</strong> ${factory.admin_name || ''}</div>
+                <div><strong>ទូរស័ព្ទ:</strong> ${factory.admin_phone || ''}</div>
+              </div>
+            <td>
+              <div class="btn-group btn-group-sm">
+                <button class="btn btn-outline-primary" title="View">
+                  <i class="bi bi-eye"></i>
+                </button>
+                <button class="btn btn-outline-secondary" title="Edit">
+                  <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn btn-outline-danger" title="Delete">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `}).join('');
+
+        this.updateStatistics();
+      }
+
+      searchFactories(query) {
+        if (!query.trim()) {
+          this.renderFactories(this.allFactories);
+          return;
+        }
+
+        const filteredFactories = this.allFactories.filter(factory =>
+          Object.values(factory).some(value =>
+            value && value.toString().toLowerCase().includes(query.toLowerCase())
+          )
+        );
+        this.renderFactories(filteredFactories);
+      }
+
+      openFactoryForm(editId = null) {
+        currentEditingId = editId;
+        const modal = new bootstrap.Modal(document.getElementById('factoryModal'));
+        const modalTitle = document.getElementById('factoryModalTitle');
+        const form = document.getElementById('factoryForm');
+
+        modalTitle.textContent = editId ? 'កែសម្រួលរោងចក្រ' : 'បញ្ចូលរោងចក្រថ្មី';
+        form.reset();
+
+        if (editId) {
+          this.populateForm(editId);
+        }
+
+        modal.show();
+      }
+
+      populateForm(id) {
+        const factory = this.allFactories.find(f => f.id.toString() === id.toString());
+        if (!factory) return;
+        console.log("Factory to edit:", factory);
+        const form = document.getElementById('factoryForm');
+        form.elements['no'].value = factory.no || '';
+        form.elements['factoryname'].value = factory.factoryname || '';
+        form.elements['factoryname_en'].value = factory.factoryname_en || '';
+        form.elements['sector'].value = factory.sector || '';
+        form.elements['village'].value = factory.village || '';
+        form.elements['commune'].value = factory.commune.id|| '';
+        form.elements['district'].value = factory.district.id || '';
+        form.elements['province'].value = factory.province.id || '';
+        form.elements['address'].value = factory.address || '';
+        form.elements['total_workers'].value = factory.total_workers || '';
+        form.elements['female_workers'].value = factory.female_workers || '';
+        form.elements['admin_name'].value = factory.admin_name || '';
+        form.elements['admin_phone'].value = factory.admin_phone || '';
+      }
+
+      async handleFormSubmit(e) {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const data = Object.fromEntries(formData);
+
+        // Validate worker numbers
+        const totalWorkers = parseInt(data.total_workers) || 0;
+        const femaleWorkers = parseInt(data.female_workers) || 0;
+
+        if (femaleWorkers > totalWorkers) {
+          showMessage('កម្មករស្រីមិនអាចលើសពីកម្មករសរុបបានទេ', 'Error');
+          return;
+        }
+
+        if (!data.no || !data.factoryname || !data.factoryname_en || !data.sector) {
+          showMessage('សូមបំពេញព័ត៌មានចាំបាច់ទាំងអស់', 'Error');
+          return;
+        }
+
+        const submitBtn = document.getElementById('factorySubmitBtn');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<span class="loading"></span> កំពុងរក្សាទុក...';
+        submitBtn.disabled = true;
+
+        try {
+          // Prepare data for API
+          const apiData = {
+            no: data.no,
+            factoryname: data.factoryname,
+            factoryname_en: data.factoryname_en,
+            sector: data.sector,
+            village: data.village,
+            communeId: Number(data.commune),
+            districtId: Number(data.district),
+            provinceId: Number(data.province),
+            address: data.address,
+            total_workers: parseInt(data.total_workers),
+            female_workers: parseInt(data.female_workers),
+            admin_name: data.admin_name,
+            admin_phone: data.admin_phone
+          };
+
+          let response;
+          if (currentEditingId) {
+            // Update existing factory
+            response = await fetch(`${FACTORY_API}/${currentEditingId}`, {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(apiData)
+            });
+          } else {
+            // Create new factory
+            response = await fetch(FACTORY_API, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(apiData)
+            });
+          }
+
+          if (response.ok) {
+            showMessage(currentEditingId ? 'Factory updated successfully' : 'Factory created successfully', 'Success');
+            this.fetchFactories(); // Refresh data from server
+          } else {
+            throw new Error('API request failed');
+          }
+
+          const modal = bootstrap.Modal.getInstance(document.getElementById('factoryModal'));
+          modal.hide();
+        } catch (error) {
+          console.error('Save error:', error);
+          showMessage('Failed to save factory', 'Error');
+        } finally {
+          submitBtn.innerHTML = originalText;
+          submitBtn.disabled = false;
+        }
+      }
+
+      viewFactory(id) {
+        const factory = this.allFactories.find(f => f.id.toString() === id.toString());
+        if (!factory) {
+          showMessage('Factory not found', 'Error');
+          return;
+        }
+
+        const totalWorkers = parseInt(factory.total_workers) || 0;
+        const femaleWorkers = parseInt(factory.female_workers) || 0;
+        const femalePercentage = totalWorkers > 0 ?
+          Math.round((femaleWorkers / totalWorkers) * 100) : 0;
+
+        let detailHTML = `
+          <strong>លេខចូល:</strong> ${factory.no || ''}<br>
+          <strong>ឈ្មោះរោងចក្រ:</strong> ${factory.factoryname || ''}<br>
+          <strong>ឈ្មោះរោងចក្រ (EN):</strong> ${factory.factoryname_en || ''}<br>
+          <strong>Sector:</strong> ${factory.sector || ''}<br>
+          <strong>ទីតាំង:</strong> ${factory.village || ''}, ${factory.commune || ''}, ${factory.district || ''}, ${factory.province || ''}<br>
+          <strong>អាសយដ្ឋាន:</strong> ${factory.address || ''}<br>
+          <strong>កម្មករសរុប:</strong> ${formatNumber(totalWorkers)} នាក់<br>
+          <strong>កម្មករស្រី:</strong> ${formatNumber(femaleWorkers)} នាក់ (${femalePercentage}%)<br>
+          <strong>ឈ្មោះអ្នកគ្រប់គ្រង:</strong> ${factory.admin_name || ''}<br>
+          <strong>លេខទូរស័ព្ទ:</strong> ${factory.admin_phone || ''}
+        `;
+
+        showMessage(detailHTML, 'ព័ត៌មានលម្អិតរោងចក្រ');
+      }
+
+      editFactory(id) {
+        this.openFactoryForm(id);
+      }
+
+      async deleteFactoryConfirm(id) {
+        if (confirm('តើអ្នកប្រាកដថាចង់លុបរោងចក្រនេះមែនទេ?')) {
+          await this.deleteFactory(id);
+        }
+      }
+
+      async deleteFactory(id) {
+        try {
+          const response = await fetch(`${FACTORY_API}/${id}`, {
+            method: 'DELETE'
+          });
+
+          if (response.ok) {
+            showMessage('Factory deleted successfully', 'Success');
+            this.fetchFactories(); // Refresh data from server
+          } else {
+            throw new Error('API request failed');
+          }
+        } catch (error) {
+          console.error('Delete error:', error);
+          showMessage('Failed to delete factory', 'Error');
+        }
+      }
+
+      handleFileSelect(e) {
+        const file = e.target.files[0];
+        if (file) {
+          selectedFile = file;
+          this.updateFileInfo(file);
+          document.getElementById('importBtn').disabled = false;
+        }
+      }
+
+      updateFileInfo(file) {
+        const fileInfo = document.getElementById('fileInfo');
+        const fileName = document.getElementById('fileName');
+        const fileSize = document.getElementById('fileSize');
+
+        if (fileInfo && fileName && fileSize) {
+          fileName.textContent = file.name;
+          fileSize.textContent = formatFileSize(file.size);
+          fileInfo.classList.remove('d-none');
+        }
+      }
+
+      downloadTemplate() {
+        // Create template data matching the Sequelize model
+        const templateData = [{
+          'no': 'FAC001',
+          'factoryname': 'រោងចក្រគំរូ',
+          'factoryname_en': 'Sample Factory',
+          'sector': 'វិស័យឧស្សាហកម្ម',
+          'village': 'ភូមិគំរូ',
+          'communeId': 'ឃុំគំរូ',
+          'districtId': 'ស្រុកគំរូ',
+          'provinceId': 'ខេត្តគំរូ',
+          'address': 'អាសយដ្ឋានគំរូ',
+          'total_workers': '100',
+          'female_workers': '50',
+          'admin_name': 'ឈ្មោះអ្នកគ្រប់គ្រង',
+          'admin_phone': '012345678'
+        }];
+
+        try {
+          const ws = XLSX.utils.json_to_sheet(templateData);
+          const wb = XLSX.utils.book_new();
+          XLSX.utils.book_append_sheet(wb, ws, "Template");
+          XLSX.writeFile(wb, "factory_template.xlsx");
+          showMessage('Template downloaded successfully', 'Success');
+        } catch (error) {
+          console.error('Template download error:', error);
+          showMessage('Failed to download template', 'Error');
+        }
+      }
+
+      importData() {
+        if (!selectedFile) {
+          showMessage('Please select a file first', 'Error');
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          try {
+            const data = new Uint8Array(e.target.result);
+            const workbook = XLSX.read(data, { type: 'array' });
+            const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+            const jsonData = XLSX.utils.sheet_to_json(firstSheet);
+
+            // Process imported data
+            this.processImportedData(jsonData);
+          } catch (error) {
+            console.error('Import error:', error);
+            showMessage('Failed to import data from file', 'Error');
+          }
+        };
+        reader.readAsArrayBuffer(selectedFile);
+      }
+
+      async processImportedData(data) {
+        const importBtn = document.getElementById('importBtn');
+        const originalText = importBtn.innerHTML;
+        importBtn.innerHTML = '<span class="loading"></span> កំពុងនាំចូល...';
+        importBtn.disabled = true;
+
+        try {
+          // Process each factory in the imported data
+          for (const item of data) {
+            console.log("Importing item:", item);
+            const factoryData = {
+              no: item['no'] || '',
+              factoryname: item['factoryname'] || '',
+              factoryname_en: item['factoryname_en'] || '',
+              sector: item['sector'] || '',
+              village: item['village'] || '',
+              communeId: item['communeId'] || '',
+              districtId: item['districtId'] || '',
+              provinceId: item['provinceId'] || '',
+              address: item['address'] || '',
+              total_workers: parseInt(item['total_workers']) || 0,
+              female_workers: parseInt(item['female_workers']) || 0,
+              admin_name: item['admin_name'] || '',
+              admin_phone: item['admin_phone'] || ''
+            };
+
+            // Send to API
+            await fetch(FACTORY_API, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(factoryData)
+            });
+          }
+
+          showMessage(`Successfully imported ${data.length} factories`, 'Success');
+          this.fetchFactories(); // Refresh data from server
+
+          // Reset file input
+          document.getElementById('fileInput').value = '';
+          document.getElementById('fileInfo').classList.add('d-none');
+          selectedFile = null;
+        } catch (error) {
+          console.error('Import error:', error);
+          showMessage('Failed to import data', 'Error');
+        } finally {
+          importBtn.innerHTML = originalText;
+          importBtn.disabled = false;
+        }
+      }
+
+      exportToExcel() {
+        try {
+          const ws = XLSX.utils.json_to_sheet(this.allFactories);
+          const wb = XLSX.utils.book_new();
+          XLSX.utils.book_append_sheet(wb, ws, "Factories");
+          XLSX.writeFile(wb, "factories.xlsx");
+          showMessage('Excel file downloaded successfully', 'Success');
+        } catch (error) {
+          console.error('Export error:', error);
+          showMessage('Failed to export to Excel', 'Error');
+        }
+      }
+    }
+
+    const fetchProvinces = async () => {
+      try {
+        const res = await fetch(PROVICE_API);
+        const data = await res.json();
+        if (!res.ok) {
+          throw new Error("Failed to fetch provinces.");
+        }
+        this.provinces = data.data || [];
+
+        redenderProvinces();
+      } catch (error) {
+        console.error("Province fetch error:", error);
+        return [];
+      }
+    };
+
+    const fetchCommunes = async () => {
+      try {
+        const res = await fetch(`${PROVICE_API}/communes`);
+        const data = await res.json();
+        if (!res.ok) {
+          throw new Error("Failed to fetch communes.");
+        }
+        this.communes = data.data || [];
+        redenderCommunes();
+      } catch (error) {
+        console.error("Province fetch error:", error);
+        return [];
+      }
+    };
+
+    const fetchDistricts = async () => {
+      try {
+        const res = await fetch(`${PROVICE_API}/districts`);
+        const data = await res.json();
+        if (!res.ok) {
+          throw new Error("Failed to fetch district.");
+        }
+        this.districts = data.data || [];
+        redenderDistricts();
+      } catch (error) {
+        console.error("Province fetch error:", error);
+        return [];
+      }
+    };
+
+    const redenderProvinces = () => {
+      const provinceSelect = document.getElementById('provinceSelect');
+      provinceSelect.innerHTML = '<option value="">-- ជ្រើសរើសខេត្ត --</option>';
+
+      this.provinces.forEach(province => {
+        const option = document.createElement('option');
+        option.value = province.id;
+        option.textContent = province.name;
+        provinceSelect.appendChild(option);
+      });
+    };
+
+  const redenderDistricts = () => {
+    const districtSelect = document.getElementById('districtSelect');
+    districtSelect.innerHTML = '<option value="">-- ជ្រើសរើសស្រុក --</option>';
+    districtSelect.disabled = false;
+    
+    this.districts.forEach(district => {
+      const option = document.createElement('option');
+      option.value = district.id;
+      option.textContent = district.name;
+      districtSelect.appendChild(option);
+    });
+  }
+
+  const  redenderCommunes = () => {
+    const communeSelect = document.getElementById('communeSelect');
+    communeSelect.innerHTML = '<option value="">-- ជ្រើសរើសឃុំ --</option>';
+    communeSelect.disabled = false;
+    
+    this.communes.forEach(commune => {
+      const option = document.createElement('option');
+      option.value = commune.id;
+      option.textContent = commune.name;
+      communeSelect.appendChild(option);
+    });
+  }
+
+
+    // Initialize when page loads
+    document.addEventListener('DOMContentLoaded', () => {
+      window.factoriesManager = new FactoriesManager();
+      window.factoriesManager.init();
+
+      fetchCommunes();
+      fetchDistricts();
+      fetchProvinces();
+    });
+  </script>
+</body>
+
+</html>

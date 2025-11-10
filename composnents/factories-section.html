@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Silly Flying Cart Button</title>
+
+<style>
+    body {
+        background: #000;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    /* Base Button Style */
+    .fly-btn {
+        position: relative;
+        padding: 15px 40px;
+        background: white;
+        border-radius: 14px;
+        border: none;
+        font-size: 17px;
+        font-weight: 700;
+        cursor: pointer;
+        overflow: hidden;
+        transition: 0.3s;
+        color: black;
+    }
+
+    /* Hover State */
+    .fly-btn:hover {
+        transform: scale(1.05);
+    }
+
+    /* Button Text Style */
+    .btn-text {
+        transition: 0.3s;
+        z-index: 3;
+        position: relative;
+    }
+
+    /* Cart Icon Style */
+    svg.cart {
+        width: 26px;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        /* Initial position: translated up and slightly to the left/right for a "waiting" look */
+        transform: translate(-50%, -160%); 
+        transition: 0.4s;
+        opacity: 0;
+        z-index: 2;
+        fill: black; /* Set fill property for easier color change later if needed */
+    }
+
+    /* Cart Icon Hover/Ready State */
+    .fly-btn:hover svg.cart {
+        transform: translate(-50%, -50%);
+        opacity: 1;
+    }
+
+    /* Button shake animation on click */
+    .shake-btn {
+        animation: shake 0.3s ease-in-out;
+    }
+
+    @keyframes shake {
+        0% { transform: translate(1px, 1px) rotate(0deg); }
+        33% { transform: translate(-1px, -2px) rotate(-1deg); }
+        66% { transform: translate(-3px, 0px) rotate(1deg); }
+        100% { transform: translate(0px, 0px) rotate(0deg); }
+    }
+
+    /* Button success state (color change) */
+    .success-btn {
+        background: #4CAF50 !important; /* Green */
+        color: white;
+        transition: background 0.2s, color 0.2s;
+    }
+
+    /* Cart Flying Animation */
+    .fly-away {
+        animation: flyUpAndSpin 1.0s cubic-bezier(0.5, 0.1, 0.5, 1.2) forwards;
+    }
+
+    @keyframes flyUpAndSpin {
+        0% {
+            opacity: 1;
+            transform: translate(-50%, -50%) rotate(0deg) scale(1);
+        }
+        30% {
+             /* Quick jump/exaggeration */
+            transform: translate(-50%, -100%) rotate(180deg) scale(1.2);
+            opacity: 1;
+        }
+        100% {
+            /* Higher, more spin, shrinks for a funny vanishing effect */
+            transform: translate(50%, -500%) rotate(720deg) scale(0.3); 
+            opacity: 0;
+        }
+    }
+
+</style>
+</head>
+<body>
+
+<button class="fly-btn" id="cartBtn">
+    <span class="btn-text" id="btnText">Add to Cart</span>
+
+    <svg class="cart" id="cartIcon" viewBox="0 0 24 24">
+        <path d="M6 6H21L19 14H8L6 6Z" stroke="black" stroke-width="2" fill="none"/>
+        <circle cx="9" cy="18" r="2" stroke="black" stroke-width="2" fill="black"/>
+        <circle cx="17" cy="18" r="2" stroke="black" stroke-width="2" fill="black"/>
+    </svg>
+</button>
+
+<script>
+    const btn = document.getElementById("cartBtn");
+    const cart = document.getElementById("cartIcon");
+    const text = document.getElementById("btnText");
+    const originalText = "Add to Cart";
+    const addedText = "ZOOM! In the bag! 🛒"; // Funnier text
+
+    btn.addEventListener("click", () => {
+        // Prevent double-clicking while animating
+        if (cart.classList.contains("fly-away")) {
+            return;
+        }
+
+        // 1. Add flying animation to cart
+        cart.classList.add("fly-away");
+
+        // 2. Add button success/shake animations
+        btn.classList.add("shake-btn");
+        btn.classList.add("success-btn");
+        
+        // 3. Change button text
+        text.textContent = addedText;
+
+        // 4. Reset after animation completes (1.0s total)
+        setTimeout(() => {
+            // Remove flying animation so it can be triggered again
+            cart.classList.remove("fly-away");
+            
+            // Remove button animations
+            btn.classList.remove("shake-btn");
+            
+            // Reset button style and text after a short delay for viewing the success state
+            setTimeout(() => {
+                btn.classList.remove("success-btn");
+                text.textContent = originalText;
+            }, 300); // Wait 0.3s before resetting color/text
+        }, 1000); // Matches the flyUpAndSpin animation duration
+    });
+</script>
+
+</body>
+</html>

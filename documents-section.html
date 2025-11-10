@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html lang="km">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document Management System</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+  <!-- XLSX Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+  <style>
+    /* Basic styles for documents section only */
+    :root {
+      --primary-color: #3498db;
+    }
+
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f8f9fa;
+      color: #2c3e50;
+      line-height: 1.6;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .page-header {
+      background: #fff;
+      color: #2c3e50;
+      padding: 30px;
+      border-radius: 10px;
+      margin-bottom: 25px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+      border: 1px solid #e1e5e9;
+    }
+
+    .control-section {
+      background: #fff;
+      padding: 25px;
+      border-radius: 10px;
+      margin-bottom: 25px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+      border: 1px solid #e1e5e9;
+    }
+
+    .table-container {
+      background: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 25px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+      border: 1px solid #e1e5e9;
+    }
+
+    .table-wrapper {
+      overflow-x: auto;
+    }
+
+    .status-badge {
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .status-pending {
+      background: #fff3cd;
+      color: #856404;
+      border: 1px solid #ffeaa7;
+    }
+
+    .status-completed {
+      background: #d1ecf1;
+      color: #0c5460;
+      border: 1px solid #b8e0e6;
+    }
+
+    .loading {
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(52, 152, 219, 0.3);
+      border-radius: 50%;
+      border-top-color: var(--primary-color);
+      animation: spin 1s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .chart-container {
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 25px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+      border: 1px solid #e1e5e9;
+    }
+
+    .chart-card {
+      text-align: center;
+      padding: 20px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      margin-bottom: 15px;
+    }
+
+    .chart-card h3 {
+      font-size: 2.5rem;
+      margin-bottom: 5px;
+      font-weight: 700;
+    }
+
+    .chart-card p {
+      margin: 0;
+      opacity: 0.9;
+    }
+
+    .date-filter-section {
+      background: #f8f9fa;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      border: 1px solid #e9ecef;
+    }
+
+    .form-section {
+      background: #f8f9fa;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      border: 1px solid #e9ecef;
+    }
+
+    .field-number {
+      display: inline-block;
+      background: #3498db;
+      color: white;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 24px;
+      font-size: 12px;
+      font-weight: bold;
+      margin-right: 8px;
+    }
+
+    .form-label {
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .table th {
+      white-space: nowrap;
+      font-size: 0.85rem;
+    }
+
+    .table td {
+      font-size: 0.8rem;
+    }
+
+    /* Smart input styles */
+    .smart-input-container {
+      position: relative;
+    }
+
+    .suggestions-list {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: white;
+      border: 1px solid #dee2e6;
+      border-top: none;
+      border-radius: 0 0 4px 4px;
+      max-height: 200px;
+      overflow-y: auto;
+      z-index: 1000;
+      display: none;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .suggestion-item {
+      padding: 8px 12px;
+      cursor: pointer;
+      border-bottom: 1px solid #f8f9fa;
+    }
+
+    .suggestion-item:hover {
+      background-color: #f8f9fa;
+    }
+
+    .suggestion-item:last-child {
+      border-bottom: none;
+    }
+
+    /* Multi-select styles */
+    .selected-officers {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: 5px;
+    }
+
+    .selected-officer {
+      background: #e9ecef;
+      padding: 4px 8px;
+      border-radius: 15px;
+      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .selected-officer .remove-officer {
+      cursor: pointer;
+      color: #dc3545;
+      font-weight: bold;
+    }
+
+    .officer-options {
+      max-height: 150px;
+      overflow-y: auto;
+      border: 1px solid #dee2e6;
+      border-radius: 4px;
+      margin-top: 5px;
+      display: none;
+    }
+
+    .officer-option {
+      padding: 8px 12px;
+      cursor: pointer;
+      border-bottom: 1px solid #f8f9fa;
+    }
+
+    .officer-option:hover {
+      background-color: #f8f9fa;
+    }
+
+    .officer-option:last-child {
+      border-bottom: none;
+    }
+
+    .officer-option.selected {
+      background-color: #e3f2fd;
+    }
+
+    /* Date placeholder styling */
+    .date-input::placeholder {
+      color: #6c757d;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container-fluid">
+
+    <!-- Documents Section -->
+    <section id="documents-section">
+      <header class="page-header">
+        <h1 class="mb-2"><i class="bi bi-folder"></i> ប្រព័ន្ធគ្រប់គ្រងឯកសារ</h1>
+        <p class="text-muted mb-0">Document Management System</p>
+      </header>
+
+      <!-- Count Chart Section -->
+      <div class="chart-container">
+        <h4 class="mb-4"><i class="bi bi-bar-chart"></i> ស្ថិតិឯកសារ</h4>
+        <div class="row" id="countChart">
+          <div class="col-md-3">
+            <div class="chart-card">
+              <h3 id="totalCount">0</h3>
+              <p>សរុបឯកសារ</p>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="chart-card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+              <h3 id="completedCount">0</h3>
+              <p>បានធ្វើចេញ</p>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="chart-card" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+              <h3 id="pendingCount">0</h3>
+              <p>មិនទាន់ធ្វើចេញ</p>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="chart-card" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+              <h3 id="todayCount">0</h3>
+              <p>ថ្ងៃនេះ</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="control-section d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+        <button class="btn btn-primary" id="openDocForm">
+          <i class="bi bi-plus-circle"></i> បញ្ចូលឯកសារថ្មី
+        </button>
+        <div class="d-flex flex-wrap gap-2 align-items-center">
+          <select class="form-select" id="showCount" style="width: auto;">
+            <option value="15">15</option>
+            <option value="30">30</option>
+            <option value="60">60</option>
+            <option value="100">100</option>
+            <option value="all">All</option>
+          </select>
+          <input type="search" class="form-control" id="docSearch" placeholder="ស្វែងរកឯកសារ..." style="width: auto;">
+          <button class="btn btn-outline-secondary" id="exportDocExcel">
+            <i class="bi bi-download"></i> ទាញយក Excel
+          </button>
+        </div>
+      </div>
+
+      <!-- Date Filter Section -->
+      <div class="date-filter-section">
+        <div class="row g-3 align-items-center">
+          <div class="col-md-auto">
+            <label class="form-label mb-0"><strong>របាយការណ៍តាមកាលកំណត់:</strong></label>
+          </div>
+          <div class="col-md-2">
+            <label class="form-label mb-0">ពីថ្ងៃ</label>
+            <input type="date" class="form-control date-input" id="dateFrom" placeholder="dd/mm/yyyy">
+          </div>
+          <div class="col-md-2">
+            <label class="form-label mb-0">ដល់ថ្ងៃ</label>
+            <input type="date" class="form-control date-input" id="dateTo" placeholder="dd/mm/yyyy">
+          </div>
+          <div class="col-md-auto">
+            <button class="btn btn-primary" id="applyDateFilter">
+              <i class="bi bi-filter"></i> អនុវត្ត
+            </button>
+            <button class="btn btn-outline-secondary" id="clearDateFilter">
+              <i class="bi bi-arrow-clockwise"></i> សម្អាត
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-container">
+        <div class="table-wrapper">
+          <table class="table table-hover mb-0" id="documentTable">
+            <thead class="table-light">
+              <tr>
+                <th>លេខចូល</th>
+                <th>លេខលិខិត (IR)</th>
+                <th>លេខចេញ</th>
+                <th>ថ្ងៃខែលិខិត</th>
+                <th>អង្គភាព</th>
+                <th>ប្រភេទឯកសារ</th>
+                <th>ថ្ងៃមុខការិ.២</th>
+                <th>មន្រ្តីទទួល</th>
+                <th>ថ្ងៃទទួល</th>
+                <th>ស្ថានភាព</th>
+                <th>ចំនួនថ្ងៃ</th>
+                <th>ប្រធានការិ.</th>
+                <th>អនុ.នាយក</th>
+                <th>ប្រធាននាយក</th>
+                <th>ថ្ងៃចេញលិខិត</th>
+                <th>ស្ថានភាពបញ្ជិកា</th>
+                <th>មូលហេតុ</th>
+                <th>សកម្មភាព</th>
+              </tr>
+            </thead>
+            <tbody id="docTableBody">
+              <!-- Data will be loaded here -->
+              <tr>
+                <td colspan="18" class="text-center text-muted py-4">
+                  <div class="loading"></div> កំពុងផ្ទុកទិន្នន័យ...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Document Modal -->
+  <div class="modal fade" id="docModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header bg-light">
+          <h5 class="modal-title" id="docModalTitle">បញ្ចូលឯកសារថ្មី</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="docForm">
+            <div class="form-section">
+              <h6 class="mb-3">ព័ត៌មានមូលដ្ឋាន</h6>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label">
+                    <span class="field-number">1</span>លេខចូល *
+                  </label>
+                  <input type="text" class="form-control" name="no" required>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">
+                    <span class="field-number">2</span>លេខលិខិត(IR) *
+                  </label>
+                  <input type="text" class="form-control" name="ir" required>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">
+                    <span class="field-number">3</span>លេខចេញ
+                  </label>
+                  <input type="text" class="form-control" name="outNo">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">
+                    <span class="field-number">4</span>ថ្ងៃខែលិខិតចូល/ចេញ
+                  </label>
+                  <input type="date" class="form-control date-input" name="submitDate" placeholder="dd/mm/yyyy">
+                </div>
+                <div class="col-12">
+                  <label class="form-label">
+                    <span class="field-number">5</span>អង្គភាព/ប្រភពលិខិត
+                  </label>
+                  <div class="smart-input-container">
+                    <input type="text" class="form-control" name="source" id="sourceInput"
+                      placeholder="វាយបញ្ចូលឬជ្រើសរើសអង្គភាព...">
+                    <div class="suggestions-list" id="sourceSuggestions">
+                      <!-- Suggestions will be populated here -->
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">
+                    <span class="field-number">6</span>ប្រភេទឯកសារ
+                  </label>
+                  <input type="text" class="form-control" name="doc">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">
+                    <span class="field-number">7</span>ថ្ងៃខែមុខការិ.២
+                  </label>
+                  <input type="date" class="form-control date-input" name="officeDate2" placeholder="dd/mm/yyyy">
+                </div>
+                <div class="col-12">
+                  <label class="form-label">
+                    <span class="field-number">8</span>មន្រ្តីទទួលមុខការ
+                  </label>
+                  <div class="officer-selection-container">
+                    <input type="text" class="form-control" id="officerSearch" placeholder="ស្វែងរកមន្ត្រី...">
+                    <div class="officer-options" id="officerOptions">
+                      <!-- Officer options will be populated here -->
+                    </div>
+                    <div class="selected-officers" id="selectedOfficers">
+                      <!-- Selected officers will be displayed here -->
+                    </div>
+                    <input type="hidden" name="officer" id="selectedOfficersInput">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">
+                    <span class="field-number">9</span>ថ្ងៃខែឆ្នាំទទួល
+                  </label>
+                  <input type="date" class="form-control date-input" name="receiveDate" placeholder="dd/mm/yyyy">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">
+                    <span class="field-number">10</span>ស្ថានភាព
+                  </label>
+                  <select class="form-select" name="progress">
+                    <option value="">ជ្រើសរើស</option>
+                    <option value="មិនទាន់ធ្វើចេញ">មិនទាន់ធ្វើចេញ</option>
+                    <option value="បានធ្វើចេញរួចរាល់">បានធ្វើចេញរួចរាល់</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">
+                    <span class="field-number">11</span>ចំនួនថ្ងៃទាន់បានធ្វើចេញ
+                  </label>
+                  <input type="text" class="form-control" name="duration">
+                </div>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <h6 class="mb-3">ព័ត៌មានបន្ថែម</h6>
+              <div class="row g-3">
+                <div class="col-md-4">
+                  <label class="form-label">
+                    <span class="field-number">12</span>ចូលប្រធានការិ.
+                  </label>
+                  <input type="text" class="form-control" name="toChiefOffice">
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label">
+                    <span class="field-number">13</span>ចូលអនុ.នាយកដ្ឋាន
+                  </label>
+                  <input type="text" class="form-control" name="toDeputy">
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label">
+                    <span class="field-number">14</span>ចូលប្រធាននាយកដ្ឋាន
+                  </label>
+                  <input type="text" class="form-control" name="toHeadDept">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">
+                    <span class="field-number">15</span>ថ្ងៃខែឆ្នាំចេញលិខិត
+                  </label>
+                  <input type="date" class="form-control date-input" name="outDate" placeholder="dd/mm/yyyy">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">
+                    <span class="field-number">16</span>ចេញបញ្ជិកា/មិនទាន់ចេញបញ្ជិកា
+                  </label>
+                  <select class="form-select" name="registryStatus">
+                    <option value="">ជ្រើសរើស</option>
+                    <option value="ចេញបញ្ជិកា">ចេញបញ្ជិកា</option>
+                    <option value="មិនទាន់ចេញបញ្ជិកា">មិនទាន់ចេញបញ្ជិកា</option>
+                  </select>
+                </div>
+                <div class="col-12">
+                  <label class="form-label">
+                    <span class="field-number">17</span>មូលហេតុ/ផ្សេងៗ
+                  </label>
+                  <textarea class="form-control" name="reason" rows="3"></textarea>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer mt-4">
+              <button type="submit" class="btn btn-primary" id="docSubmitBtn">
+                <i class="bi bi-save"></i> រក្សាទុក
+              </button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">បិទ</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Message Modal -->
+  <div class="modal fade" id="messageModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header bg-light">
+          <h5 class="modal-title" id="messageTitle">Information</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p id="messageText"></p>
+        </div>
+        <div class="modal-footer" id="messageButtons">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- JavaScript -->
+  <script>
+    // Simple configuration
+    const DOC_API = "https://uat-api-office2.thithabirdnest.com/doc";
+
+    // Global variables
+    let allDocs = [];
+    let currentEditingId = null;
+    let currentFilteredDocs = [];
+
+    // Sample data for smart inputs
+    const organizationSuggestions = [
+      "ក្រសួងកសិកម្ម រុក្ខាប្រមាញ់ និងនេសាទ",
+      "ក្រសួងអប់រំ យុវជន និងកីឡា",
+      "ក្រសួងសេដ្ឋកិច្ច និងហិរញ្ញវត្ថុ",
+      "ក្រសួងសុខាភិបាល",
+      "ក្រសួងមហាផ្ទៃ",
+      "ក្រសួងការពារជាតិ",
+      "ក្រសួងយុត្តិធម៌",
+      "ក្រសួងរៀបចំដែនដី នគរូបនីយកម្ម និងសំណង់",
+      "ក្រសួងឧស្សាហកម្ម វិទ្យាសាស្ត្រ បច្ចេកវិទ្យា និងនovation",
+      "ក្រសួងសាធារណការ និងដឹកជញ្ជូន",
+      "រោងចក្រ ក",
+      "រោងចក្រ ខ",
+      "រោងចក្រ គ",
+      "រោងចក្រ ឃ",
+      "រោងចក្រ ង"
+    ];
+
+    const officerList = [
+      { id: 1, name: "លោក សុខ សំអាត", position: "មន្ត្រីទទួល" },
+      { id: 2, name: "លោក ម៉ៅ រស្មី", position: "មន្ត្រីទទួល" },
+      { id: 3, name: "លោក វ៉ាន់ សុផាត", position: "មន្ត្រីទទួល" },
+      { id: 4, name: "លោក គឹម សុខុម", position: "មន្ត្រីទទួល" },
+      { id: 5, name: "លោក ហេង សំណាង", position: "មន្ត្រីទទួល" },
+      { id: 6, name: "លោក ឈិន បញ្ញា", position: "មន្ត្រីទទួល" },
+      { id: 7, name: "លោក តាន់ សេរី", position: "មន្ត្រីទទួល" },
+      { id: 8, name: "លោក ផាន់ ធារី", position: "មន្ត្រីទទួល" }
+    ];
+
+    // Utility functions
+    function showMessage(message, title = 'Information') {
+      const messageModal = new bootstrap.Modal(document.getElementById('messageModal'));
+      document.getElementById('messageTitle').textContent = title;
+      document.getElementById('messageText').innerHTML = message;
+      messageModal.show();
+    }
+
+    function formatDate(dateString) {
+      if (!dateString) return '';
+      return dateString.split('T')[0];
+    }
+
+    function getTodayDate() {
+      return new Date().toISOString().split('T')[0];
+    }
+
+    // Smart input functionality
+    function initSmartInputs() {
+      // Organization smart input
+      const sourceInput = document.getElementById('sourceInput');
+      const sourceSuggestions = document.getElementById('sourceSuggestions');
+
+      sourceInput.addEventListener('input', function (e) {
+        const value = e.target.value.toLowerCase();
+        if (value.length === 0) {
+          sourceSuggestions.style.display = 'none';
+          return;
+        }
+
+        const filtered = organizationSuggestions.filter(org =>
+          org.toLowerCase().includes(value)
+        );
+
+        if (filtered.length > 0) {
+          sourceSuggestions.innerHTML = filtered.map(org =>
+            `<div class="suggestion-item" data-value="${org}">${org}</div>`
+          ).join('');
+          sourceSuggestions.style.display = 'block';
+        } else {
+          sourceSuggestions.style.display = 'none';
+        }
+      });
+
+      // Click outside to hide suggestions
+      document.addEventListener('click', function (e) {
+        if (!sourceInput.contains(e.target) && !sourceSuggestions.contains(e.target)) {
+          sourceSuggestions.style.display = 'none';
+        }
+      });
+
+      // Select suggestion
+      sourceSuggestions.addEventListener('click', function (e) {
+        if (e.target.classList.contains('suggestion-item')) {
+          sourceInput.value = e.target.getAttribute('data-value');
+          sourceSuggestions.style.display = 'none';
+        }
+      });
+
+      // Officer selection functionality
+      const officerSearch = document.getElementById('officerSearch');
+      const officerOptions = document.getElementById('officerOptions');
+      const selectedOfficers = document.getElementById('selectedOfficers');
+      const selectedOfficersInput = document.getElementById('selectedOfficersInput');
+
+      let selectedOfficerIds = [];
+
+      // Populate officer options
+      function populateOfficerOptions() {
+        officerOptions.innerHTML = officerList.map(officer =>
+          `<div class="officer-option ${selectedOfficerIds.includes(officer.id) ? 'selected' : ''}" 
+                data-id="${officer.id}" data-name="${officer.name}">
+            <strong>${officer.name}</strong><br>
+            <small class="text-muted">${officer.position}</small>
+          </div>`
+        ).join('');
+      }
+
+      // Update selected officers display
+      function updateSelectedOfficers() {
+        const selectedNames = officerList
+          .filter(officer => selectedOfficerIds.includes(officer.id))
+          .map(officer => officer.name);
+
+        selectedOfficersInput.value = selectedNames.join(', ');
+
+        selectedOfficers.innerHTML = selectedNames.map(name =>
+          `<div class="selected-officer">
+            ${name}
+            <span class="remove-officer" data-name="${name}">×</span>
+          </div>`
+        ).join('');
+      }
+
+      // Officer search
+      officerSearch.addEventListener('input', function (e) {
+        const value = e.target.value.toLowerCase();
+        if (value.length === 0) {
+          officerOptions.style.display = 'none';
+          return;
+        }
+
+        const filtered = officerList.filter(officer =>
+          officer.name.toLowerCase().includes(value) ||
+          officer.position.toLowerCase().includes(value)
+        );
+
+        if (filtered.length > 0) {
+          officerOptions.innerHTML = filtered.map(officer =>
+            `<div class="officer-option ${selectedOfficerIds.includes(officer.id) ? 'selected' : ''}" 
+                  data-id="${officer.id}" data-name="${officer.name}">
+              <strong>${officer.name}</strong><br>
+              <small class="text-muted">${officer.position}</small>
+            </div>`
+          ).join('');
+          officerOptions.style.display = 'block';
+        } else {
+          officerOptions.style.display = 'none';
+        }
+      });
+
+      // Select/deselect officer
+      officerOptions.addEventListener('click', function (e) {
+        const officerOption = e.target.closest('.officer-option');
+        if (officerOption) {
+          const officerId = parseInt(officerOption.getAttribute('data-id'));
+          const officerName = officerOption.getAttribute('data-name');
+
+          if (selectedOfficerIds.includes(officerId)) {
+            // Deselect
+            selectedOfficerIds = selectedOfficerIds.filter(id => id !== officerId);
+            officerOption.classList.remove('selected');
+          } else {
+            // Select (limit to 2 officers)
+            if (selectedOfficerIds.length < 2) {
+              selectedOfficerIds.push(officerId);
+              officerOption.classList.add('selected');
+            } else {
+              showMessage('អាចជ្រើសរើសមន្ត្រីបានត្រឹមតែ ២នាក់ប៉ុណ្ណោះ', 'ព័ត៌មាន');
+            }
+          }
+
+          updateSelectedOfficers();
+          officerSearch.value = '';
+          officerOptions.style.display = 'none';
+        }
+      });
+
+      // Remove selected officer
+      selectedOfficers.addEventListener('click', function (e) {
+        if (e.target.classList.contains('remove-officer')) {
+          const officerName = e.target.getAttribute('data-name');
+          const officer = officerList.find(o => o.name === officerName);
+          if (officer) {
+            selectedOfficerIds = selectedOfficerIds.filter(id => id !== officer.id);
+            updateSelectedOfficers();
+            populateOfficerOptions();
+          }
+        }
+      });
+
+      // Click outside to hide officer options
+      document.addEventListener('click', function (e) {
+        if (!officerSearch.contains(e.target) && !officerOptions.contains(e.target)) {
+          officerOptions.style.display = 'none';
+        }
+      });
+
+      // Initialize
+      populateOfficerOptions();
+      updateSelectedOfficers();
+
+      // Return functions to manage officer selection state
+      return {
+        setSelectedOfficers: function (officerNames) {
+          if (!officerNames) return;
+          const names = officerNames.split(',').map(name => name.trim());
+          selectedOfficerIds = officerList
+            .filter(officer => names.includes(officer.name))
+            .map(officer => officer.id);
+          updateSelectedOfficers();
+          populateOfficerOptions();
+        },
+        getSelectedOfficers: function () {
+          return selectedOfficerIds;
+        }
+      };
+    }
+
+    // Documents functionality
+    class DocumentsManager {
+      constructor() {
+        this.allDocs = [];
+        this.currentFilteredDocs = [];
+        this.officerManager = null;
+        this.init();
+      }
+
+      init() {
+        this.bindEvents();
+        this.setDefaultDates();
+        this.fetchDocuments();
+      }
+
+      setDefaultDates() {
+        // Clear default dates and set placeholder
+        document.getElementById('dateFrom').value = '';
+        document.getElementById('dateTo').value = '';
+
+        // Set placeholder for all date inputs
+        const dateInputs = document.querySelectorAll('.date-input');
+        dateInputs.forEach(input => {
+          input.setAttribute('placeholder', 'dd/mm/yyyy');
+        });
+      }
+
+      bindEvents() {
+        // Add document button
+        document.getElementById('openDocForm').addEventListener('click', () => {
+          this.openDocumentForm();
+        });
+
+        // Export button
+        document.getElementById('exportDocExcel').addEventListener('click', () => {
+          this.exportToExcel();
+        });
+
+        // Search functionality
+        document.getElementById('docSearch').addEventListener('input', (e) => {
+          this.searchDocuments(e.target.value);
+        });
+
+        // Show count
+        document.getElementById('showCount').addEventListener('change', (e) => {
+          this.renderDocuments(this.currentFilteredDocs);
+        });
+
+        // Form submission
+        document.getElementById('docForm').addEventListener('submit', (e) => {
+          this.handleFormSubmit(e);
+        });
+
+        // Date filter events
+        document.getElementById('applyDateFilter').addEventListener('click', () => {
+          this.applyDateFilter();
+        });
+
+        document.getElementById('clearDateFilter').addEventListener('click', () => {
+          this.clearDateFilter();
+        });
+
+        // Event delegation for action buttons
+        document.getElementById('docTableBody').addEventListener('click', (e) => {
+          const row = e.target.closest('tr');
+          if (!row) return;
+
+          const id = row.getAttribute('data-id');
+          if (!id) return;
+
+          if (e.target.closest('.btn-outline-primary')) {
+            this.viewDocument(id);
+          } else if (e.target.closest('.btn-outline-secondary')) {
+            this.editDocument(id);
+          } else if (e.target.closest('.btn-outline-danger')) {
+            this.deleteDocumentConfirm(id);
+          }
+        });
+      }
+
+      async fetchDocuments() {    //get documents from API
+        try {
+          console.log('Fetching documents from API...');
+          const res = await fetch(DOC_API);
+
+          if (!res.ok) {
+            throw new Error(`HTTP error! status: ${res.status}`);
+          }
+
+          const data = await res.json();
+          console.log('Full API Response:', data);
+
+          // Better response structure handling
+          if (data.documents) {
+            this.allDocs = data.documents;
+          } else if (data.data) {
+            this.allDocs = data.data;
+          } else if (data.date) {
+            this.allDocs = data.date;
+          } else if (Array.isArray(data)) {
+            this.allDocs = data;
+          } else {
+            console.warn('Unexpected API response structure:', data);
+            this.allDocs = [];
+          }
+
+          console.log('Loaded documents:', this.allDocs.length, this.allDocs);
+
+          if (this.allDocs.length === 0) {
+            console.log('No documents found in API response');
+            this.renderDocuments([]);
+            this.updateCountChart();
+            return;
+          }
+
+          // Don't apply date filter initially - show all data
+          this.currentFilteredDocs = [...this.allDocs];
+          this.renderDocuments(this.currentFilteredDocs);
+          this.updateCountChart();
+
+        } catch (error) {
+          console.error("Document fetch error:", error);
+          showMessage("មិនអាចទាញយកទិន្នន័យពីម៉ាស៊ីនមេ: " + error.message, "កំហុស");
+
+          // Show empty state
+          this.allDocs = [];
+          this.currentFilteredDocs = [];
+          this.renderDocuments([]);
+          this.updateCountChart();
+        }
+      }
+
+      updateCountChart() {
+        const total = this.currentFilteredDocs.length;
+        const completed = this.currentFilteredDocs.filter(doc => doc.progress === 'បានធ្វើចេញរួចរាល់').length;
+        const pending = this.currentFilteredDocs.filter(doc => doc.progress === 'មិនទាន់ធ្វើចេញ').length;
+
+        // Count documents from today
+        const today = getTodayDate();
+        const todayCount = this.currentFilteredDocs.filter(doc =>
+          doc.submitDate && formatDate(doc.submitDate) === today
+        ).length;
+
+        document.getElementById('totalCount').textContent = total;
+        document.getElementById('completedCount').textContent = completed;
+        document.getElementById('pendingCount').textContent = pending;
+        document.getElementById('todayCount').textContent = todayCount;
+      }
+
+      applyDateFilter() {
+        const dateFrom = document.getElementById('dateFrom').value;
+        const dateTo = document.getElementById('dateTo').value;
+
+        if (!dateFrom || !dateTo) {
+          showMessage('សូមជ្រើសរើសកាលកំណត់ពីថ្ងៃ និងដល់ថ្ងៃ', 'Error');
+          return;
+        }
+
+        if (dateFrom > dateTo) {
+          showMessage('ថ្ងៃចាប់ផ្ដើមមិនអាចធំជាងថ្ងៃបញ្ចប់', 'Error');
+          return;
+        }
+
+        this.currentFilteredDocs = this.allDocs.filter(doc => {
+          if (!doc.submitDate) return false;
+          const docDate = formatDate(doc.submitDate);
+          return docDate >= dateFrom && docDate <= dateTo;
+        });
+
+        this.renderDocuments(this.currentFilteredDocs);
+        this.updateCountChart();
+      }
+
+      clearDateFilter() {
+        document.getElementById('dateFrom').value = '';
+        document.getElementById('dateTo').value = '';
+        this.currentFilteredDocs = [...this.allDocs];
+        this.renderDocuments(this.currentFilteredDocs);
+        this.updateCountChart();
+      }
+
+      renderDocuments(docs) {
+        const tbody = document.getElementById('docTableBody');
+        const showCount = document.getElementById('showCount');
+        const count = showCount ? showCount.value : 'all';
+
+        let displayDocs = docs;
+        if (count !== 'all') {
+          displayDocs = docs.slice(0, parseInt(count));
+        }
+
+        if (displayDocs.length === 0) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="18" class="text-center text-muted py-4">
+                មិនមានទិន្នន័យ
+              </td>
+            </tr>
+          `;
+          return;
+        }
+
+        tbody.innerHTML = displayDocs.map(doc => `
+          <tr data-id="${doc.id}">
+            <td>${doc.no || ''}</td>
+            <td>${doc.ir || ''}</td>
+            <td>${doc.outNo || ''}</td>
+            <td>${formatDate(doc.submitDate)}</td>
+            <td>${doc.source || ''}</td>
+            <td>${doc.doc || ''}</td>
+            <td>${formatDate(doc.officeDate2)}</td>
+            <td>${doc.officer || ''}</td>
+            <td>${formatDate(doc.receiveDate)}</td>
+            <td>
+              <span class="status-badge ${doc.progress === 'បានធ្វើចេញរួចរាល់' ? 'status-completed' : 'status-pending'}">
+                ${doc.progress || ''}
+              </span>
+            </td>
+            <td>${doc.duration || ''}</td>
+            <td>${doc.toChiefOffice || ''}</td>
+            <td>${doc.toDeputy || ''}</td>
+            <td>${doc.toHeadDept || ''}</td>
+            <td>${formatDate(doc.outDate)}</td>
+            <td>${doc.registryStatus || ''}</td>
+            <td>${doc.reason || ''}</td>
+            <td>
+              <div class="btn-group btn-group-sm">
+                <button class="btn btn-outline-primary" title="មើល">
+                  <i class="bi bi-eye"></i>
+                </button>
+                <button class="btn btn-outline-secondary" title="កែសម្រួល">
+                  <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn btn-outline-danger" title="លុប">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `).join('');
+      }
+
+      searchDocuments(query) {
+        if (!query.trim()) {
+          this.renderDocuments(this.currentFilteredDocs);
+          return;
+        }
+
+        const filteredDocs = this.currentFilteredDocs.filter(doc =>
+          Object.values(doc).some(value =>
+            value && value.toString().toLowerCase().includes(query.toLowerCase())
+          )
+        );
+        this.renderDocuments(filteredDocs);
+      }
+
+      openDocumentForm(editId = null) {
+        currentEditingId = editId;
+        const modal = new bootstrap.Modal(document.getElementById('docModal'));
+        const modalTitle = document.getElementById('docModalTitle');
+        const form = document.getElementById('docForm');
+
+        modalTitle.textContent = editId ? 'កែសម្រួលឯកសារ' : 'បញ្ចូលឯកសារថ្មី';
+        form.reset();
+
+        // Initialize smart inputs when modal opens
+        this.officerManager = initSmartInputs();
+
+        if (editId) {
+          this.populateForm(editId);
+        }
+
+        modal.show();
+      }
+
+      populateForm(id) {
+        const doc = this.allDocs.find(d => d.id.toString() === id.toString());
+        if (!doc) {
+          showMessage('Document not found', 'Error');
+          return;
+        }
+
+        const form = document.getElementById('docForm');
+        const fields = [
+          'no', 'ir', 'outNo', 'submitDate', 'source', 'doc', 'officeDate2',
+          'receiveDate', 'progress', 'duration', 'toChiefOffice',
+          'toDeputy', 'toHeadDept', 'outDate', 'registryStatus', 'reason'
+        ];
+
+        fields.forEach(field => {
+          if (form.elements[field]) {
+            const value = doc[field] || '';
+            if (field.includes('Date')) {
+              form.elements[field].value = formatDate(value);
+            } else {
+              form.elements[field].value = value;
+            }
+          }
+        });
+
+        // Handle officer selection
+        if (doc.officer && this.officerManager) {
+          this.officerManager.setSelectedOfficers(doc.officer);
+        }
+      }
+
+      async handleFormSubmit(e) {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const data = Object.fromEntries(formData);
+
+        console.log('Form data:', data);
+
+        if (!data.no || !data.ir) {
+          showMessage('សូមបំពេញព័ត៌មានចាំបាច់ទាំងអស់', 'Error');
+          return;
+        }
+
+        const submitBtn = document.getElementById('docSubmitBtn');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<span class="loading"></span> កំពុងរក្សាទុក...';
+        submitBtn.disabled = true;
+
+        try {
+          let response;
+
+          if (currentEditingId) {
+            // Update existing document via API
+            response = await fetch(`${DOC_API}/${currentEditingId}`, {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(data)
+            });
+
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const updatedDoc = await response.json();
+
+            // Update local data
+            const index = this.allDocs.findIndex(d => d.id.toString() === currentEditingId.toString());
+            if (index !== -1) {
+              this.allDocs[index] = { ...this.allDocs[index], ...updatedDoc };
+              showMessage('Document updated successfully', 'Success');
+            } else {
+              showMessage('Document not found for editing', 'Error');
+            }
+          } else {
+            // Create new document via API
+            response = await fetch(DOC_API, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(data)
+            });
+
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const newDoc = await response.json();
+
+            // Add to local data
+            this.allDocs.push(newDoc);
+            showMessage('Document created successfully', 'Success');
+          }
+
+          const modal = bootstrap.Modal.getInstance(document.getElementById('docModal'));
+          modal.hide();
+
+          // Refresh data from API to ensure consistency
+          await this.fetchDocuments();
+
+        } catch (error) {
+          console.error('Save error:', error);
+          showMessage('Failed to save document: ' + error.message, 'Error');
+        } finally {
+          submitBtn.innerHTML = originalText;
+          submitBtn.disabled = false;
+        }
+      }
+
+      viewDocument(id) {
+        const doc = this.allDocs.find(d => d.id.toString() === id.toString());
+        if (!doc) {
+          showMessage('Document not found', 'Error');
+          return;
+        }
+
+        let detailHTML = `
+          <div class="row">
+            <div class="col-md-6">
+              <strong>1. លេខចូល:</strong> ${doc.no || ''}<br>
+              <strong>2. លេខលិខិត (IR):</strong> ${doc.ir || ''}<br>
+              <strong>3. លេខចេញ:</strong> ${doc.outNo || ''}<br>
+              <strong>4. ថ្ងៃខែលិខិតចូល/ចេញ:</strong> ${formatDate(doc.submitDate)}<br>
+              <strong>5. អង្គភាព/ប្រភពលិខិត:</strong> ${doc.source || ''}<br>
+              <strong>6. ប្រភេទឯកសារ:</strong> ${doc.doc || ''}<br>
+              <strong>7. ថ្ងៃខែមុខការិ.២:</strong> ${formatDate(doc.officeDate2)}<br>
+              <strong>8. មន្រ្តីទទួលមុខការ:</strong> ${doc.officer || ''}<br>
+              <strong>9. ថ្ងៃខែឆ្នាំទទួល:</strong> ${formatDate(doc.receiveDate)}
+            </div>
+            <div class="col-md-6">
+              <strong>10. ស្ថានភាព:</strong> ${doc.progress || ''}<br>
+              <strong>11. ចំនួនថ្ងៃទាន់បានធ្វើចេញ:</strong> ${doc.duration || ''}<br>
+              <strong>12. ចូលប្រធានការិ.:</strong> ${doc.toChiefOffice || ''}<br>
+              <strong>13. ចូលអនុ.នាយកដ្ឋាន:</strong> ${doc.toDeputy || ''}<br>
+              <strong>14. ចូលប្រធាននាយកដ្ឋាន:</strong> ${doc.toHeadDept || ''}<br>
+              <strong>15. ថ្ងៃខែឆ្នាំចេញលិខិត:</strong> ${formatDate(doc.outDate)}<br>
+              <strong>16. ស្ថានភាពបញ្ជិកា:</strong> ${doc.registryStatus || ''}<br>
+              <strong>17. មូលហេតុ/ផ្សេងៗ:</strong> ${doc.reason || ''}
+            </div>
+          </div>
+        `;
+
+        showMessage(detailHTML, 'ព័ត៌មានលម្អិតឯកសារ');
+      }
+
+      editDocument(id) {
+        this.openDocumentForm(id);
+      }
+
+      deleteDocumentConfirm(id) {
+        if (confirm('តើអ្នកប្រាកដថាចង់លុបឯកសារនេះមែនទេ?')) {
+          this.deleteDocument(id);
+        }
+      }
+
+
+      ////
+
+async deleteDocument(id) {
+    try {
+        const docToDelete = this.allDocs.find(d => d.id.toString() === id.toString());
+        if (!docToDelete) {
+            showMessage('Document not found', 'Error');
+            return;
+        }
+
+        // Delete from backend API
+        const response = await fetch(`${DOC_API}/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`HTTP error! status: ${response.status}: ${errorText}`);
+        }
+
+         await this.fetchDocuments();
+        
+        showMessage('ឯកសារត្រូវបានលុបដោយជោគជ័យ', 'Success');
+
+    } catch (error) {
+        console.error('Delete error:', error);
+        
+        // User-friendly error messages
+    } finally {
+        // Reset button state if we modified it
+        if (event?.target) {
+            event.target.innerHTML = originalButtonText;
+            event.target.disabled = false;
+        }
+    }
+}
+
+
+      exportToExcel() {
+        try {
+          const exportData = this.currentFilteredDocs.length > 0 ? this.currentFilteredDocs : this.allDocs;
+          const ws = XLSX.utils.json_to_sheet(exportData);
+          const wb = XLSX.utils.book_new();
+          XLSX.utils.book_append_sheet(wb, ws, "Documents");
+          XLSX.writeFile(wb, "documents.xlsx");
+          showMessage('Excel file downloaded successfully', 'Success');
+        } catch (error) {
+          console.error('Export error:', error);
+          showMessage('Failed to export to Excel', 'Error');
+        }
+      }
+    }
+
+    // Initialize when page loads
+    document.addEventListener('DOMContentLoaded', () => {
+      window.documentsManager = new DocumentsManager();
+    });
+  </script>
+</body>
+
+</html>
