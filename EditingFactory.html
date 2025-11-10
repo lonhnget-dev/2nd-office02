@@ -110,7 +110,7 @@ input, textarea {
 
 input:focus,
 textarea:focus {
-  border-color: #0d6efd;
+  border-color: #fd790d;
   box-shadow: 0 0 5px rgba(13, 110, 253, 0.3);
   outline: none;
 }
@@ -170,57 +170,178 @@ textarea {
     padding: 20px;
   }
 }
+/* Month Selector Container */
+.month-selector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 25px;
+  justify-content: space-between; /* Spread buttons evenly */
+}
+
+/* Month Buttons */
+.month-btn {
+  flex: 1 1 calc(16.66% - 10px); /* 6 buttons per row on large screens */
+  text-align: center;
+  padding: 10px 0;
+  border: none;
+  border-radius: 8px;
+  background-color: #f0f2f5;
+  color: #333;
+  font-weight: 500;
+  font-size: 0.95em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+.month-btn:hover {
+  background-color: #0d6efd;
+  color: white;
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.month-btn.active {
+  background-color: #0d6efd;
+  color: white;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+/* Responsive Adjustments */
+@media screen and (max-width: 1024px) {
+  .month-btn {
+    flex: 1 1 calc(25% - 10px); /* 4 per row */
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .month-btn {
+    flex: 1 1 calc(33.33% - 10px); /* 3 per row */
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .month-btn {
+    flex: 1 1 calc(50% - 10px); /* 2 per row */
+  }
+}
+
+/* Input fields */
+.form-group input {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  margin-bottom: 12px;
+  font-size: 0.95em;
+  transition: all 0.2s;
+}
+
+.form-group input:focus {
+  border-color: #0d6efd;
+  outline: none;
+  box-shadow: 0 0 5px rgba(13,110,253,0.2);
+}
+
+.save-btn {
+  background-color: #0d6efd;
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.save-btn:hover {
+  background-color: #084298;
+  transform: scale(1.03);
+}
+
 </style>
 </head>
 <body>
 
 <!-- Sidebar -->
 <div class="sidebar">
-  <h2>Factory Profile</h2>
+  <h2>លូ​ស៊ីដា​​​ ហ្គាម៉ិន</h2>
   <ul>
-    <li class="active" onclick="showSection('general')">General Info</li>
-    <li onclick="showSection('admin')">Admin Info</li>
-    <li onclick="showSection('workers')">Number of Workers</li>
+    <li class="active" onclick="showSection('worker')">ចំនួនកម្មករ</li>
+    <li onclick="showSection('admin')">រដ្ឋបាល</li>
+    <li onclick="showSection('reprsenative')">តំណាងកម្មករ</li>
+    <li onclick="showSection('generalinfo')">ព័ត៌មានទូទៅ</li>
+
+
   </ul>
 </div>
 
 <!-- Main Content -->
 <div class="main-content">
-  <div id="general" class="section active">
-    <h3>General Information</h3>
+  <div id="worker" class="section active">
+    <h3>ចំនួនកម្មករ / Workers per Month</h3>
+
+    <!-- Month Selector -->
+    <div class="month-selector">
+      <button class="month-btn active">មករា</button>
+      <button class="month-btn">កុម្ភ</button>
+      <button class="month-btn">មីនា</button>
+      <button class="month-btn">មេសា</button>
+      <button class="month-btn">ឧសភា</button>
+      <button class="month-btn">មិថុនា</button>
+      <button class="month-btn">កក្កដា</button>
+      <button class="month-btn">សីហា</button>
+      <button class="month-btn">កញ្ញា</button>
+      <button class="month-btn">តុលា</button>
+      <button class="month-btn">វិច្ឆិកា</button>
+      <button class="month-btn">ធ្នូ</button>
+    </div>
+
+    <!-- Worker Input Fields -->
     <div class="form-group">
-      <label>Factory Name</label>
-      <input type="text" placeholder="Enter factory name">
+      <label>ចំនួនកម្មករសរុប / Total Workers</label>
+      <input type="number" placeholder="សរុប">
     </div>
     <div class="form-group">
-      <label>Location</label>
-      <input type="text" placeholder="Enter address">
+      <label>ចំនួនកម្មករស្រី / Female Workers</label>
+      <input type="number" placeholder="ស្រី">
     </div>
     <div class="form-group">
-      <label>Description</label>
-      <textarea placeholder="Enter factory description"></textarea>
+      <label>បរទេសសរុប / Foreign Workers</label>
+      <input type="number" placeholder="សរុប">
     </div>
+    <div class="form-group">
+      <label>បរទេសស្រី / Female Foreign Workers</label>
+      <input type="number" placeholder="ស្រី">
+    </div>
+
     <button class="save-btn">Save</button>
   </div>
+
 
   <div id="admin" class="section">
     <h3>Admin Information</h3>
     <div class="form-group">
-      <label>Admin Name</label>
+      <label>ប្រធានរដ្ឋបាល</label>
       <input type="text" placeholder="Enter admin name">
     </div>
     <div class="form-group">
-      <label>Contact Number</label>
+      <label>លេខទូរសព្ទ</label>
       <input type="text" placeholder="Enter contact number">
     </div>
+        <div class="form-group">
+      <label>ជំនួយការរដ្ឋបាល</label>
+      <input type="text" placeholder="Enter admin name">
+    </div>
     <div class="form-group">
-      <label>Email</label>
-      <input type="email" placeholder="Enter email address">
+      <label>លេខទូរសព្ទ</label>
+      <input type="text" placeholder="Enter contact number">
     </div>
     <button class="save-btn">Save</button>
   </div>
 
-  <div id="workers" class="section">
+  <div id="reprsenative" class="section">
     <h3>Number of Workers</h3>
     <div class="form-group">
       <label>Total Workers</label>
@@ -236,9 +357,20 @@ textarea {
     </div>
     <button class="save-btn">Save</button>
   </div>
+
+  
 </div>
 
 <script>
+  const monthButtons = document.querySelectorAll('.month-btn');
+monthButtons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    monthButtons.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    // Optional: clear inputs or load month-specific data here
+  });
+});
+
 function showSection(sectionId) {
   document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
   document.querySelectorAll(".sidebar li").forEach(li => li.classList.remove("active"));
