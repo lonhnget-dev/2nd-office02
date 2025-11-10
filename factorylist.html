@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>បញ្ជីរោងចក្រ | Office 2</title>
   <link rel="stylesheet" href="factorylist.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.19.3/xlsx.full.min.js"></script>
+
 </head>
 <body>
     <div id="navbar"></div>
@@ -12,11 +14,11 @@
   <!-- Factory List Section -->
   <section class="factory-section">
     <h2>បញ្ជីរោងចក្រ / Factory List</h2>
-    <div class="search-bar">
-      <button class="map-btn">Add Factory</button>
-      <input type="text" id="searchInput" placeholder="ស្វែងរកឈ្មោះសហគ្រាស..." />
-
-    </div>
+      <div class="search-bar">
+        <button class="map-btn">Add Factory</button>
+        <input type="text" id="searchInput" placeholder="ស្វែងរកឈ្មោះសហគ្រាស..." />
+        <button id="exportExcel" class="map-btn">Download Excel</button>
+      </div>
     <table id="factoryTable">
       <thead>
         <tr>
@@ -91,7 +93,7 @@
 </div>
 
 
-  <script src="factory-list.js"></script>
+  <script src="factory-list.js" ></script>
 </body>
 <script>
      fetch('navbar.html')
@@ -136,6 +138,19 @@ document.addEventListener("click", function(e) {
     document.getElementById("factoryModal").style.display = "none";
   }
 });
+
+// Export table to Excel
+document.getElementById("exportExcel").addEventListener("click", function () {
+  // Get the table
+  var table = document.getElementById("factoryTable");
+
+  // Convert table to workbook
+  var wb = XLSX.utils.table_to_book(table, { sheet: "Factory List" });
+
+  // Export to Excel file
+  XLSX.writeFile(wb, "Factory_List.xlsx");
+});
+
 
 </script>
 </html>

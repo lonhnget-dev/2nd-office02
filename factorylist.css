@@ -7,29 +7,93 @@ body {
 }
 /* ===== Factory Section ===== */
 .factory-section {
-  margin-top: 10px;
-  padding: 25px 40px;
+  margin: 20px auto;
+  padding: 30px 40px;
+  max-width: 1200px;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .factory-section h2 {
-  font-size: 1.6em;
+  font-size: 1.8em;
   color: #2c3e50;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
+  font-weight: 600;
 }
 
-/* Search Bar */
+/* --- Search Bar Styling --- */
 .search-bar {
-  margin-bottom: 20px;
+  display: flex;
+  flex-wrap: wrap; /* Allow wrapping on small screens */
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 25px;
 }
 
 .search-bar input {
-  width: 100%;
+  flex: 1; /* Take remaining space */
+  min-width: 250px;
   max-width: 400px;
-  padding: 10px;
+  padding: 10px 14px;
   border: 1px solid #ccc;
-  border-radius: 6px;
+  border-radius: 8px;
   font-size: 1em;
+  transition: all 0.2s ease;
 }
+
+.search-bar input:focus {
+  outline: none;
+  border-color: #3551a4;
+  box-shadow: 0 0 5px rgba(53, 81, 164, 0.3);
+}
+
+/* --- Buttons Styling --- */
+.map-btn,
+#exportExcel {
+  padding: 8px 16px;
+  font-size: 0.95em;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.map-btn {
+  background-color: #3551a4;
+  color: #fff;
+}
+
+.map-btn:hover {
+  background-color: #1f3058;
+  transform: scale(1.05);
+}
+
+#exportExcel {
+  background-color: #198754;
+  color: #fff;
+}
+
+#exportExcel:hover {
+  background-color: #157347;
+  transform: scale(1.05);
+}
+
+/* Responsive layout for small screens */
+@media screen and (max-width: 600px) {
+  .search-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-bar input,
+  .map-btn,
+  #exportExcel {
+    width: 100%;
+  }
+}
+
 
 /* Table */
 table {
@@ -165,4 +229,17 @@ td div {
 .view-btn:hover {
   background-color: #218838;
   transform: scale(1.05);
+}
+#exportExcel {
+  background-color: #198754;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+#exportExcel:hover {
+  background-color: #157347;
 }
