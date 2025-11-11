@@ -1,404 +1,712 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="km">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Factory Profile</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Factory Profile - លូ​ស៊ីដា​​​ ហ្គាម៉ិន</title>
+      <link rel="stylesheet" href="editingpage.css">
 
-<style>
-/* ===== Base Styles ===== */
-* {
-  box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  display: flex;
-  min-height: 100vh;
-  background-color: #f4f6f8;
-}
-
-/* ===== Sidebar ===== */
-.sidebar {
-  width: 220px;
-  background-color: #0d6efd;
-  color: white;
-  display: flex;
-  flex-direction: column;
-  padding: 25px 20px;
-  box-shadow: 2px 0 10px rgba(0,0,0,0.05);
-  transition: all 0.3s ease;
-}
-
-.sidebar h2 {
-  text-align: center;
-  margin-bottom: 40px;
-  font-size: 1.5rem;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-}
-
-.sidebar ul {
-  list-style: none;
-}
-
-.sidebar li {
-  padding: 12px 15px;
-  margin-bottom: 12px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: all 0.3s ease;
-}
-
-.sidebar li:hover,
-.sidebar li.active {
-  background-color: #084298;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-}
-
-/* ===== Main Content ===== */
-.main-content {
-  flex: 1;
-  padding: 35px;
-  background-color: #ffffff;
-  border-left: 1px solid #e0e0e0;
-  overflow-y: auto;
-}
-
-/* ===== Sections ===== */
-.section {
-  display: none;
-  animation: fadeIn 0.3s ease forwards;
-}
-
-.section.active {
-  display: block;
-}
-
-/* Headings */
-h3, h1 {
-  color: #0d3b66;
-  font-weight: 600;
-  margin-bottom: 15px;
-  font-size: 1.3rem;
-  border-bottom: 2px solid #0d6efd;
-  padding-bottom: 5px;
-}
-
-/* ===== Form Styles ===== */
-.form-group {
-  margin-bottom: 18px;
-}
-
-label {
-  display: block;
-  margin-bottom: 6px;
-  font-weight: 600;
-  color: #333;
-  font-size: 0.95em;
-}
-
-input, textarea {
-  width: 100%;
-  padding: 10px 12px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  font-size: 0.95em;
-  transition: all 0.3s ease;
-}
-
-input:focus,
-textarea:focus {
-  border-color: #0d6efd;
-  box-shadow: 0 0 5px rgba(13,110,253,0.2);
-  outline: none;
-}
-
-textarea {
-  resize: vertical;
-  min-height: 80px;
-}
-
-/* ===== Buttons ===== */
-.save-btn {
-  background-color: #0d6efd;
-  color: white;
-  padding: 10px 16px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: all 0.2s;
-}
-
-.save-btn:hover {
-  background-color: #084298;
-  transform: scale(1.03);
-}
-
-/* ===== Month Selector ===== */
-.month-selector {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 25px;
-  justify-content: space-between;
-}
-
-.month-btn {
-  flex: 1 1 calc(16.66% - 10px);
-  text-align: center;
-  padding: 10px 0;
-  border: none;
-  border-radius: 8px;
-  background-color: #f0f2f5;
-  color: #333;
-  font-weight: 500;
-  font-size: 0.95em;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-}
-
-.month-btn:hover {
-  background-color: #0d6efd;
-  color: white;
-  transform: translateY(-2px) scale(1.05);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-}
-
-.month-btn.active {
-  background-color: #0d6efd;
-  color: white;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-}
-
-/* ===== Animations ===== */
-@keyframes fadeIn {
-  from {opacity: 0; transform: translateY(10px);}
-  to {opacity: 1; transform: translateY(0);}
-}
-
-/* ===== Responsive ===== */
-@media screen and (max-width: 1024px) {
-  .month-btn { flex: 1 1 calc(25% - 10px); }
-}
-
-@media screen and (max-width: 768px) {
-  body { flex-direction: column; }
-  .sidebar { width: 100%; flex-direction: row; overflow-x: auto; padding: 15px; }
-  .sidebar h2 { display: none; }
-  .sidebar ul { display: flex; gap: 12px; }
-  .sidebar li { white-space: nowrap; }
-  .main-content { border-left: none; padding: 20px; }
-  .month-btn { flex: 1 1 calc(33.33% - 10px); }
-}
-
-@media screen and (max-width: 480px) {
-  .month-btn { flex: 1 1 calc(50% - 10px); }
-
-  /* ===== Worker Section Inputs ===== */
-#worker .form-group {
-  display: flex;
-  flex-direction: column;
-  max-width: 300px; /* Limit the width of each input */
-  margin-bottom: 15px;
-}
-
-#worker .form-group label {
-  margin-bottom: 5px;
-  font-size: 0.95em;
-  color: #333;
-}
-
-#worker input, 
-#worker textarea {
-  width: 100%; /* Fill the form-group width */
-  padding: 8px 12px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  font-size: 0.95em;
-  transition: all 0.2s;
-}
-
-#worker input:focus,
-#worker textarea:focus {
-  border-color: #0d6efd;
-  box-shadow: 0 0 5px rgba(13,110,253,0.2);
-  outline: none;
-}
-
-/* Arrange inputs side by side for certain groups */
-#worker .input-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  margin-bottom: 15px;
-}
-
-#worker .input-row .form-group {
-  flex: 1 1 150px; /* Flexible width, min 150px */
-}
-
-/* Adjust Save Button */
-#worker .save-btn {
-  margin-top: 15px;
-  padding: 10px 20px;
-  border-radius: 6px;
-  font-weight: 500;
-}
-
-/* Responsive adjustments */
-@media screen and (max-width: 768px) {
-  #worker .input-row {
-    flex-direction: column;
-  }
-}
-
-}
-</style>
 </head>
 <body>
-
-<!-- Sidebar -->
-<div class="sidebar">
-  <h2>លូ​ស៊ីដា​​​ ហ្គាម៉ិន</h2>
-  <ul>
-    <li class="active" onclick="showSection('worker')">ចំនួនកម្មករ</li>
-    <li onclick="showSection('admin')">រដ្ឋបាល</li>
-    <li onclick="showSection('reprsenative')">តំណាងកម្មករ</li>
-    <li onclick="showSection('generalinfo')">ព័ត៌មានទូទៅ</li>
-  </ul>
-</div>
-
-<!-- Main Content -->
-<div class="main-content">
-  <div id="worker" class="section active">
-    <h3>ចំនួនកម្មករ / Workers per Month</h3>
-
-    <!-- Month Selector -->
-    <div class="month-selector">
-      <button class="month-btn active">មករា</button>
-      <button class="month-btn">កុម្ភ</button>
-      <button class="month-btn">មីនា</button>
-      <button class="month-btn">មេសា</button>
-      <button class="month-btn">ឧសភា</button>
-      <button class="month-btn">មិថុនា</button>
-      <button class="month-btn">កក្កដា</button>
-      <button class="month-btn">សីហា</button>
-      <button class="month-btn">កញ្ញា</button>
-      <button class="month-btn">តុលា</button>
-      <button class="month-btn">វិច្ឆិកា</button>
-      <button class="month-btn">ធ្នូ</button>
+    <!-- Header -->
+    <div class="header">
+        <h1>Factory Profile - លូ​ស៊ីដា​​​ ហ្គាម៉ិន</h1>
+        <p>ប្រព័ន្ធគ្រប់គ្រងទិន្នន័យសហគ្រាស</p>
     </div>
 
-    <!-- Worker Input Fields -->
-    <div class="form-group">
-      <label>ចំនួនកម្មករសរុប / Total Workers</label>
-      <input type="number" placeholder="សរុប">
-    </div>
-    <div class="form-group">
-      <label>ចំនួនកម្មករស្រី / Female Workers</label>
-      <input type="number" placeholder="ស្រី">
-    </div>
-    <div class="form-group">
-      <label>បរទេសសរុប / Foreign Workers</label>
-      <input type="number" placeholder="សរុប">
-    </div>
-    <div class="form-group">
-      <label>បរទេសស្រី / Female Foreign Workers</label>
-      <input type="number" placeholder="ស្រី">
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <h2>លូ​ស៊ីដា​​​ ហ្គាម៉ិន</h2>
+            <ul>
+                <li class="active" onclick="showSection('generalInfo')">១. ព័ត៌មានទូទៅ</li>
+                <li onclick="showSection('workersInfo')">២. កម្មករនិយោជិត</li>
+                <li onclick="showSection('contractInfo')">៤. កិច្ចសន្យាការងារ</li>
+                <li onclick="showSection('workingConditions')">៥. លក្ខខណ្ឌទូទៅនៃការងារ</li>
+                <li onclick="showSection('safetyHealth')">៦. លក្ខខណ្ឌសុវត្ថិភាព និងសុខភាពការងារ</li>
+                <li onclick="showSection('socialSecurity')">៧. លក្ខខណ្ឌនៃរបបសន្តិសុខសង្គម</li>
+                <li onclick="showSection('professionalRelations')">៨. អំពីទំនាក់ទំនងវិជ្ជាជីវៈ</li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- General Information Section -->
+            <div id="generalInfo" class="section active">
+                <h3>១. ព័ត៌មានទូទៅរបស់សហគ្រាស គ្រឹះស្ថាន</h3>
+
+                <div class="form-group">
+                    <label>នាមករណ៍នៃសហគ្រាស គ្រឹះស្ថាន ជាភាសាខ្មែរ</label>
+                    <input type="text" placeholder="សូមបំពេញទីន្នន័យ">
+                    
+                    <label>នាមករណ៍នៃសហគ្រាស គ្រឹះស្ថាន ជាភាសាឡាតាំង</label>
+                    <input type="text" placeholder="សូមបំពេញទីន្នន័យ">
+                    
+                    <label>ចុះបញ្ជីពាណិជ្ជកម្មក្រោមលេខ</label>
+                    <input type="text" placeholder="សូមបំពេញទីន្នន័យ">
+                    
+                    <label>លេខអត្តសញ្ញាណកម្មសារពើពន្ធ (TIN)</label>
+                    <input type="text" placeholder="សូមបំពេញទីន្នន័យ">
+                    
+                    <label>សកម្មភាពអាជីវកម្ម</label>
+                    <input type="text" placeholder="សូមបំពេញទីន្នន័យ">
+                    
+                    <div class="radio-group">
+                        <label>ប្រភេទសកម្មភាព</label>
+                        <span><input type="radio" name="activityType" checked> មិននាំចេញ</span>
+                        <span><input type="radio" name="activityType"> សម្រាប់នាំចេញ</span>
+                        <span><input type="radio" name="activityType"> សម្រាប់បម្រើឱ្យការនាំចេញ</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>ផ្នែកសកម្មភាពសេដ្ឋកិច្ចកម្រិត១</label>
+                    <input type="text" placeholder="សូមបំពេញទីន្នន័យ">
+                    
+                    <label>ផ្នែកសកម្មភាពសេដ្ឋកិច្ចកម្រិត២</label>
+                    <input type="text" placeholder="សូមបំពេញទីន្នន័យ">
+                    
+                    <label>ផ្នែកសកម្មភាពសេដ្ឋកិច្ចកម្រិត៣</label>
+                    <input type="text" placeholder="សូមបំពេញទីន្នន័យ">
+                    
+                    <label>ផ្នែកសកម្មភាពសេដ្ឋកិច្ចកម្រិត៤</label>
+                    <input type="text" placeholder="សូមបំពេញទីន្នន័យ">
+                    
+                    <label>ប្រភេទសហគ្រាស</label>
+                    <input type="text" placeholder="សូមបំពេញទីន្នន័យ">
+                    
+                    <label>វិស័យ</label>
+                    <input type="text" placeholder="សូមបំពេញទីន្នន័យ">
+                    
+                    <label>ទ្រង់ទ្រាយរបស់សហគ្រាស គ្រឹះស្ថាន</label>
+                    <input type="text" placeholder="សូមបំពេញទីន្នន័យ">
+                    
+                    <label>កាលបរិច្ឆេទបើកដំណើរការ</label>
+                    <input type="text" placeholder="សូមបំពេញទីន្នន័យ">
+                </div>
+
+                <div class="form-group">
+                    <label>អាសយដ្ឋានសហគ្រាស</label>
+                    <div class="sub-group">
+                        <label>លេខផ្ទះ</label>
+                        <input type="text" placeholder="សូមបំពេញទីន្នន័យ">
+                        
+                        <label>ផ្លូវ</label>
+                        <input type="text" placeholder="សូមបំពេញទីន្នន័យ">
+                        
+                        <label>ភូមិ</label>
+                        <input type="text" placeholder="សូមបំពេញទីន្នន័យ">
+                        
+                        <label>សង្កាត់</label>
+                        <input type="text" placeholder="សូមបំពេញទីន្នន័យ">
+                        
+                        <label>ខណ្ឌ</label>
+                        <input type="text" placeholder="សូមបំពេញទីន្នន័យ">
+                        
+                        <label>រាជធានី/ខេត្ត</label>
+                        <input type="text" placeholder="សូមបំពេញទីន្នន័យ">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>លេខទំនាក់ទំនង</label>
+                    <div class="sub-group">
+                        <label>លេខទូរសព្ទសហគ្រាស</label>
+                        <input type="text" placeholder="សូមបំពេញទីន្នន័យ">
+                        
+                        <label>អ៊ីមែល</label>
+                        <input type="text" placeholder="សូមបំពេញទីន្នន័យ">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>ថ្នាក់ដឹកនាំរបស់រោងចក្រ</label>
+
+                    <!-- Director Info -->
+                    <div class="sub-group">
+                        <label>ព័ត៌មាននាយកសហគ្រាស</label>
+                        <div class="sub-group">
+                            <label>ឈ្មោះជាភាសាខ្មែរ</label>
+                            <input type="text" placeholder="សូមបំពេញទីន្នន័យ">
+                            
+                            <label>ឈ្មោះជាអក្សរឡាតាំង</label>
+                            <input type="text" placeholder="សូមបំពេញទីន្នន័យ">
+                            
+                            <label>ភេទ</label>
+                            <input type="text" placeholder="សូមបំពេញទីន្នន័យ">
+                            
+                            <label>សញ្ជាតិ</label>
+                            <input type="text" placeholder="សូមបំពេញទីន្នន័យ">
+                            
+                            <label>លេខអត្តសញ្ញាណប័ណ្ណ/លិខិតឆ្លងដែន</label>
+                            <input type="text" placeholder="សូមបំពេញទីន្នន័យ">
+                        </div>
+                    </div>
+
+                    <!-- Owner Info -->
+                    <div class="sub-group">
+                        <label>ព័ត៌មានម្ចាស់សហគ្រាស</label>
+                        <div class="sub-group">
+                            <label>ឈ្មោះជាភាសាខ្មែរ</label>
+                            <input type="text" placeholder="សូមបំពេញទីន្នន័យ">
+                            
+                            <label>ឈ្មោះជាអក្សរឡាតាំង</label>
+                            <input type="text" placeholder="សូមបំពេញទីន្នន័យ">
+                            
+                            <label>ភេទ</label>
+                            <input type="text" placeholder="សូមបំពេញទីន្នន័យ">
+                            
+                            <label>សញ្ជាតិ</label>
+                            <input type="text" placeholder="សូមបំពេញទីន្នន័យ">
+                            
+                            <label>លេខអត្តសញ្ញាណប័ណ្ណ/លិខិតឆ្លងដែន</label>
+                            <input type="text" placeholder="សូមបំពេញទីន្នន័យ">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>ជាសាខារបស់សហគ្រាស គ្រឹះស្ថានណាមួយ?</label>
+                    <select>
+                        <option>គ្មានសាខា ឬក្រុមហ៊ុនមេ</option>
+                        <option>ជាក្រុមហ៊ុនដើម</option>
+                        <option>ជាក្រុមហ៊ុនមេ</option>
+                        <option>ជាសាខាក្រុមហ៊ុនក្នុងស្រុក</option>
+                        <option>ជាបុត្រសម្ព័ន្ធក្រុមហ៊ុនក្នុងស្រុក</option>
+                        <option>ជាសាខាក្រុមហ៊ុនពាណិជ្ជកម្មបរទេស</option>
+                        <option>ជាបុត្រសម្ព័ន្ធក្រុមហ៊ុនពាណិជ្ជកម្មបរទេស</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>គង់ធនាគារ</label>
+                    <div class="sub-group">
+                        <label>ឈ្មោះធនាគារ</label>
+                        <input type="text" placeholder="សូមបំពេញទីន្នន័យ">
+                        
+                        <label>ឈ្មោះម្ចាស់គណនី</label>
+                        <input type="text" placeholder="សូមបំពេញទីន្នន័យ">
+                        
+                        <label>លេខគណនីធនាគារ</label>
+                        <input type="text" placeholder="សូមបំពេញទីន្នន័យ">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>ផលិតផលចម្បង</label>
+                    <input type="text" placeholder="សូមបំពេញទីន្នន័យ">
+                    
+                    <label>ផលិតផលម៉ាក</label>
+                    <div class="radio-group">
+                        <span><input type="radio" name="brandProduct" checked> មាន</span>
+                        <span><input type="radio" name="brandProduct"> គ្មាន</span>
+                    </div>
+                    
+                    <label>នាំចេញទៅប្រទេស</label>
+                    <input type="text" placeholder="សូមបំពេញទីន្នន័យ">
+                </div>
+
+                <button class="save-btn">រក្សាទុក</button>
+            </div>
+
+            <!-- Workers Information Section -->
+            <div id="workersInfo" class="section">
+                <h3>២. កម្មករនិយោជិត</h3>
+
+                <!-- Month Selector -->
+                <div class="month-selector">
+                    <button class="month-btn active">មករា</button>
+                    <button class="month-btn">កុម្ភ</button>
+                    <button class="month-btn">មីនា</button>
+                    <button class="month-btn">មេសា</button>
+                    <button class="month-btn">ឧសភា</button>
+                    <button class="month-btn">មិថុនា</button>
+                    <button class="month-btn">កក្កដា</button>
+                    <button class="month-btn">សីហា</button>
+                    <button class="month-btn">កញ្ញា</button>
+                    <button class="month-btn">តុលា</button>
+                    <button class="month-btn">វិច្ឆិកា</button>
+                    <button class="month-btn">ធ្នូ</button>
+                </div>
+
+                <div class="form-group">
+                    <h4>២.១ ចំនួនកម្មករនិយោជិត</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ប្រភេទ</th>
+                                <th>សរុប</th>
+                                <th>ស្រី</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>ខ្មែរ - ពេញសិទ្ធិ</td>
+                                <td><input type="number" placeholder="សូមបំពេញទីន្នន័យ"></td>
+                                <td><input type="number" placeholder="សូមបំពេញទីន្នន័យ"></td>
+                            </tr>
+                            <tr>
+                                <td>ខ្មែរ - សាកល្បង</td>
+                                <td><input type="number" placeholder="សូមបំពេញទីន្នន័យ"></td>
+                                <td><input type="number" placeholder="សូមបំពេញទីន្នន័យ"></td>
+                            </tr>
+                            <tr>
+                                <td>ខ្មែរ - សរុប</td>
+                                <td><input type="number" placeholder="សូមបំពេញទីន្នន័យ"></td>
+                                <td><input type="number" placeholder="សូមបំពេញទីន្នន័យ"></td>
+                            </tr>
+                            <tr>
+                                <td>បរទេស - ពេញសិទ្ធិ</td>
+                                <td><input type="number" placeholder="សូមបំពេញទីន្នន័យ"></td>
+                                <td><input type="number" placeholder="សូមបំពេញទីន្នន័យ"></td>
+                            </tr>
+                            <tr>
+                                <td>បរទេស - សាកល្បង</td>
+                                <td><input type="number" placeholder="សូមបំពេញទីន្នន័យ"></td>
+                                <td><input type="number" placeholder="សូមបំពេញទីន្នន័យ"></td>
+                            </tr>
+                            <tr>
+                                <td>បរទេស - សរុប</td>
+                                <td><input type="number" placeholder="សូមបំពេញទីន្នន័យ"></td>
+                                <td><input type="number" placeholder="សូមបំពេញទីន្នន័យ"></td>
+                            </tr>
+                            <tr>
+                                <td>សរុបរួម - ពេញសិទ្ធិ</td>
+                                <td><input type="number" placeholder="សូមបំពេញទីន្នន័យ"></td>
+                                <td><input type="number" placeholder="សូមបំពេញទីន្នន័យ"></td>
+                            </tr>
+                            <tr>
+                                <td>សរុបរួម - សាកល្បង</td>
+                                <td><input type="number" placeholder="សូមបំពេញទីន្នន័យ"></td>
+                                <td><input type="number" placeholder="សូមបំពេញទីន្នន័យ"></td>
+                            </tr>
+                            <tr>
+                                <td>សរុបរួម - សរុប</td>
+                                <td><input type="number" placeholder="សូមបំពេញទីន្នន័យ"></td>
+                                <td><input type="number" placeholder="សូមបំពេញទីន្នន័យ"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="form-group">
+                    <h4>២.២ បែងចែកតាមអាយុ</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>អាយុ</th>
+                                <th>សរុប</th>
+                                <th>ស្រី</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>ពីអាយុ ១២ឆ្នាំ ដល់ក្រោម ១៦ឆ្នាំ</td>
+                                <td><input type="number" placeholder="សូមបំពេញទីន្នន័យ"></td>
+                                <td><input type="number" placeholder="សូមបំពេញទីន្នន័យ"></td>
+                            </tr>
+                            <tr>
+                                <td>ពីអាយុ ១៦ឆ្នាំ ដល់ក្រោម ១៨ឆ្នាំ</td>
+                                <td><input type="number" placeholder="សូមបំពេញទីន្នន័យ"></td>
+                                <td><input type="number" placeholder="សូមបំពេញទីន្នន័យ"></td>
+                            </tr>
+                            <tr>
+                                <td>ចាប់ពីអាយុ ១៨ឆ្នាំ ឡើងទៅ</td>
+                                <td><input type="number" placeholder="សូមបំពេញទីន្នន័យ"></td>
+                                <td><input type="number" placeholder="សូមបំពេញទីន្នន័យ"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="form-group">
+                    <h4>២.៣ បែងចែកតាមមុខតំណែង</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>មុខតំណែង</th>
+                                <th>សរុប</th>
+                                <th>ស្រី</th>
+                                <th>ជនពិការ</th>
+                                <th>បរទេសសរុប</th>
+                                <th>ស្រី</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>ថ្នាក់ដឹកនាំ General Manager/CEO</td>
+                                <td><input type="number" placeholder="សូមបំពេញទីន្នន័យ"></td>
+                                <td><input type="number" placeholder="សូមបំពេញទីន្នន័យ"></td>
+                                <td><input type="number" placeholder="សូមបំពេញទីន្នន័យ"></td>
+                                <td><input type="number" placeholder="សូមបំពេញទីន្នន័យ"></td>
+                                <td><input type="number" placeholder="សូមបំពេញទីន្នន័យ"></td>
+                            </tr>
+                            <tr>
+                                <td>ថ្នាក់ដឹកនាំកណ្ដាល Supervisor</td>
+                                <td><input type="number" placeholder="សូមបំពេញទីន្នន័យ"></td>
+                                <td><input type="number" placeholder="សូមបំពេញទីន្នន័យ"></td>
+                                <td><input type="number" placeholder="សូមបំពេញទីន្នន័យ"></td>
+                                <td><input type="number" placeholder="សូមបំពេញទីន្នន័យ"></td>
+                                <td><input type="number" placeholder="សូមបំពេញទីន្នន័យ"></td>
+                            </tr>
+                            <tr>
+                                <td>និយោជិតការិយាល័យ</td>
+                                <td><input type="number" placeholder="សូមបំពេញទីន្នន័យ"></td>
+                                <td><input type="number" placeholder="សូមបំពេញទីន្នន័យ"></td>
+                                <td><input type="number" placeholder="សូមបំពេញទីន្នន័យ"></td>
+                                <td><input type="number" placeholder="សូមបំពេញទីន្នន័យ"></td>
+                                <td><input type="number" placeholder="សូមបំពេញទីន្នន័យ"></td>
+                            </tr>
+                            <tr>
+                                <td>អ្នកជំនាញជាន់ខ្ពស់/កម្មករជំនាញ</td>
+                                <td><input type="number" placeholder="សូមបំពេញទីន្នន័យ"></td>
+                                <td><input type="number" placeholder="សូមបំពេញទីន្នន័យ"></td>
+                                <td><input type="number" placeholder="សូមបំពេញទីន្នន័យ"></td>
+                                <td><input type="number" placeholder="សូមបំពេញទីន្នន័យ"></td>
+                                <td><input type="number" placeholder="សូមបំពេញទីន្នន័យ"></td>
+                            </tr>
+                            <tr>
+                                <td>ហត្ថករ</td>
+                                <td><input type="number" placeholder="សូមបំពេញទីន្នន័យ"></td>
+                                <td><input type="number" placeholder="សូមបំពេញទីន្នន័យ"></td>
+                                <td><input type="number" placeholder="សូមបំពេញទីន្នន័យ"></td>
+                                <td><input type="number" placeholder="សូមបំពេញទីន្នន័យ"></td>
+                                <td><input type="number" placeholder="សូមបំពេញទីន្នន័យ"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <button class="save-btn">រក្សាទុក</button>
+            </div>
+
+            <!-- Contract Information Section -->
+            <div id="contractInfo" class="section">
+                <h3>៤. កិច្ចសន្យាការងារ</h3>
+
+                <div class="form-group">
+                    <h4>៤.១ កិច្ចសន្យាសាកល្បង</h4>
+                    <label>ចំនួនកម្មករនិយោជិតសាកល្បងសរុប</label>
+                    <input type="number" placeholder="សូមបំពេញទីន្នន័យ">
+                    
+                    <label>ស្រី</label>
+                    <input type="number" placeholder="សូមបំពេញទីន្នន័យ">
+                    
+                    <div class="radio-group">
+                        <label>រយៈពេលកិច្ចសន្យាសាកល្បង</label>
+                        <span><input type="radio" name="probationPeriod" checked> ត្រឹមត្រូវ</span>
+                        <span><input type="radio" name="probationPeriod"> មិនត្រឹមត្រូវ</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <h4>៤.២ កិច្ចសន្យាការងារ</h4>
+                    <label>កិច្ចសន្យាការងារមានថិរវេលាមិនកំណត់</label>
+                    <input type="text" placeholder="សូមបំពេញទីន្នន័យ">
+                    
+                    <label>កិច្ចសន្យាការងារមានថិរវេលាកំណត់</label>
+                    <input type="text" placeholder="សូមបំពេញទីន្នន័យ">
+                    
+                    <label>ថិរវេលានៃកិច្ចសន្យាការងារគ្រាដំបូង</label>
+                    <input type="text" placeholder="សូមបំពេញទីន្នន័យ">
+                    
+                    <label>រយៈពេលនៃការបន្តកិច្ចសន្យាការងារសរុប</label>
+                    <input type="text" placeholder="សូមបំពេញទីន្នន័យ">
+                    
+                    <div class="radio-group">
+                        <label>ការរក្សាអតីតភាពការងារដើម្បីទទួលបានអត្ថប្រយោជន៍ផ្សេងៗ</label>
+                        <span><input type="radio" name="workHistory" checked> មាន</span>
+                        <span><input type="radio" name="workHistory"> គ្មាន</span>
+                    </div>
+                </div>
+
+                <button class="save-btn">រក្សាទុក</button>
+            </div>
+
+            <!-- Working Conditions Section -->
+            <div id="workingConditions" class="section">
+                <h3>៥. លក្ខខណ្ឌទូទៅនៃការងារ</h3>
+
+                <div class="form-group">
+                    <h4>៥.១ ប្រាក់ឈ្នួល</h4>
+                    <label>កម្រិតប្រាក់ឈ្នួលជាសាច់ប្រាក់</label>
+                    <div class="sub-group">
+                        <label>ទាបបំផុត</label>
+                        <input type="text" placeholder="សូមបំពេញទីន្នន័យ">
+                        
+                        <label>មធ្យម</label>
+                        <input type="text" placeholder="សូមបំពេញទីន្នន័យ">
+                        
+                        <label>ខ្ពស់បំផុត</label>
+                        <input type="text" placeholder="សូមបំពេញទីន្នន័យ">
+                    </div>
+                    
+                    <label>មូលដ្ឋាននៃការគិត និងផ្តល់ប្រាក់ឈ្នួល</label>
+                    <div class="radio-group">
+                        <span><input type="radio" name="salaryBasis" checked> តាមពេលវេលា</span>
+                        <span><input type="radio" name="salaryBasis"> តាមបរិមាណផលិតផល</span>
+                    </div>
+                    
+                    <div class="sub-group">
+                        <label>បើកប្រាក់ឈ្នួលប្រចាំខែ</label>
+                        <input type="number" placeholder="សូមបំពេញទីន្នន័យ">
+                        
+                        <label>បើកប្រាក់ឈ្នួលប្រចាំថ្ងៃ</label>
+                        <input type="number" placeholder="សូមបំពេញទីន្នន័យ">
+                        
+                        <label>បើកប្រាក់ឈ្នួលប្រចាំម៉ោង</label>
+                        <input type="number" placeholder="សូមបំពេញទីន្នន័យ">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <h4>៥.៤ ថិរវេលាធ្វើការ និងការឈប់សម្រាក</h4>
+                    <label>ចំនួនម៉ោងធ្វើការធម្មតាក្នុងមួយថ្ងៃ</label>
+                    <div class="radio-group">
+                        <span><input type="radio" name="dailyHours"> តិចជាង ឬស្មើ ៨ម៉ោង</span>
+                        <span><input type="radio" name="dailyHours" checked> តិចជាង ឬស្មើ ៩ម៉ោង</span>
+                        <span><input type="radio" name="dailyHours"> លើសពី ៩ម៉ោង</span>
+                    </div>
+                    
+                    <label>ចំនួនម៉ោងធ្វើការធម្មតាក្នុងមួយសប្តាហ៍</label>
+                    <div class="radio-group">
+                        <span><input type="radio" name="weeklyHours"> តិចជាង ៤៨ម៉ោង</span>
+                        <span><input type="radio" name="weeklyHours" checked> ៤៨ម៉ោង</span>
+                        <span><input type="radio" name="weeklyHours"> លើសពី ៤៨ម៉ោង</span>
+                    </div>
+                    
+                    <label>ធ្វើការថែមម៉ោងជាមធ្យមចំនួន</label>
+                    <input type="text" placeholder="សូមបំពេញទីន្នន័យ">
+                    
+                    <label>ប្រៀបធៀបម៉ោងធ្វើការរយៈពេលដូចគ្នា ឆ្នាំនេះ ធៀបនឹងឆ្នាំមុន</label>
+                    <div class="radio-group">
+                        <span><input type="radio" name="hoursComparison"> កើនឡើង</span>
+                        <span><input type="radio" name="hoursComparison"> ថយចុះ</span>
+                        <span><input type="radio" name="hoursComparison" checked> ប្រហាក់ប្រហែល</span>
+                    </div>
+                </div>
+
+                <button class="save-btn">រក្សាទុក</button>
+            </div>
+
+            <!-- Safety and Health Section -->
+            <div id="safetyHealth" class="section">
+                <h3>៦. លក្ខខណ្ឌសុវត្ថិភាព និងសុខភាពការងារ</h3>
+
+                <div class="form-group">
+                    <h4>៦.១ គោលការណ៍ស្តីពីសុវត្ថិភាព និងសុខភាពការងារ</h4>
+                    <div class="radio-group">
+                        <label>ក្រុមការងារសុវត្ថិភាព និងសុខភាពការងារប្រចាំសហគ្រាស</label>
+                        <span><input type="radio" name="safetyCommittee" checked> ត្រឹមត្រូវ</span>
+                        <span><input type="radio" name="safetyCommittee"> មិនត្រឹមត្រូវ</span>
+                        <span><input type="radio" name="safetyCommittee"> គ្មាន</span>
+                    </div>
+                    
+                    <div class="radio-group">
+                        <label>វិធានស្តីពីសុវត្ថិភាព និងសុខភាពការងារ</label>
+                        <span><input type="radio" name="safetyRules" checked> មាន</span>
+                        <span><input type="radio" name="safetyRules"> គ្មាន</span>
+                    </div>
+                    
+                    <div class="radio-group">
+                        <label>របាយការណ៍វាយតម្លៃស្តីពីការអនុវត្តលក្ខខណ្ឌសុវត្ថិភាព និងសុខភាពការងារ</label>
+                        <span><input type="radio" name="safetyReport" checked> មាន</span>
+                        <span><input type="radio" name="safetyReport"> គ្មាន</span>
+                    </div>
+                    
+                    <div class="radio-group">
+                        <label>ការបិទផ្សាយ ព័ត៌មានស្តីពីសុវត្ថិភាព និងសុខភាពការងារជាភាសាខ្មែរ</label>
+                        <span><input type="radio" name="safetyInfo" checked> មាន</span>
+                        <span><input type="radio" name="safetyInfo"> គ្មាន</span>
+                    </div>
+                    
+                    <div class="radio-group">
+                        <label>ការបណ្ដុះបណ្ដាលអំពីការការពារសុវត្ថិភាព និងសុខភាពការងារ</label>
+                        <span><input type="radio" name="safetyTraining" checked> មាន</span>
+                        <span><input type="radio" name="safetyTraining"> គ្មាន</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <h4>៦.៤ ផ្នែកសេវាពេទ្យ សហគ្រាស</h4>
+                    <div class="radio-group">
+                        <label>ប្រអប់សង្គ្រោះ</label>
+                        <span><input type="radio" name="firstAid" checked> មាន</span>
+                        <span><input type="radio" name="firstAid"> មិនត្រឹមត្រូវ</span>
+                        <span><input type="radio" name="firstAid"> គ្មាន</span>
+                    </div>
+                    
+                    <div class="radio-group">
+                        <label>បន្ទប់រុំរបួស</label>
+                        <span><input type="radio" name="treatmentRoom" checked> មាន</span>
+                        <span><input type="radio" name="treatmentRoom"> មិនត្រឹមត្រូវ</span>
+                        <span><input type="radio" name="treatmentRoom"> គ្មាន</span>
+                    </div>
+                    
+                    <div class="radio-group">
+                        <label>គិលានដ្ឋាន</label>
+                        <span><input type="radio" name="clinic"> ជាប់កាតព្វកិច្ច</span>
+                        <span><input type="radio" name="clinic" checked> មិនជាប់កាតព្វកិច្ច</span>
+                        <span><input type="radio" name="clinic"> មាន</span>
+                        <span><input type="radio" name="clinic"> គ្មាន</span>
+                    </div>
+                </div>
+
+                <button class="save-btn">រក្សាទុក</button>
+            </div>
+
+            <!-- Social Security Section -->
+            <div id="socialSecurity" class="section">
+                <h3>៧. លក្ខខណ្ឌនៃរបបសន្តិសុខសង្គម</h3>
+
+                <div class="form-group">
+                    <h4>៧.១ ការចុះបញ្ជីសហគ្រាស គ្រឹះស្ថានក្នុង ប.ស.ស</h4>
+                    <div class="radio-group">
+                        <span><input type="radio" name="nssfRegistration" checked> មាន</span>
+                        <span><input type="radio" name="nssfRegistration"> គ្មាន</span>
+                    </div>
+                    
+                    <label>លេខអត្តសញ្ញាណសហគ្រាស</label>
+                    <input type="text" placeholder="សូមបំពេញទីន្នន័យ">
+                </div>
+
+                <div class="form-group">
+                    <h4>៧.២ ការចុះបញ្ជីកម្មករនិយោជិតក្នុង ប.ស.ស</h4>
+                    <div class="radio-group">
+                        <span><input type="radio" name="workerRegistration" checked> មាន</span>
+                        <span><input type="radio" name="workerRegistration"> គ្មាន</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <h4>៧.៣ ការបង់ភាគទានរបបសន្ដិសុខសង្គម</h4>
+                    <div class="radio-group">
+                        <label>ការបង់ភាគទានតាមកាលកំណត់</label>
+                        <span><input type="radio" name="timelyPayment" checked> ត្រឹមត្រូវ</span>
+                        <span><input type="radio" name="timelyPayment"> មិនត្រឹមត្រូវ</span>
+                    </div>
+                    
+                    <div class="radio-group">
+                        <label>ការរាយការណ៍អំពីចំនួនកម្មករនិយោជិត</label>
+                        <span><input type="radio" name="workerReporting" checked> ត្រឹមត្រូវ</span>
+                        <span><input type="radio" name="workerReporting"> មិនត្រឹមត្រូវ</span>
+                    </div>
+                    
+                    <div class="radio-group">
+                        <label>ការប្រកាសប្រាក់ឈ្នួលជាប់ភាគទាន</label>
+                        <span><input type="radio" name="salaryDeclaration" checked> ត្រឹមត្រូវ</span>
+                        <span><input type="radio" name="salaryDeclaration"> មិនត្រឹមត្រូវ</span>
+                    </div>
+                    
+                    <div class="radio-group">
+                        <label>ការដកយកភាគទានអនុលោមតាមបទប្បញ្ញត្តិនៃច្បាប់</label>
+                        <span><input type="radio" name="benefitWithdrawal" checked> ត្រឹមត្រូវ</span>
+                        <span><input type="radio" name="benefitWithdrawal"> មិនត្រឹមត្រូវ</span>
+                    </div>
+                </div>
+
+                <button class="save-btn">រក្សាទុក</button>
+            </div>
+
+            <!-- Professional Relations Section -->
+            <div id="professionalRelations" class="section">
+                <h3>៨. អំពីទំនាក់ទំនងវិជ្ជាជីវៈ</h3>
+
+                <div class="form-group">
+                    <h4>៨.១ ប្រតិភូបុគ្គលិកក្នុងសហគ្រាស គ្រឹះស្ថាន</h4>
+                    <div class="radio-group">
+                        <span><input type="radio" name="staffRepresentatives" checked> ជាប់កាតព្វកិច្ច</span>
+                        <span><input type="radio" name="staffRepresentatives"> មិនជាប់កាតព្វកិច្ច</span>
+                        <span><input type="radio" name="staffRepresentatives"> មាន</span>
+                        <span><input type="radio" name="staffRepresentatives"> គ្មាន</span>
+                    </div>
+                    
+                    <label>ប្រតិភូបុគ្គលិកពេញសិទ្ធិ</label>
+                    <input type="text" placeholder="សូមបំពេញទីន្នន័យ">
+                    
+                    <label>ស្រី</label>
+                    <input type="text" placeholder="សូមបំពេញទីន្នន័យ">
+                    
+                    <label>ប្រតិភូបុគ្គលិកជំនួយ</label>
+                    <input type="text" placeholder="សូមបំពេញទីន្នន័យ">
+                    
+                    <label>ស្រី</label>
+                    <input type="text" placeholder="សូមបំពេញទីន្នន័យ">
+                    
+                    <div class="radio-group">
+                        <label>ការអនុវត្តតាមប្រកាសស្ដីពីប្រតិភូបុគ្គលិកនៅក្នុង សហគ្រាស គ្រឹះស្ថាន</label>
+                        <span><input type="radio" name="representativeImplementation" checked> ត្រឹមត្រូវ</span>
+                        <span><input type="radio" name="representativeImplementation"> មិនត្រឹមត្រូវ</span>
+                    </div>
+                    
+                    <div class="radio-group">
+                        <label>បានអនុញ្ញាតឱ្យប្រតិភូបុគ្គលិកអនុវត្តតួនាទី និងភារកិច្ចរបស់ខ្លួន</label>
+                        <span><input type="radio" name="representativeDuties" checked> ត្រឹមត្រូវ</span>
+                        <span><input type="radio" name="representativeDuties"> មិនត្រឹមត្រូវ</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <h4>៨.៤ សហជីព</h4>
+                    <div class="radio-group">
+                        <span><input type="radio" name="union" checked> មាន</span>
+                        <span><input type="radio" name="union"> គ្មាន</span>
+                    </div>
+                    
+                    <label>សហជីពចំនួន</label>
+                    <input type="text" placeholder="សូមបំពេញទីន្នន័យ">
+                    
+                    <label>មានបញ្ជិកាហើយនៅមានសុពលភាពមានចំនួន</label>
+                    <input type="text" placeholder="សូមបំពេញទីន្នន័យ">
+                    
+                    <label>មានកម្មករនិយោជិតចំនួន ជាសមាជិកសហជីព</label>
+                    <input type="text" placeholder="សូមបំពេញទីន្នន័យ">
+                    
+                    <label>ភាគរយ</label>
+                    <input type="text" placeholder="សូមបំពេញទីន្នន័យ">
+                </div>
+
+                <button class="save-btn">រក្សាទុក</button>
+            </div>
+        </div>
     </div>
 
-    ----​
-    <h1>ប្រភេទកិច្ចសន្យា</h1>
- <div class="form-group">
-      <label>UDC</label>
-      <input type="number" placeholder="សរុប">
-    </div>
-    <div class="form-group">
-      <label>FDC</label>
-      <input type="number" placeholder="សរុប">
-    </div>
-    <h1>ស្ត្រីមានផ្ទៃពោះ</h1>
-     <div class="form-group">
-      <label>ចាប់ពី ១ - ៣ ខែ</label>
-      <input type="number" placeholder="សរុប">
-    </div>
-    <div class="form-group">
-      <label>ចាប់ពី ៣ - ៦ ខែ</label>
-      <input type="number" placeholder="សរុប">
-    </div>
-        <div class="form-group">
-      <label>ចាប់ពី ៦ - ៩ ខែ</label>
-      <input type="number" placeholder="សរុប">
-    </div>
-    <button class="save-btn">Save</button>
-  </div>
-  
+    <script>
+        // Function to show selected section and hide others
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Remove active class from all sidebar items
+            document.querySelectorAll('.sidebar li').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Add active class to clicked sidebar item
+            event.target.classList.add('active');
+        }
 
+        // Month selector functionality
+        const monthButtons = document.querySelectorAll('.month-btn');
+        monthButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                monthButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            });
+        });
 
-  <div id="admin" class="section">
-    <h3>Admin Information</h3>
-    <div class="form-group">
-      <label>ប្រធានរដ្ឋបាល</label>
-      <input type="text" placeholder="Enter admin name">
-    </div>
-    <div class="form-group">
-      <label>លេខទូរសព្ទ</label>
-      <input type="text" placeholder="Enter contact number">
-    </div>
-        <div class="form-group">
-      <label>ជំនួយការរដ្ឋបាល</label>
-      <input type="text" placeholder="Enter admin name">
-    </div>
-    <div class="form-group">
-      <label>លេខទូរសព្ទ</label>
-      <input type="text" placeholder="Enter contact number">
-    </div>
-    <button class="save-btn">Save</button>
-  </div>
-
-  <div id="reprsenative" class="section">
-    <h3>Number of Workers</h3>
-    <div class="form-group">
-      <label>Total Workers</label>
-      <input type="number" placeholder="Enter total number">
-    </div>
-    <div class="form-group">
-      <label>Male Workers</label>
-      <input type="number" placeholder="Enter male workers">
-    </div>
-    <div class="form-group">
-      <label>Female Workers</label>
-      <input type="number" placeholder="Enter female workers">
-    </div>
-    <button class="save-btn">Save</button>
-  </div>
-
-  
-</div>
-
-<script>
-  const monthButtons = document.querySelectorAll('.month-btn');
-monthButtons.forEach(btn => {
-  btn.addEventListener('click', () => {
-    monthButtons.forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    // Optional: clear inputs or load month-specific data here
-  });
-});
-
-function showSection(sectionId) {
-  document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
-  document.querySelectorAll(".sidebar li").forEach(li => li.classList.remove("active"));
-  document.getElementById(sectionId).classList.add("active");
-  event.target.classList.add("active");
-}
-</script>
-
+        // Save button functionality
+        document.querySelectorAll('.save-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                alert('ទិន្នន័យត្រូវបានរក្សាទុកដោយជោគជ័យ!');
+            });
+        });
+    </script>
 </body>
 </html>
