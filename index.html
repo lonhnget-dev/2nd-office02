@@ -32,75 +32,162 @@
   </section>
 
   <!-- Table -->
-  <div class="table-container">
-    <table id="documentTable">
-      <thead>
-        <tr>
-          <th>លេខចូល</th>
-          <th>លេខលិខិត(IR)</th>
-          <th>លេខចេញ</th>
-          <th>ថ្ងៃខែ</th>
-          <th>អង្គភាព</th>
-          <th>ប្រភេទឯកសារ</th>
-          <th>មន្រ្តីទទួល</th>
-          <th>ស្ថានភាព</th>
-          <th>សកម្មភាព</th>
-        </tr>
-      </thead>
-      <tbody id="tableBody"></tbody>
-    </table>
-  </div>
+<div class="table-container">
+  <table id="documentTable">
+    <thead>
+      <tr>
+        <th>លេខចូល</th> <!-- no -->
+        <th>លេខលិខិត (IR)</th> <!-- ir -->
+        <th>លេខចេញ</th> <!-- outNo -->
+        <th>ថ្ងៃខែលិខិតចូល/ចេញ</th> <!-- submitDate -->
+        <th>អង្គភាព/ប្រភពលិខិត</th> <!-- source -->
+        <th>ប្រភេទឯកសារ</th> <!-- doc -->
+        <th>ថ្ងៃខែមុខការិ.២</th> <!-- officeDate2 -->
+        <th>មន្រ្តីទទួលមុខការ</th> <!-- officer -->
+        <th>ថ្ងៃខែឆ្នាំទទួល</th> <!-- receiveDate -->
+        <th>ស្ថានភាពការងារ</th> <!-- progress -->
+        <th>ចំនួនថ្ងៃធ្វើចេញ</th> <!-- duration -->
+        <th>ចូលប្រធានការិ.</th> <!-- toChiefOffice -->
+        <th>ចូលអនុ.នាយកដ្ឋាន</th> <!-- toDeputy -->
+        <th>ចូលប្រធាននាយកដ្ឋាន</th> <!-- toHeadDept -->
+        <th>ថ្ងៃខែឆ្នាំចេញលិខិត</th> <!-- outDate -->
+        <th>បញ្ជិកា</th> <!-- registryStatus -->
+        <th>មូលហេតុ/ផ្សេងៗ</th> <!-- reason -->
+        <th>សកម្មភាព</th>
+      </tr>
+    </thead>
+
+    <tbody id="tableBody"></tbody>
+  </table>
+</div>
 
   <!-- Overlay -->
   <div id="overlay"></div>
 
   <!-- Form Modal -->
   <div id="myForm">
-    <h2 class="form-title">បញ្ចូលឯកសារ</h2>
-    <form id="contactForm" class="styled-form">
-      <div class="form-group">
-        <label>លេខចូល</label>
-        <input type="text" name="no" placeholder="បញ្ចូលលេខចូល" required>
-      </div>
-      <div class="form-group">
-        <label>លេខលិខិត(IR)</label>
-        <input type="text" name="ir" placeholder="បញ្ចូលលេខលិខិត" required>
-      </div>
-      <div class="form-group">
-        <label>លេខចេញ</label>
-        <input type="text" name="outNo" placeholder="បញ្ចូលលេខចេញ">
-      </div>
-      <div class="form-group">
-        <label>ថ្ងៃខែ</label>
-        <input type="date" name="submitDate">
-      </div>
-      <div class="form-group">
-        <label>អង្គភាព</label>
-        <input type="text" name="source" placeholder="បញ្ចូលអង្គភាព">
-      </div>
-      <div class="form-group">
-        <label>ប្រភេទឯកសារ</label>
-        <input type="text" name="doc" placeholder="ឧទាហរណ៍: លិខិតជាផ្លូវការ">
-      </div>
-      <div class="form-group">
-        <label>មន្រ្តីទទួល</label>
-        <input type="text" name="officer" placeholder="ឈ្មោះមន្រ្តី">
-      </div>
-      <div class="form-group">
-        <label>ស្ថានភាព</label>
-        <select name="status">
-          <option value="">ជ្រើសរើសស្ថានភាព</option>
-          <option value="កំពុងដំណើរការ">កំពុងដំណើរការ</option>
-          <option value="បានបញ្ចប់">បានបញ្ចប់</option>
-          <option value="មិនទាន់ចាប់ផ្តើម">មិនទាន់ចាប់ផ្តើម</option>
-        </select>
-      </div>
-      <div class="form-buttons">
-        <button type="submit" class="btn-submit">រក្សាទុក</button>
-        <button type="button" id="closeForm" class="btn-close">បិទ</button>
-      </div>
-    </form>
-  </div>
+  <h2 class="form-title">បញ្ចូលឯកសារ</h2>
+
+  <form id="contactForm" class="styled-form">
+
+    <!-- 1. លេខចូល -->
+    <div class="form-group">
+      <label>លេខចូល</label>
+      <input type="text" name="no" placeholder="បញ្ចូលលេខចូល" required>
+    </div>
+
+    <!-- 2. លេខលិខិត(IR) -->
+    <div class="form-group">
+      <label>លេខលិខិត(IR)</label>
+      <input type="text" name="ir" placeholder="បញ្ចូលលេខលិខិត" required>
+    </div>
+
+    <!-- 3. លេខចេញ -->
+    <div class="form-group">
+      <label>លេខចេញ</label>
+      <input type="text" name="outNo" placeholder="បញ្ចូលលេខចេញ">
+    </div>
+
+    <!-- 4. ថ្ងៃខែលិខិតចូល/ចេញ -->
+    <div class="form-group">
+      <label>ថ្ងៃខែលិខិតចូល/ចេញ</label>
+      <input type="date" name="submitDate">
+    </div>
+
+    <!-- 5. អង្គភាព/ប្រភពលិខិត -->
+    <div class="form-group">
+      <label>អង្គភាព/ប្រភពលិខិត</label>
+      <input type="text" name="source" placeholder="បញ្ចូលអង្គភាព">
+    </div>
+
+    <!-- 6. ប្រភេទឯកសារ -->
+    <div class="form-group">
+      <label>ប្រភេទឯកសារ</label>
+      <input type="text" name="doc" placeholder="ឧទាហរណ៍: លិខិតជាផ្លូវការ">
+    </div>
+
+    <!-- 7. ថ្ងៃខែមុខការិ.២ -->
+    <div class="form-group">
+      <label>ថ្ងៃខែមុខការិ.២</label>
+      <input type="date" name="officeDate2">
+    </div>
+
+    <!-- 8. មន្រ្តីទទួលមុខការ -->
+    <div class="form-group">
+      <label>មន្រ្តីទទួលមុខការ</label>
+      <input type="text" name="officer" placeholder="ឈ្មោះមន្រ្តី">
+    </div>
+
+    <!-- 9. ថ្ងៃខែ ឆ្នាំ ទទួល -->
+    <div class="form-group">
+      <label>ថ្ងៃខែឆ្នាំទទួល</label>
+      <input type="date" name="receiveDate">
+    </div>
+
+    <!-- 10. មិនទាន់ធ្វើចេញ / បានធ្វើចេញ -->
+    <div class="form-group">
+      <label>ស្ថានភាពការងារ</label>
+      <select name="progress">
+        <option value="">ជ្រើសរើសស្ថានភាព</option>
+        <option value="មិនទាន់ធ្វើចេញ">មិនទាន់ធ្វើចេញ</option>
+        <option value="បានធ្វើចេញ">បានធ្វើចេញ</option>
+      </select>
+    </div>
+
+    <!-- 11. ចំនួនថ្ងៃធ្វើចេញ -->
+    <div class="form-group">
+      <label>ចំនួនថ្ងៃធ្វើចេញ</label>
+      <input type="number" name="duration" placeholder="ចំនួនថ្ងៃ">
+    </div>
+
+    <!-- 12. ចូលប្រធានការិ. -->
+    <div class="form-group">
+      <label>ចូលប្រធានការិ.</label>
+      <input type="text" name="toChiefOffice" placeholder="ឧទាហរណ៍: 01-11-2025">
+    </div>
+
+    <!-- 13. ចូលអនុ.នាយកដ្ឋាន -->
+    <div class="form-group">
+      <label>ចូលអនុ.នាយកដ្ឋាន</label>
+      <input type="text" name="toDeputy" placeholder="ឧទាហរណ៍: 02-11-2025">
+    </div>
+
+    <!-- 14. ចូលប្រធាននាយកដ្ឋាន -->
+    <div class="form-group">
+      <label>ចូលប្រធាននាយកដ្ឋាន</label>
+      <input type="text" name="toHeadDept" placeholder="ឧទាហរណ៍: 03-11-2025">
+    </div>
+
+    <!-- 15. ថ្ងៃខែឆ្នាំចេញលិខិត -->
+    <div class="form-group">
+      <label>ថ្ងៃខែឆ្នាំចេញលិខិត</label>
+      <input type="date" name="outDate">
+    </div>
+
+    <!-- 16. ចេញបញ្ជិកា / មិនទាន់ចេញ -->
+    <div class="form-group">
+      <label>បញ្ជិកា</label>
+      <select name="registryStatus">
+        <option value="">ជ្រើសរើស</option>
+        <option value="ចេញបញ្ជិកា">ចេញបញ្ជិកា</option>
+        <option value="មិនទាន់ចេញបញ្ជិកា">មិនទាន់ចេញបញ្ជិកា</option>
+      </select>
+    </div>
+
+    <!-- 17. មូលហេតុ / ផ្សេងៗ -->
+    <div class="form-group">
+      <label>មូលហេតុ/ផ្សេងៗ</label>
+      <textarea name="reason" placeholder="បញ្ចូលមូលហេតុ"></textarea>
+    </div>
+
+    <!-- Buttons -->
+    <div class="form-buttons">
+      <button type="submit" class="btn-submit">រក្សាទុក</button>
+      <button type="button" id="closeForm" class="btn-close">បិទ</button>
+    </div>
+
+  </form>
+</div>
 
   <!-- View Popup -->
   <div id="viewPopup" class="popup">
@@ -170,42 +257,72 @@
     }
   }
 
-  // === Render Table ===
-  function renderTable(docs) {
-    tableBody.innerHTML = "";
-    docs.forEach((doc) => {
-      const row = document.createElement("tr");
-      row.innerHTML = `
-        <td>${doc.no}</td>
-        <td>${doc.ir}</td>
-        <td>${doc.outNo}</td>
-        <td>${doc.submitDate?.split("T")[0] || ""}</td>
-        <td>${doc.source}</td>
-        <td>${doc.doc}</td>
-        <td>${doc.officer || '-'}</td>
-        <td>${doc.status || '-'}</td>
-        <td>
-          <button onclick="viewDocument('${doc.id}', '${doc.doc}', '${doc.source}', '${doc.submitDate?.split("T")[0] || ""}')">View</button>
-          <button class="editBtn">Edit</button>
-          <button class="deleteBtn">Delete</button>
-        </td>
-      `;
+ function renderTable(docs) {
+  tableBody.innerHTML = "";
+  docs.forEach((doc) => {
+    const row = document.createElement("tr");
 
-      // Edit
-      row.querySelector(".editBtn").onclick = () => openEditForm(doc);
-      // Delete
-      row.querySelector(".deleteBtn").onclick = () => deleteDoc(doc.id);
-      tableBody.appendChild(row);
-    });
-  }
-  // === Search Function ===
-  searchInput.addEventListener("input", () => {
-    const q = searchInput.value.toLowerCase();
-    const filtered = allDocs.filter((d) =>
-      [d.no, d.ir, d.source, d.doc, d.officer, d.status].some(v => v?.toLowerCase().includes(q))
-    );
-    renderTable(filtered);
+    row.innerHTML = `
+      <td>${doc.no || ""}</td>
+      <td>${doc.ir || ""}</td>
+      <td>${doc.outNo || ""}</td>
+      <td>${doc.submitDate?.split("T")[0] || ""}</td>
+      <td>${doc.source || ""}</td>
+      <td>${doc.doc || ""}</td>
+      <td>${doc.officeDate2 || ""}</td>
+      <td>${doc.officer || "-"}</td>
+      <td>${doc.receiveDate || ""}</td>
+      <td>${doc.progress || ""}</td>
+      <td>${doc.duration || ""}</td>
+      <td>${doc.toChiefOffice || ""}</td>
+      <td>${doc.toDeputy || ""}</td>
+      <td>${doc.toHeadDept || ""}</td>
+      <td>${doc.outDate || ""}</td>
+      <td>${doc.registryStatus || ""}</td>
+      <td>${doc.reason || ""}</td>
+
+      <td>
+        <button onclick="viewDocument('${doc.id}')">View</button>
+        <button class="editBtn">Edit</button>
+        <button class="deleteBtn">Delete</button>
+      </td>
+    `;
+
+    // Edit
+    row.querySelector(".editBtn").onclick = () => openEditForm(doc);
+    // Delete
+    row.querySelector(".deleteBtn").onclick = () => deleteDoc(doc.id);
+
+    tableBody.appendChild(row);
   });
+}
+ searchInput.addEventListener("input", () => {
+  const q = searchInput.value.toLowerCase();
+
+  const filtered = allDocs.filter((d) =>
+    [
+      d.no,
+      d.ir,
+      d.outNo,
+      d.submitDate,
+      d.source,
+      d.doc,
+      d.officeDate2,
+      d.officer,
+      d.receiveDate,
+      d.progress,
+      d.duration,
+      d.toChiefOffice,
+      d.toDeputy,
+      d.toHeadDept,
+      d.outDate,
+      d.registryStatus,
+      d.reason,
+    ].some(v => v?.toLowerCase().includes(q))
+  );
+
+  renderTable(filtered);
+});
 
   // === Submit Form ===
   form.addEventListener("submit", async (e) => {

@@ -1,156 +1,263 @@
 <!DOCTYPE html>
-<html lang="km">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>បញ្ជីរោងចក្រ | Office 2</title>
-  <link rel="stylesheet" href="factorylist.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.19.3/xlsx.full.min.js"></script>
+  <title>Factory List</title>
 
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Khmer:wght@300;400;500&display=swap" rel="stylesheet"/>
+
+  <!-- XLSX Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+  <style>
+    body {
+      font-family: "Noto Sans Khmer", sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f5f5f5;
+    }
+
+    .container {
+      width: 95%;
+      margin: auto;
+      margin-top: 20px;
+    }
+
+    h2 {
+      font-weight: 500;
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 15px;
+    }
+
+    .search-box input {
+      padding: 8px 12px;
+      width: 250px;
+      border-radius: 5px;
+      border: 1px solid #aaa;
+    }
+
+    .btn {
+      padding: 8px 12px;
+      background: #1a73e8;
+      border: none;
+      border-radius: 5px;
+      color: white;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background: #0e57b5;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 6px;
+      text-align: left;
+    }
+
+    th {
+      background: #f0f0f0;
+    }
+
+    /* Modal */
+    #factoryModal {
+      display: none;
+      position: fixed;
+      z-index: 10;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.4);
+    }
+
+    .modal-content {
+      background: white;
+      margin: 8% auto;
+      padding: 20px;
+      width: 40%;
+      border-radius: 8px;
+    }
+
+    .close-btn {
+      float: right;
+      font-size: 18px;
+      cursor: pointer;
+      padding: 4px 8px;
+      background: #d9534f;
+      color: white;
+      border-radius: 4px;
+    }
+
+    .action-buttons button, .action-buttons a {
+      margin-right: 4px;
+    }
+
+    .view-btn {
+      background: #4caf50;
+      border: none;
+      padding: 6px 10px;
+      color: white;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .btn-link {
+      background: #007bff;
+      color: white;
+      padding: 6px 10px;
+      border-radius: 4px;
+      text-decoration: none;
+    }
+  </style>
 </head>
 <body>
-    <div id="navbar"></div>
-    
-  <!-- Factory List Section -->
-  <section class="factory-section">
-    <h2>បញ្ជីរោងចក្រ / Factory List</h2>
-      <div class="search-bar">
-        <button class="map-btn">Add Factory</button>
-        <input type="text" id="searchInput" placeholder="ស្វែងរកឈ្មោះសហគ្រាស..." />
-        <button id="exportExcel" class="map-btn">Download Excel</button>
-      </div>
-    <table id="factoryTable">
-      <thead>
-        <tr>
-          <th>ល.រ</th>
-          <th>នាមករណ៍សហគ្រាស (ខ្មែរ)</th>
-          <th>នាមករណ៍សហគ្រាស (អង់គ្លេស)</th>
-          <th>វិស័យ</th>
-          <th>ភូមិ</th>
-          <th>ឃុំ/សង្កាត់</th>
-          <th>ស្រុក/ក្រុង/ខណ្ឌ</th>
-          <th>រាជធានី/ខេត្ត</th>
-          <th>កម្មករសរុប</th>
-          <th>(ស្រី)</th>
-          <th>ឈ្មោះរដ្ឋបាល</th>
-          <th>លេខរដ្ឋបាល</th>
 
-          <th>ACTION</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>1</td>
-          <td>សហគ្រាស វីសិន</td>
-          <td>Vision Factory</td>
-          <td>កាត់ដេរ</td>
-          <td>ភូមិទួលសង្កែ</td>
-          <td>សង្កាត់ទួលសង្កែ</td>
-          <td>ខណ្ឌរលាប្អៀរ</td>
-          <td>ភ្នំពេញ</td>
-          <td>250</td>
-          <td>160</td>
-          <td>សុខ ចាន់នី</td>
-          <td>012345678</td>
-          <td>
-              <div>
-                <button class="view-btn">View</button>
-                <a href="editpage.html" id="services-link" class="btn-link" target="_blank">Editing Link</a>
-              </div>
-          </td>
-        </tr>
-          <tr>
-            <td>2</td>
-            <td>ឡូស៊ីដា</td>
-            <td>Lucida</td>
-            <td>កាត់ដេរ</td>
-            <td>ភូមិទួលសង្កែ</td>
-            <td>សង្កាត់ទួលសង្កែ</td>
-            <td>ខណ្ឌរលាប្អៀរ</td>
-            <td>ភ្នំពេញ</td>
-            <td>250</td>
-            <td>160</td>
-            <td>សុខ ចាន់នី</td>
-            <td>012345678</td>
-            <td>
-                <div>
-                  <button class="view-btn">View</button>
-                  <a href="editpage.html" id="services-link" class="btn-link" target="_blank">Editing Link</a>
-                </div>
-            </td>
-        </tr>
-      </tbody>
-    </table>
-  </section>
+<div class="container">
+  <h2>Factory List</h2>
 
-<!-- Factory Detail Modal -->
-<div id="factoryModal" class="modal">
+  <div class="top-bar">
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Search factory name..." />
+    </div>
+    <button id="exportExcel" class="btn">Export Excel</button>
+  </div>
+
+  <table id="factoryTable">
+    <thead>
+      <tr>
+        <th>ល.រ</th>
+        <th>ឈ្មោះរោងចក្រ</th>
+        <th>Factory Name (EN)</th>
+        <th>Sector</th>
+        <th>Village</th>
+        <th>Commune</th>
+        <th>District</th>
+        <th>Province</th>
+        <th>Total Workers</th>
+        <th>Female Workers</th>
+        <th>Admin Name</th>
+        <th>Admin Phone</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody id="factoryTableBody"></tbody>
+  </table>
+</div>
+
+<!-- Modal -->
+<div id="factoryModal">
   <div class="modal-content">
-    <span class="close-btn">&times;</span>
-    <h3>ព័ត៌មានរោងចក្រ / Factory Details</h3>
+    <span class="close-btn">X</span>
+    <h3>Factory Detail</h3>
     <div id="factoryDetail"></div>
   </div>
 </div>
 
-
-  <script src="factory-list.js" ></script>
-</body>
 <script>
-     fetch('navbar.html')
-    .then(response => response.text())
-    .then(data => {
-      document.getElementById('navbar').innerHTML = data;
+// =============================
+// Load factories from backend
+// =============================
+async function loadFactories() {
+  try {
+    const res = await fetch("http://localhost:4000/fac"); // API endpoint
+    const factories = await res.json();
+    window.allFactories = factories.data;
+    renderFactoryTable(factories.data);
+  } catch (err) {
+    console.error("Error loading factories:", err);
+  }
+}
 
-      // Highlight current page
-      const currentPage = window.location.pathname.split("/").pop();
-      const links = document.querySelectorAll(".navbar a");
+// Render into table
+function renderFactoryTable(list) {
+  const tbody = document.getElementById("factoryTableBody");
+  tbody.innerHTML = "";
 
-      links.forEach(link => {
-        if (link.getAttribute("href") === currentPage) {
-          link.classList.add("active");
-        }
-      });
-    });
-
-/// View button functionality
-document.addEventListener("click", function(e) {
-  if (e.target.classList.contains("view-btn")) {
-    const row = e.target.closest("tr");
-    const cells = row.querySelectorAll("td");
-
-    const factoryInfo = `
-      <p><strong>ឈ្មោះសហគ្រាស (ខ្មែរ):</strong> ${cells[1].textContent}</p>
-      <p><strong>ឈ្មោះសហគ្រាស (អង់គ្លេស):</strong> ${cells[2].textContent}</p>
-      <p><strong>វិស័យ:</strong> ${cells[3].textContent}</p>
-      <p><strong>ទីតាំង:</strong> ${cells[4].textContent}, ${cells[5].textContent}, ${cells[6].textContent}, ${cells[7].textContent}</p>
-      <p><strong>កម្មករសរុប:</strong> ${cells[8].textContent} (ស្រី: ${cells[9].textContent})</p>
-      <p><strong>អ្នកទំនាក់ទំនង:</strong> ${cells[10].textContent} (${cells[11].textContent})</p>
+  list.forEach((f, index) => {
+    const row = `
+      <tr>
+        <td>${index + 1}</td>
+        <td>${f.factoryname || "-"}</td>
+        <td>${f.factoryname_en || "-"}</td>
+        <td>${f.sector || "-"}</td>
+        <td>${f.village || "-"}</td>
+        <td>${f.commune || "-"}</td>
+        <td>${f.district || "-"}</td>
+        <td>${f.province || "-"}</td>
+        <td>${f.total_workers || "-"}</td>
+        <td>${f.female_workers || "-"}</td>
+        <td>${f.admin_name || "-"}</td>
+        <td>${f.admin_phone || "-"}</td>
+        <td class="action-buttons">
+          <button class="view-btn" data-id="${f.id}">View</button>
+          <a href="editpage.html?id=${f.id}" class="btn-link" target="_blank">Editing Link</a>
+        </td>
+      </tr>
     `;
+    tbody.insertAdjacentHTML("beforeend", row);
+  });
+}
 
-    document.getElementById("factoryDetail").innerHTML = factoryInfo;
+// =============================
+// Search
+// =============================
+document.getElementById("searchInput").addEventListener("input", function () {
+  const q = this.value.toLowerCase();
+  const filtered = window.allFactories.filter(f =>
+    (f.factoryname || "").toLowerCase().includes(q)
+  );
+  renderFactoryTable(filtered);
+});
+
+// =============================
+// View Modal
+// =============================
+document.addEventListener("click", async function (e) {
+  if (e.target.classList.contains("view-btn")) {
+    const id = e.target.getAttribute("data-id");
+    const res = await fetch(`http://localhost:4000/fac/${id}`);
+    const f = await res.json();
+
+    const detail = `
+      <p><strong>លេខចូល:</strong> ${f.no}</p>
+      <p><strong>ឈ្មោះរោងចក្រ:</strong> ${f.factoryname}</p>
+      <p><strong>អាសយដ្ឋាន:</strong> ${f.address}</p>
+    `;
+    document.getElementById("factoryDetail").innerHTML = detail;
     document.getElementById("factoryModal").style.display = "block";
   }
 });
 
-// Close modal
-document.addEventListener("click", function(e) {
+document.addEventListener("click", function (e) {
   if (e.target.classList.contains("close-btn") || e.target.id === "factoryModal") {
     document.getElementById("factoryModal").style.display = "none";
   }
 });
 
-// Export table to Excel
+// =============================
+// Export Excel
+// =============================
 document.getElementById("exportExcel").addEventListener("click", function () {
-  // Get the table
-  var table = document.getElementById("factoryTable");
-
-  // Convert table to workbook
-  var wb = XLSX.utils.table_to_book(table, { sheet: "Factory List" });
-
-  // Export to Excel file
+  var wb = XLSX.utils.table_to_book(document.getElementById("factoryTable"));
   XLSX.writeFile(wb, "Factory_List.xlsx");
 });
 
+// Load data on page start
+loadFactories();
 
 </script>
+</body>
 </html>
