@@ -1,100 +1,725 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="km">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>User Management</title>
-  <link rel="stylesheet" href="user.css" />
+  <title>User Management - Office 02</title>
+  
+  <style>
+    /* ===== Base Styling ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Helvetica Neue", Arial, sans-serif;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Main content adjustment for sidebar */
+    .main-content {
+      margin-left: 250px;
+      min-height: 100vh;
+      transition: margin-left 0.3s ease;
+    }
+
+    /* Mobile responsive for main content */
+    @media (max-width: 768px) {
+      .main-content {
+        margin-left: 0;
+      }
+    }
+
+    /* ===== Page Header ===== */
+    .page-header {
+      background: linear-gradient(135deg, #0b3d91 0%, #1e5bc9 100%);
+      color: white;
+      padding: 30px 20px;
+      margin: 0;
+    }
+
+    .page-header h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+
+    .page-header .subtitle {
+      font-size: 1.1rem;
+      text-align: center;
+      opacity: 0.9;
+      font-weight: 300;
+    }
+
+    /* ===== User Management Section ===== */
+    .user-container {
+      padding: 20px;
+    }
+
+    .user-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+      background: white;
+      margin: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    @media (max-width: 768px) {
+      .user-header {
+        flex-direction: column;
+        gap: 15px;
+        align-items: stretch;
+      }
+    }
+
+    #addUserBtn {
+      background: linear-gradient(135deg, #0b3d91 0%, #1e5bc9 100%);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 8px rgba(11, 61, 145, 0.3);
+    }
+
+    #addUserBtn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(11, 61, 145, 0.4);
+    }
+
+    /* ===== Table ===== */
+    .table-container {
+      margin: 20px;
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      position: relative;
+    }
+
+    .table-wrapper {
+      overflow-x: auto;
+      max-height: 70vh;
+      overflow-y: auto;
+      position: relative;
+    }
+
+    .table-wrapper::-webkit-scrollbar {
+      height: 12px;
+      width: 12px;
+    }
+
+    .table-wrapper::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 6px;
+    }
+
+    .table-wrapper::-webkit-scrollbar-thumb {
+      background: #c1c1c1;
+      border-radius: 6px;
+      border: 2px solid #f1f1f1;
+    }
+
+    .table-wrapper::-webkit-scrollbar-thumb:hover {
+      background: #a8a8a8;
+    }
+
+    .table-wrapper::-webkit-scrollbar-corner {
+      background: #f1f1f1;
+    }
+
+    .user-table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 1200px;
+    }
+
+    th, td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid #eaeaea;
+      font-size: 0.9rem;
+    }
+
+    th {
+      background: linear-gradient(135deg, #0b3d91 0%, #1e5bc9 100%);
+      color: white;
+      font-weight: 600;
+      position: sticky;
+      top: 0;
+      font-size: 0.85rem;
+      padding: 15px;
+    }
+
+    tr:hover {
+      background-color: #f8f9fa;
+    }
+
+    /* Column widths */
+    td:nth-child(1), th:nth-child(1) {
+      min-width: 60px;
+      max-width: 80px;
+      position: sticky;
+      left: 0;
+      background: white;
+      z-index: 10;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    }
+
+    th:nth-child(1) {
+      background: linear-gradient(135deg, #0b3d91 0%, #1e5bc9 100%);
+      z-index: 20;
+    }
+
+    td:nth-child(8), th:nth-child(8) {
+      min-width: 140px;
+      position: sticky;
+      right: 0;
+      background: white;
+      z-index: 10;
+      box-shadow: -2px 0 5px rgba(0,0,0,0.1);
+    }
+
+    th:nth-child(8) {
+      background: linear-gradient(135deg, #0b3d91 0%, #1e5bc9 100%);
+      z-index: 20;
+    }
+
+    /* ===== Button styles in table ===== */
+    button {
+      padding: 6px 12px;
+      margin: 2px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 0.85rem;
+      font-weight: 500;
+      min-width: 70px;
+    }
+
+    .edit-btn {
+      background: linear-gradient(135deg, #ffc107 0%, #ffb300 100%);
+      color: black;
+    }
+
+    .edit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(255, 193, 7, 0.3);
+    }
+
+    .delete-btn {
+      background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+      color: white;
+    }
+
+    .delete-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+    }
+
+    /* ===== Modal Styles ===== */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(4px);
+      justify-content: center;
+      align-items: center;
+      z-index: 1002;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+      max-width: 600px;
+      width: 95%;
+      overflow: hidden;
+    }
+
+    .modal-header {
+      background: linear-gradient(135deg, #0b3d91 0%, #1e5bc9 100%);
+      color: white;
+      padding: 25px 30px;
+      position: relative;
+    }
+
+    .modal-header h2 {
+      margin: 0;
+      font-size: 1.4rem;
+      font-weight: 600;
+    }
+
+    .modal-body {
+      padding: 30px;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 20px;
+      right: 25px;
+      font-size: 28px;
+      cursor: pointer;
+      color: white;
+      background: none;
+      border: none;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+    }
+
+    .close-btn:hover {
+      background: rgba(255,255,255,0.2);
+    }
+
+    /* ===== Form Styles ===== */
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .form-group.full-width {
+      grid-column: 1 / -1;
+    }
+
+    @media (max-width: 768px) {
+      .form-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+      }
+    }
+
+    .form-group {
+      margin-bottom: 0;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #333;
+      font-size: 0.95rem;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #e1e5e9;
+      border-radius: 8px;
+      box-sizing: border-box;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: #0b3d91;
+      box-shadow: 0 0 0 3px rgba(11, 61, 145, 0.1);
+    }
+
+    /* Required field styling */
+    .form-group label:has(+ input:required)::after {
+      content: " *";
+      color: #dc3545;
+    }
+
+    input:required {
+      border-left: 3px solid #0b3d91;
+    }
+
+    .form-buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid #eaeaea;
+    }
+
+    @media (max-width: 768px) {
+      .form-buttons {
+        flex-direction: column;
+        gap: 10px;
+      }
+      
+      .btn-submit,
+      .btn-cancel {
+        width: 100%;
+      }
+    }
+
+    .btn-submit {
+      background: linear-gradient(135deg, #0b3d91 0%, #1e5bc9 100%);
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 600;
+      box-shadow: 0 4px 8px rgba(11, 61, 145, 0.3);
+    }
+
+    .btn-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(11, 61, 145, 0.4);
+    }
+
+    .btn-cancel {
+      background: #6c757d;
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 600;
+    }
+
+    .btn-cancel:hover {
+      background: #5a6268;
+      transform: translateY(-2px);
+    }
+
+    /* ===== Empty State ===== */
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: #666;
+    }
+
+    .empty-state p {
+      font-size: 1.1rem;
+      margin-bottom: 20px;
+    }
+
+    /* ===== Password Field ===== */
+    .password-field {
+      position: relative;
+    }
+
+    .toggle-password {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #666;
+      font-size: 0.9rem;
+    }
+
+    .toggle-password:hover {
+      color: #0b3d91;
+    }
+  </style>
 </head>
 <body>
-
-  <!-- ===== NAVBAR (same as your design) ===== -->
   <div id="navbar"></div>
 
-  <!-- ===== USER MANAGEMENT SECTION ===== -->
-  <div class="user-container">
-    <header class="user-header">
-      <h1>User Management</h1>
-      <button id="addUserBtn">+ Add User</button>
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Page Header -->
+    <header class="page-header">
+      <h1>👥 ការគ្រប់គ្រងអ្នកប្រើប្រាស់</h1>
+      <p class="subtitle">User Management System - Office 02</p>
     </header>
 
-    <div class="user-table-container">
-      <table class="user-table">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Full Name</th>
-            <th>Email</th>
-            <th>Role</th>
-            <th>Responsibility</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody id="userTableBody">
-          <tr>
-            <td>1</td>
-            <td> បងឆាយ</td>
-            <td>jane@example.com</td>
-            <td>ប្រធានការិយាល័យ</td>
-            <td>Oversees laundry operations</td>
-            <td><button class="edit-btn">Edit</button></td>
-          </tr>
-        </tbody>
-      </table>
+    <!-- User Management Section -->
+    <div class="user-container">
+      <section class="user-header">
+        <h2 style="color: #0b3d91; margin: 0;">បញ្ជីអ្នកប្រើប្រាស់</h2>
+        <button id="addUserBtn">➕ បន្ថែមអ្នកប្រើប្រាស់</button>
+      </section>
+
+      <!-- Table -->
+      <div class="table-container">
+        <div class="table-wrapper">
+          <table class="user-table">
+            <thead>
+              <tr>
+                <th>ល.រ</th>
+                <th>ឈ្មោះ</th>
+                <th>លេខទូរស័ព្ទ</th>
+                <th>អ៊ីមែល</th>
+                <th>តួនាទី</th>
+                <th>មុខងារ</th>
+                <th>សង្កាត់</th>
+                <th>សកម្មភាព</th>
+              </tr>
+            </thead>
+            <tbody id="userTableBody">
+              <!-- Users will be loaded here dynamically -->
+              <tr>
+                <td colspan="8" class="empty-state">
+                  <p>កំពុងផ្ទុកទិន្នន័យ...</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- ===== MODAL ===== -->
+  <!-- User Modal -->
   <div class="modal" id="userModal">
     <div class="modal-content">
-      <h2>Add / Edit User</h2>
-      <form id="userForm">
-        <div class="form-group">
-          <label>Full Name</label>
-          <input type="text" id="name" placeholder="Enter full name" required>
-        </div>
-        <div class="form-group">
-          <label>Email</label>
-          <input type="email" id="email" placeholder="Enter email" required>
-        </div>
-        <div class="form-group">
-          <label>Role</label>
-          <select id="role" required>
-            <option value="">-- Select Role --</option>
-            <option>Admin</option>
-            <option>Manager</option>
-            <option>Staff</option>
-            <option>Driver</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Responsibility</label>
-          <textarea id="responsibility" rows="3" placeholder="Describe responsibility" required></textarea>
-        </div>
-        <div class="modal-buttons">
-          <button type="button" id="cancelBtn">Cancel</button>
-          <button type="submit" id="saveBtn">Save</button>
-        </div>
-      </form>
+      <div class="modal-header">
+        <h2 id="modalTitle">បន្ថែមអ្នកប្រើប្រាស់</h2>
+        <button class="close-btn" id="closeModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="userForm">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>ឈ្មោះ *</label>
+              <input type="text" id="name" placeholder="បញ្ចូលឈ្មោះ" required>
+            </div>
+
+            <div class="form-group">
+              <label>លេខទូរស័ព្ទ *</label>
+              <input type="tel" id="phone" placeholder="បញ្ចូលលេខទូរស័ព្ទ" required>
+            </div>
+
+            <div class="form-group">
+              <label>អ៊ីមែល *</label>
+              <input type="email" id="email" placeholder="បញ្ចូលអ៊ីមែល" required>
+            </div>
+
+            <div class="form-group password-field">
+              <label>ពាក្យសម្ងាត់ *</label>
+              <input type="password" id="password" placeholder="បញ្ចូលពាក្យសម្ងាត់" required>
+              <button type="button" class="toggle-password">👁️</button>
+            </div>
+
+            <div class="form-group">
+              <label>តួនាទី *</label>
+              <select id="role" required>
+                <option value="">-- ជ្រើសរើសតួនាទី --</option>
+                <option value="admin">អ្នកគ្រប់គ្រង</option>
+                <option value="user">អ្នកប្រើប្រាស់</option>
+                <option value="viewer">អ្នកមើល</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>មុខងារ</label>
+              <input type="text" id="function" placeholder="បញ្ចូលមុខងារ">
+            </div>
+
+            <div class="form-group">
+              <label>សង្កាត់</label>
+              <input type="text" id="sangkat" placeholder="បញ្ចូលសង្កាត់">
+            </div>
+          </div>
+
+          <div class="form-buttons">
+            <button type="button" class="btn-cancel" id="cancelBtn">បោះបង់</button>
+            <button type="submit" class="btn-submit" id="saveBtn">រក្សាទុក</button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 
- <script>
-  fetch('navbar.html')
-    .then(response => response.text())
-    .then(data => {
-      document.getElementById('navbar').innerHTML = data;
+  <script>
+        fetch('navbar.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('navbar').innerHTML = data;
 
-      // Highlight current page
-      const currentPage = window.location.pathname.split("/").pop();
-      const links = document.querySelectorAll(".navbar a");
+        // Highlight current page
+        const currentPage = window.location.pathname.split("/").pop();
+        const links = document.querySelectorAll(".navbar-links a");
 
-      links.forEach(link => {
-        if (link.getAttribute("href") === currentPage) {
-          link.classList.add("active");
+        links.forEach(link => {
+          if (link.getAttribute("href") === currentPage) {
+            link.classList.add("active");
+          }
+        });
+      })
+      
+      .catch(error => console.error('Error loading navbar:', error));
+    // =============================
+    // Load users from backend
+    // =============================
+    async function loadUsers() {
+      try {
+        console.log("Loading users from backend...");
+        const res = await fetch("https://uat-api-office2.thithabirdnest.com/user1");
+        
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
         }
+        
+        const result = await res.json();
+        console.log("Users loaded:", result);
+        
+        if (result.data) {
+          renderUserTable(result.data);
+        } else {
+          console.error("No data in response:", result);
+          renderUserTable([]);
+        }
+      } catch (err) {
+        console.error("Error loading users:", err);
+        const tbody = document.getElementById("userTableBody");
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="8" class="empty-state">
+              <p>កំហុសក្នុងការផ្ទុកទិន្នន័យ: ${err.message}</p>
+            </td>
+          </tr>
+        `;
+      }
+    }
+
+    // Render into table
+    function renderUserTable(list) {
+      const tbody = document.getElementById("userTableBody");
+      tbody.innerHTML = "";
+
+      if (!list || list.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="8" class="empty-state">
+              <p>មិនមានទិន្នន័យអ្នកប្រើប្រាស់ទេ</p>
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      list.forEach((user, index) => {
+        const row = `
+          <tr>
+            <td>${index + 1}</td>
+            <td>${user.name || "-"}</td>
+            <td>${user.phone || "-"}</td>
+            <td>${user.email || "-"}</td>
+            <td>${user.role || "-"}</td>
+            <td>${user.function || "-"}</td>
+            <td>${user.sangkat || "-"}</td>
+            <td class="action-buttons">
+              <button class="edit-btn" data-id="${user.id}">កែសម្រួល</button>
+              <button class="delete-btn" data-id="${user.id}">លុប</button>
+            </td>
+          </tr>
+        `;
+        tbody.insertAdjacentHTML("beforeend", row);
       });
+    }
+
+    // =============================
+    // Modal functionality
+    // =============================
+    const modal = document.getElementById('userModal');
+    const addUserBtn = document.getElementById('addUserBtn');
+    const closeModal = document.getElementById('closeModal');
+    const cancelBtn = document.getElementById('cancelBtn');
+    const userForm = document.getElementById('userForm');
+
+    // Open modal
+    addUserBtn.addEventListener('click', () => {
+      modal.style.display = 'flex';
+      document.getElementById('modalTitle').textContent = 'បន្ថែមអ្នកប្រើប្រាស់';
+      userForm.reset();
     });
-</script>
+
+    // Close modal
+    function closeUserModal() {
+      modal.style.display = 'none';
+    }
+
+    closeModal.addEventListener('click', closeUserModal);
+    cancelBtn.addEventListener('click', closeUserModal);
+
+    // Close modal when clicking outside
+    window.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        closeUserModal();
+      }
+    });
+
+    // Form submission
+    userForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const userData = {
+        name: document.getElementById('name').value,
+        phone: document.getElementById('phone').value,
+        email: document.getElementById('email').value,
+        password: document.getElementById('password').value,
+        role: document.getElementById('role').value,
+        function: document.getElementById('function').value,
+        sangkat: document.getElementById('sangkat').value
+      };
+
+      try {
+        const response = await fetch('https://uat-api-office2.thithabirdnest.com/user', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(userData)
+        });
+
+        if (response.ok) {
+          closeUserModal();
+          loadUsers(); // Reload the user list
+        } else {
+          console.error('Failed to create user');
+          alert('កំហុសក្នុងការបង្កើតអ្នកប្រើប្រាស់');
+        }
+      } catch (error) {
+        console.error('Error creating user:', error);
+        alert('កំហុសក្នុងការបង្កើតអ្នកប្រើប្រាស់: ' + error.message);
+      }
+    });
+
+    // Password toggle visibility
+    document.querySelector('.toggle-password').addEventListener('click', function() {
+      const passwordField = document.getElementById('password');
+      const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+      passwordField.setAttribute('type', type);
+      this.textContent = type === 'password' ? '👁️' : '🙈';
+    });
+
+    // =============================
+    // Initialize when DOM is loaded
+    // =============================
+    window.addEventListener("DOMContentLoaded", () => {
+      console.log("DOM loaded, initializing...");
+      loadUsers();
+    });
+
+  </script>
 </body>
 </html>
