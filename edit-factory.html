@@ -287,12 +287,17 @@
                     showStatusMessage('Loading factory data...', 'success');
                     document.getElementById('factoryForm').classList.add('loading');
                     
-                    // In a real application, you would make an API call to your backend
-                    // Example: const response = await fetch(`/api/factories?name=${encodeURIComponent(factoryName)}`);
-                    // const factoryData = await response.json();
+                    // First, let's check if we have factories data in localStorage or use a fallback
+                    let factories = await getFactoriesData();
                     
-                    // For this example, we'll simulate an API call with mock data
-                    const factoryData = await simulateApiCall(factoryName);
+                    // Find factory by English name (factoryname_en)
+                    const factoryData = factories.find(factory => 
+                        factory.factoryname_en && factory.factoryname_en.toLowerCase() === factoryName.toLowerCase()
+                    );
+                    
+                    if (!factoryData) {
+                        throw new Error(`Factory "${factoryName}" not found in database`);
+                    }
                     
                     // Populate form with data
                     populateForm(factoryData);
@@ -306,8 +311,30 @@
                 } catch (error) {
                     console.error('Error fetching factory data:', error);
                     document.getElementById('factoryForm').classList.remove('loading');
-                    showStatusMessage('Error loading factory data: ' + error.message, 'error');
+                    showStatusMessage('Error: ' + error.message, 'error');
                 }
+            }
+            
+            // Function to get factories data
+            async function getFactoriesData() {
+                // Try to fetch from API first
+                try {
+                    const response = await fetch('/api/factories');
+                    if (response.ok) {
+                        return await response.json();
+                    }
+                } catch (error) {
+                    console.log('API not available, checking localStorage...');
+                }
+                
+                // Fallback to localStorage or sample data
+                const storedData = localStorage.getItem('factoriesData');
+                if (storedData) {
+                    return JSON.parse(storedData);
+                }
+                
+                // If no data exists, return empty array
+                return [];
             }
             
             // Function to populate form with data
@@ -356,28 +383,39 @@
                     showStatusMessage('Updating factory information...', 'success');
                     document.getElementById('factoryForm').classList.add('loading');
                     
-                    // In a real application, you would send this data to your backend
-                    // Example:
-                    // const response = await fetch(`/api/factories/${factoryName}`, {
-                    //     method: 'PUT',
-                    //     headers: {
-                    //         'Content-Type': 'application/json',
-                    //     },
-                    //     body: JSON.stringify(formData)
-                    // });
-                    // 
-                    // if (!response.ok) {
-                    //     throw new Error('Failed to update factory');
-                    // }
+                    // Try to update via API first
+                    try {
+                        const response = await fetch(`/api/factories/${encodeURIComponent(factoryName)}`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(formData)
+                        });
+                        
+                        if (response.ok) {
+                            document.getElementById('factoryForm').classList.remove('loading');
+                            showStatusMessage('Factory information updated successfully!', 'success');
+                            return;
+                        }
+                    } catch (error) {
+                        console.log('API update failed, using localStorage fallback...');
+                    }
                     
-                    // For this example, we'll simulate an API call
-                    await simulateUpdateApiCall(formData);
+                    // Fallback: Update in localStorage
+                    let factories = await getFactoriesData();
+                    const factoryIndex = factories.findIndex(factory => 
+                        factory.factoryname_en && factory.factoryname_en.toLowerCase() === factoryName.toLowerCase()
+                    );
                     
-                    document.getElementById('factoryForm').classList.remove('loading');
-                    showStatusMessage('Factory information updated successfully!', 'success');
-                    
-                    // Log the data to console (for demonstration)
-                    console.log('Updated factory data:', formData);
+                    if (factoryIndex !== -1) {
+                        factories[factoryIndex] = { ...factories[factoryIndex], ...formData };
+                        localStorage.setItem('factoriesData', JSON.stringify(factories));
+                        document.getElementById('factoryForm').classList.remove('loading');
+                        showStatusMessage('Factory information updated successfully! (Local storage)', 'success');
+                    } else {
+                        throw new Error('Factory not found for update');
+                    }
                     
                 } catch (error) {
                     console.error('Error updating factory data:', error);
@@ -392,42 +430,6 @@
                 statusElement.textContent = message;
                 statusElement.className = 'status-message ' + type;
                 statusElement.style.display = 'block';
-            }
-            
-            // Simulate API call to fetch factory data
-            function simulateApiCall(factoryName) {
-                return new Promise((resolve) => {
-                    setTimeout(() => {
-                        // Mock data that exactly matches your Sequelize model
-                        const mockData = {
-                            no: 'F-' + Math.floor(1000 + Math.random() * 9000),
-                            factoryname: factoryName,
-                            factoryname_en: factoryName + ' Ltd.',
-                            sector: 'Manufacturing',
-                            village: 'Village 1',
-                            commune: 'Commune A',
-                            district: 'District X',
-                            province: 'Phnom Penh',
-                            address: '123 Industrial Zone, Phnom Penh, Cambodia',
-                            total_workers: Math.floor(50 + Math.random() * 200),
-                            female_workers: Math.floor(20 + Math.random() * 100),
-                            admin_name: 'John Doe',
-                            admin_phone: '+855 12 345 678'
-                        };
-                        resolve(mockData);
-                    }, 1000);
-                });
-            }
-            
-            // Simulate API call to update factory data
-            function simulateUpdateApiCall(formData) {
-                return new Promise((resolve) => {
-                    setTimeout(() => {
-                        // In a real application, this would update the database
-                        console.log('Data sent to server for update:', formData);
-                        resolve({ success: true });
-                    }, 1000);
-                });
             }
         });
     </script>
