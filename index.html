@@ -489,7 +489,234 @@
       color: #0c5460;
       border: 1px solid #b8e0e6;
     }
+
+    /* Role badges */
+    .role-badge {
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .role-badge-admin {
+      background: rgba(231, 76, 60, 0.2);
+      color: #e74c3c;
+      border: 1px solid rgba(231, 76, 60, 0.3);
+    }
+    .role-badge-officer {
+      background: rgba(52, 152, 219, 0.2);
+      color: #3498db;
+      border: 1px solid rgba(52, 152, 219, 0.3);
+    }
+
+    /* Inspection Management Styles */
+    .inspection-tabs {
+      display: flex;
+      background: #fff;
+      border-radius: 10px;
+      margin-bottom: 25px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+      border: 1px solid #e1e5e9;
+      overflow: hidden;
+    }
     
+    .inspection-tab {
+      flex: 1;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      border-bottom: 3px solid transparent;
+    }
+    
+    .inspection-tab.active {
+      background: #f8f9fa;
+      border-bottom-color: #3498db;
+      font-weight: 600;
+      color: #3498db;
+    }
+    
+    .inspection-tab:hover {
+      background: #f8f9fa;
+    }
+    
+    .inspection-content {
+      display: none;
+    }
+    
+    .inspection-content.active {
+      display: block;
+    }
+
+    .penalty-section {
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      border: 1px solid #e1e5e9;
+    }
+    
+    .penalty-section h4 {
+      color: #2c3e50;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1.1rem;
+    }
+    
+    .penalty-options {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+    }
+    
+    .penalty-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border: 2px solid #d1d9e6;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s;
+      background: #f8f9fa;
+    }
+    
+    .penalty-option.selected {
+      background: #3498db;
+      border-color: #3498db;
+      color: white;
+    }
+    
+    .penalty-option input {
+      margin: 0;
+    }
+    
+    .penalty-details {
+      display: none;
+      background: #f8f9fa;
+      padding: 20px;
+      border-radius: 8px;
+      margin-top: 15px;
+      border: 1px solid #e1e5e9;
+    }
+    
+    .penalty-details.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+    
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    
+    .detail-item {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .detail-item label {
+      font-weight: 600;
+      color: #5d6d7e;
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+    }
+    
+    .detail-item input, .detail-item textarea {
+      padding: 12px;
+      border: 1px solid #d1d9e6;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      transition: all 0.3s;
+      background: white;
+    }
+    
+    .detail-item input:focus, .detail-item textarea:focus {
+      outline: none;
+      border-color: #3498db;
+      box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+    }
+    
+    .detail-item textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+    
+    .followup-info {
+      background: #e8f5e8;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 10px 0;
+      border-left: 4px solid #2ecc71;
+    }
+    
+    .address-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+    
+    .address-item {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .address-item.full-width {
+      grid-column: 1 / -1;
+    }
+    
+    .compact-form-group {
+      margin-bottom: 12px;
+    }
+    
+    .compact-form-group label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+      color: #5d6d7e;
+      font-size: 0.9rem;
+    }
+    
+    .compact-form-group input, .compact-form-group select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #d1d9e6;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      transition: all 0.3s;
+    }
+    
+    .company-info-section {
+      background: #f8f9fa;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      border: 1px solid #e1e5e9;
+    }
+    
+    .company-info-section h4 {
+      color: #2c3e50;
+      margin-bottom: 15px;
+      font-size: 1.1rem;
+    }
+    
+    .company-info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 15px;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     /* --- Responsive Styles --- */
     @media (max-width: 900px) {
       body {
@@ -565,6 +792,30 @@
         width: 100%;
         justify-content: space-between;
       }
+      
+      .inspection-tabs {
+        flex-direction: column;
+      }
+      
+      .company-info-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .address-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .detail-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .penalty-options {
+        flex-direction: column;
+      }
+      
+      .penalty-option {
+        justify-content: center;
+      }
     }
   </style>
 </head>
@@ -582,9 +833,17 @@
         <span>📄</span>
         <span>ឯកសារ</span>
       </a>
+      <a href="#" onclick="showSection('inspectionmanagement', event)">
+        <span>🔍</span>
+        <span>គ្រប់គ្រងអធិការកិច្ច</span>
+      </a>
       <a href="#" onclick="showSection('factories', event)">
         <span>🏭</span>
         <span>រោងចក្រ</span>
+      </a>
+      <a href="#" onclick="showSection('users', event)">
+        <span>👥</span>
+        <span>អ្នកប្រើប្រាស់</span>
       </a>
     </div>
   </nav>
@@ -637,6 +896,101 @@
             </thead>
             <tbody id="docTableBody"></tbody>
           </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Inspection Management Section -->
+    <section id="inspectionmanagement-section" style="display: none;">
+      <header class="page-header">
+        <h1>🔍 គ្រប់គ្រងអធិការកិច្ច</h1>
+        <p>Inspection Management System</p>
+      </header>
+
+      <!-- Inspection Tabs -->
+      <div class="inspection-tabs">
+        <div class="inspection-tab active" onclick="showInspectionTab('initial')">
+          <span>📋</span>
+          <span>ការត្រួតពិនិត្យដំបូង</span>
+        </div>
+        <div class="inspection-tab" onclick="showInspectionTab('followup')">
+          <span>🔄</span>
+          <span>តាមដានកំហិត</span>
+        </div>
+      </div>
+
+      <!-- Initial Inspection Tab -->
+      <div class="inspection-content active" id="initial-inspection">
+        <div class="control-section">
+          <button class="btn" id="openInspectionForm">
+            <span>➕</span>
+            <span>ការត្រួតពិនិត្យថ្មី</span>
+          </button>
+          <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+            <input type="search" class="search-box" id="inspectionSearch" placeholder="ស្វែងរកការត្រួតពិនិត្យ...">
+            <button class="btn" id="exportInspectionExcel">
+              <span>📥</span>
+              <span>ទាញយក Excel</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <div class="table-wrapper">
+            <table id="inspectionTable">
+              <thead>
+                <tr>
+                  <th>លេខចូល</th>
+                  <th>រោងចក្រ</th>
+                  <th>កាលបរិច្ឆេទ</th>
+                  <th>កំហិត</th>
+                  <th>ផាក</th>
+                  <th>ស្ថានភាព</th>
+                  <th>សកម្មភាព</th>
+                </tr>
+              </thead>
+              <tbody id="inspectionTableBody">
+                <!-- Data will be loaded here -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Follow-up Inspection Tab -->
+      <div class="inspection-content" id="followup-inspection">
+        <div class="control-section">
+          <button class="btn" id="openFollowupForm">
+            <span>➕</span>
+            <span>តាមដានកំហិតថ្មី</span>
+          </button>
+          <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+            <input type="search" class="search-box" id="followupSearch" placeholder="ស្វែងរកការតាមដាន...">
+            <button class="btn" id="exportFollowupExcel">
+              <span>📥</span>
+              <span>ទាញយក Excel</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <div class="table-wrapper">
+            <table id="followupTable">
+              <thead>
+                <tr>
+                  <th>លេខចូល</th>
+                  <th>រោងចក្រ</th>
+                  <th>កាលបរិច្ឆេទតាមដាន</th>
+                  <th>កាលបរិច្ឆេទកំហិតដើម</th>
+                  <th>ស្ថានភាពតាមដាន</th>
+                  <th>សកម្មភាព</th>
+                </tr>
+              </thead>
+              <tbody id="followupTableBody">
+                <!-- Data will be loaded here -->
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </section>
@@ -711,13 +1065,54 @@
         </div>
       </div>
     </section>
+
+    <!-- Users Section -->
+    <section id="users-section" style="display: none;">
+      <header class="page-header">
+        <h1>👥 ការគ្រប់គ្រងអ្នកប្រើប្រាស់</h1>
+        <p>User Management System</p>
+      </header>
+
+      <div class="control-section">
+        <button class="btn" id="openUserForm">
+          <span>➕</span>
+          <span>បញ្ចូលអ្នកប្រើប្រាស់ថ្មី</span>
+        </button>
+        <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+          <input type="search" class="search-box" id="userSearch" placeholder="ស្វែងរកអ្នកប្រើប្រាស់...">
+          <button class="btn" id="exportUserExcel">
+            <span>📥</span>
+            <span>ទាញយក Excel</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="table-container">
+        <div class="table-wrapper">
+          <table id="userTable">
+            <thead>
+              <tr>
+                <th>ឈ្មោះ</th>
+                <th>ទូរស័ព្ទ</th>
+                <th>អ៊ីមែល</th>
+                <th>តួនាទី</th>
+                <th>មុខងារ</th>
+                <th>សង្កាត់</th>
+                <th>សកម្មភាព</th>
+              </tr>
+            </thead>
+            <tbody id="userTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
   </div>
 
   <!-- Document Modal (Used for both New and Edit) -->
   <div class="modal" id="docModal">
     <div class="modal-content">
       <div class="modal-header">
-        <h2>បញ្ចូល / កែសម្រួលឯកសារ</h2>
+        <h2 id="docModalTitle">បញ្ចូលឯកសារថ្មី</h2>
       </div>
       <div class="modal-body">
         <form id="docForm">
@@ -845,6 +1240,341 @@
     </div>
   </div>
 
+  <!-- User Modal (Used for both New and Edit) -->
+  <div class="modal" id="userModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="userModalTitle">បញ្ចូលអ្នកប្រើប្រាស់ថ្មី</h2>
+      </div>
+      <div class="modal-body">
+        <form id="userForm">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>ឈ្មោះ *</label>
+              <input type="text" name="name" required>
+            </div>
+            <div class="form-group">
+              <label>ទូរស័ព្ទ *</label>
+              <input type="text" name="phone" required>
+            </div>
+            <div class="form-group">
+              <label>អ៊ីមែល *</label>
+              <input type="email" name="email" required>
+            </div>
+            <div class="form-group">
+              <label>ពាក្យសម្ងាត់ *</label>
+              <input type="password" name="password" required>
+            </div>
+            <div class="form-group">
+              <label>តួនាទី *</label>
+              <select name="role" required>
+                <option value="">-- ជ្រើសរើសតួនាទី --</option>
+                <option value="admin">អ្នកគ្រប់គ្រង</option>
+                <option value="officer">មន្ត្រី</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>មុខងារ *</label>
+              <input type="text" name="function" required>
+            </div>
+            <div class="form-group">
+              <label>សង្កាត់ *</label>
+              <input type="text" name="sangkat" required>
+            </div>
+          </div>
+          <div class="form-buttons">
+            <button type="submit" class="btn" id="userSubmitBtn">
+              <span>💾</span>
+              <span>រក្សាទុក</span>
+            </button>
+            <button type="button" class="btn" onclick="closeModal('userModal')">បិទ</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Inspection Management Modals -->
+  <!-- Initial Inspection Modal -->
+  <div class="modal" id="inspectionModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="inspectionModalTitle">ការត្រួតពិនិត្យថ្មី</h2>
+      </div>
+      <div class="modal-body">
+        <form id="inspectionForm">
+          <div class="form-grid">
+            <!-- Basic Information -->
+            <div class="form-group">
+              <label>លេខចូល *</label>
+              <input type="text" name="no" required>
+            </div>
+            <div class="form-group">
+              <label>ក្រុម *</label>
+              <select name="group" required>
+                <option value="">-- ជ្រើសរើសក្រុម --</option>
+                <option value="ក្រុម ក">ក្រុម ក</option>
+                <option value="ក្រុម ខ">ក្រុម ខ</option>
+                <option value="ក្រុម គ">ក្រុម គ</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>កាលបរិច្ឆេទត្រួតពិនិត្យ *</label>
+              <input type="date" name="inspection_date" required>
+            </div>
+
+            <!-- Company Information Section -->
+            <div class="company-info-section full-width">
+              <h4>ព័ត៌មានរោងចក្រ</h4>
+              <div class="company-info-grid">
+                <div class="compact-form-group">
+                  <label>ឈ្មោះរោងចក្រ *</label>
+                  <select name="factory_name" required onchange="updateFactoryInfo()">
+                    <option value="">-- ជ្រើសរើសរោងចក្រ --</option>
+                    <option value="រោងចក្រ ក" data-sector="វិស័យ ក" data-village="ភូមិ ក" data-commune="ឃុំ ក" data-district="ស្រុក ក" data-province="ខេត្ត ក">រោងចក្រ ក</option>
+                    <option value="រោងចក្រ ខ" data-sector="វិស័យ ខ" data-village="ភូមិ ខ" data-commune="ឃុំ ខ" data-district="ស្រុក ខ" data-province="ខេត្ត ខ">រោងចក្រ ខ</option>
+                    <option value="រោងចក្រ គ" data-sector="វិស័យ គ" data-village="ភូមិ គ" data-commune="ឃុំ គ" data-district="ស្រុក គ" data-province="ខេត្ត គ">រោងចក្រ គ</option>
+                  </select>
+                </div>
+                
+                <div class="compact-form-group">
+                  <label>វិស័យ *</label>
+                  <input type="text" name="sector" required placeholder="បញ្ចូលវិស័យ...">
+                </div>
+                
+                <div class="compact-form-group">
+                  <label>ប្រធានបទ *</label>
+                  <input type="text" name="case_subject" required placeholder="បញ្ចូលប្រធានបទ...">
+                </div>
+              </div>
+              
+              <!-- Address Fields -->
+              <div class="address-grid" style="margin-top: 15px;">
+                <div class="address-item">
+                  <label>ភូមិ *</label>
+                  <input type="text" name="village" required placeholder="បញ្ចូលភូមិ...">
+                </div>
+                <div class="address-item">
+                  <label>ឃុំ *</label>
+                  <input type="text" name="commune" required placeholder="បញ្ចូលឃុំ...">
+                </div>
+                <div class="address-item">
+                  <label>ស្រុក *</label>
+                  <input type="text" name="district" required placeholder="បញ្ចូលស្រុក...">
+                </div>
+                <div class="address-item">
+                  <label>ខេត្ត *</label>
+                  <input type="text" name="province" required placeholder="បញ្ចូលខេត្ត...">
+                </div>
+              </div>
+            </div>
+
+            <!-- កំហិត Section -->
+            <div class="penalty-section full-width">
+              <h4>កំហិត (អ្វីដែលរោងចក្រត្រូវកែលម្អ)</h4>
+              <div class="penalty-options">
+                <label class="penalty-option" id="penalty_yes_option">
+                  <input type="radio" name="has_penalty" value="មាន" onchange="togglePenaltyDetails(true)">
+                  <span>មាន</span>
+                </label>
+                <label class="penalty-option" id="penalty_no_option">
+                  <input type="radio" name="has_penalty" value="គ្មាន" onchange="togglePenaltyDetails(false)">
+                  <span>គ្មាន</span>
+                </label>
+              </div>
+              
+              <div class="penalty-details" id="penalty_details">
+                <div class="detail-grid">
+                  <div class="detail-item">
+                    <label>បែបបទ</label>
+                    <input type="text" name="penalty_format" placeholder="បញ្ចូលបែបបទកំហិត...">
+                  </div>
+                  <div class="detail-item">
+                    <label>លក្ខខណ្ឌ</label>
+                    <input type="text" name="penalty_condition" placeholder="បញ្ចូលលក្ខខណ្ឌកំហិត...">
+                  </div>
+                  <div class="detail-item">
+                    <label>សុខភាពនិងសុវត្ថភាព</label>
+                    <textarea name="penalty_health" placeholder="បញ្ចូលព័ត៌មានសុខភាពនិងសុវត្ថភាព..."></textarea>
+                  </div>
+                  <div class="detail-item">
+                    <label>វិជ្ជាជីវៈ</label>
+                    <textarea name="penalty_professional" placeholder="បញ្ចូលព័ត៌មានវិជ្ជាជីវៈ..."></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ផាក Section -->
+            <div class="penalty-section full-width">
+              <h4>ផាក</h4>
+              <div class="penalty-options">
+                <label class="penalty-option" id="fine_yes_option">
+                  <input type="radio" name="has_fine" value="មាន" onchange="toggleFineDetails(true)">
+                  <span>មាន</span>
+                </label>
+                <label class="penalty-option" id="fine_no_option">
+                  <input type="radio" name="has_fine" value="គ្មាន" onchange="toggleFineDetails(false)">
+                  <span>គ្មាន</span>
+                </label>
+              </div>
+              
+              <div class="penalty-details" id="fine_details">
+                <div class="detail-grid">
+                  <div class="detail-item">
+                    <label>ចំនួនទឹកប្រាក់</label>
+                    <input type="text" name="fine_amount" placeholder="បញ្ចូលចំនួនទឹកប្រាក់...">
+                  </div>
+                  <div class="detail-item">
+                    <label>ប្រភេទផាក</label>
+                    <input type="text" name="fine_type" placeholder="បញ្ចូលប្រភេទផាក...">
+                  </div>
+                  <div class="detail-item full-width">
+                    <label>ហេតុផល</label>
+                    <textarea name="fine_reason" placeholder="បញ្ចូលហេតុផលផាក..."></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group full-width">
+              <label>ផ្សេងៗ</label>
+              <textarea name="remarks" rows="3" placeholder="បញ្ចូលផ្សេងៗ..."></textarea>
+            </div>
+          </div>
+          <div class="form-buttons">
+            <button type="submit" class="btn" id="inspectionSubmitBtn">
+              <span>💾</span>
+              <span>រក្សាទុក</span>
+            </button>
+            <button type="button" class="btn" onclick="closeModal('inspectionModal')">បិទ</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Follow-up Inspection Modal -->
+  <div class="modal" id="followupModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="followupModalTitle">តាមដានកំហិតថ្មី</h2>
+      </div>
+      <div class="modal-body">
+        <form id="followupForm">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>លេខចូល *</label>
+              <input type="text" name="no" required>
+            </div>
+            <div class="form-group">
+              <label>ការត្រួតពិនិត្យដើម *</label>
+              <select name="original_inspection" id="originalInspectionSelect" required onchange="loadOriginalInspectionData()">
+                <option value="">-- ជ្រើសរើសការត្រួតពិនិត្យដើម --</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>កាលបរិច្ឆេទតាមដាន *</label>
+              <input type="date" name="followup_date" required>
+            </div>
+            
+            <!-- Company Information Display (Read-only) -->
+            <div class="company-info-section full-width" id="companyInfoDisplay" style="display: none;">
+              <h4>ព័ត៌មានរោងចក្រ</h4>
+              <div class="company-info-grid">
+                <div class="compact-form-group">
+                  <label>ឈ្មោះរោងចក្រ</label>
+                  <input type="text" id="display_factory_name" readonly style="background: #f8f9fa;">
+                </div>
+                <div class="compact-form-group">
+                  <label>វិស័យ</label>
+                  <input type="text" id="display_sector" readonly style="background: #f8f9fa;">
+                </div>
+                <div class="compact-form-group">
+                  <label>ប្រធានបទ</label>
+                  <input type="text" id="display_case_subject" readonly style="background: #f8f9fa;">
+                </div>
+              </div>
+              
+              <div class="address-grid" style="margin-top: 15px;">
+                <div class="address-item">
+                  <label>ភូមិ</label>
+                  <input type="text" id="display_village" readonly style="background: #f8f9fa;">
+                </div>
+                <div class="address-item">
+                  <label>ឃុំ</label>
+                  <input type="text" id="display_commune" readonly style="background: #f8f9fa;">
+                </div>
+                <div class="address-item">
+                  <label>ស្រុក</label>
+                  <input type="text" id="display_district" readonly style="background: #f8f9fa;">
+                </div>
+                <div class="address-item">
+                  <label>ខេត្ត</label>
+                  <input type="text" id="display_province" readonly style="background: #f8f9fa;">
+                </div>
+              </div>
+            </div>
+
+            <!-- Original Penalty Information (Read-only) -->
+            <div id="originalPenaltyInfo" class="followup-info" style="display: none;">
+              <h4>កំហិតដើម</h4>
+              <div id="penaltyDisplay"></div>
+            </div>
+
+            <!-- Follow-up Result -->
+            <div class="penalty-section full-width">
+              <h4>លទ្ធផលតាមដាន</h4>
+              <div class="penalty-options">
+                <label class="penalty-option" id="implemented_yes_option">
+                  <input type="radio" name="penalty_implemented" value="អនុវត្ត" onchange="toggleFollowupDetails(false)">
+                  <span>អនុវត្ត</span>
+                </label>
+                <label class="penalty-option" id="implemented_no_option">
+                  <input type="radio" name="penalty_implemented" value="មិនអនុវត្ត" onchange="toggleFollowupDetails(true)">
+                  <span>មិនអនុវត្ត</span>
+                </label>
+              </div>
+              
+              <div class="penalty-details" id="followup_details">
+                <div class="detail-grid">
+                  <div class="detail-item">
+                    <label>បែបបទ</label>
+                    <input type="text" name="followup_format" placeholder="បញ្ចូលបែបបទតាមដាន...">
+                  </div>
+                  <div class="detail-item">
+                    <label>លក្ខខណ្ឌ</label>
+                    <input type="text" name="followup_condition" placeholder="បញ្ចូលលក្ខខណ្ឌតាមដាន...">
+                  </div>
+                  <div class="detail-item">
+                    <label>សុខភាពនិងសុវត្ថភាព</label>
+                    <textarea name="followup_health" placeholder="បញ្ចូលព័ត៌មានសុខភាពនិងសុវត្ថភាពតាមដាន..."></textarea>
+                  </div>
+                  <div class="detail-item">
+                    <label>វិជ្ជាជីវៈ</label>
+                    <textarea name="followup_professional" placeholder="បញ្ចូលព័ត៌មានវិជ្ជាជីវៈតាមដាន..."></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group full-width">
+              <label>សេចក្តីសន្និដ្ឋាន</label>
+              <textarea name="conclusion" rows="3" placeholder="បញ្ចូលសេចក្តីសន្និដ្ឋាន..."></textarea>
+            </div>
+          </div>
+          <div class="form-buttons">
+            <button type="submit" class="btn" id="followupSubmitBtn">
+              <span>💾</span>
+              <span>រក្សាទុក</span>
+            </button>
+            <button type="button" class="btn" onclick="closeModal('followupModal')">បិទ</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
   <!-- View Modals -->
   <div class="modal" id="viewDocModal">
     <div class="modal-content">
@@ -873,6 +1603,48 @@
       </div>
     </div>
   </div>
+
+  <div class="modal" id="viewUserModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>ព័ត៌មានលម្អិតអ្នកប្រើប្រាស់</h2>
+      </div>
+      <div class="modal-body">
+        <div id="userDetail" class="detail-view"></div>
+        <div class="form-buttons" style="justify-content: center; margin-top: 30px;">
+          <button type="button" class="btn" onclick="closeModal('viewUserModal')">បិទ (Close)</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="viewInspectionModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>ព័ត៌មានលម្អិតការត្រួតពិនិត្យ</h2>
+      </div>
+      <div class="modal-body">
+        <div id="inspectionDetail" class="detail-view"></div>
+        <div class="form-buttons" style="justify-content: center; margin-top: 30px;">
+          <button type="button" class="btn" onclick="closeModal('viewInspectionModal')">បិទ (Close)</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="viewFollowupModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>ព័ត៌មានលម្អិតតាមដានកំហិត</h2>
+      </div>
+      <div class="modal-body">
+        <div id="followupDetail" class="detail-view"></div>
+        <div class="form-buttons" style="justify-content: center; margin-top: 30px;">
+          <button type="button" class="btn" onclick="closeModal('viewFollowupModal')">បិទ (Close)</button>
+        </div>
+      </div>
+    </div>
+  </div>
   
   <!-- Message Box/Confirmation Modal -->
   <div class="modal" id="messageModal">
@@ -893,9 +1665,11 @@
     // API URLs - Using your working server
     const DOC_API = "https://uat-api-office2.thithabirdnest.com/doc";
     const FACTORY_API = "https://uat-api-office2.thithabirdnest.com/fac";
+    const USER_API = "https://uat-api-office2.thithabirdnest.com/user";
     
     // Global variables
-    let allDocs = [], allFactories = [];
+    let allDocs = [], allFactories = [], allUsers = [];
+    let allInspections = [], allFollowups = [];
     let currentEditingId = null;
     let selectedFile = null;
 
@@ -944,267 +1718,6 @@
       sidebar.classList.toggle('open');
     });
 
-    // --- Import Functionality ---
-    selectFileBtn.addEventListener('click', () => {
-      fileInput.click();
-    });
-
-    fileInput.addEventListener('change', handleFileSelect);
-    importBtn.addEventListener('click', importData);
-    downloadTemplateBtn.addEventListener('click', downloadTemplate);
-
-    function handleFileSelect(e) {
-      const files = e.target.files;
-      if (files.length > 0) {
-        selectedFile = files[0];
-        displayFileInfo(selectedFile);
-        importBtn.disabled = false;
-      }
-    }
-
-    function displayFileInfo(file) {
-      fileName.textContent = file.name;
-      fileSize.textContent = formatFileSize(file.size);
-      fileInfo.classList.remove('hidden');
-    }
-
-    function formatFileSize(bytes) {
-      if (bytes === 0) return '0 Bytes';
-      const k = 1024;
-      const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-      const i = Math.floor(Math.log(bytes) / Math.log(k));
-      return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-    }
-
-    async function importData() {
-      if (!selectedFile) return;
-
-      const submitBtn = importBtn;
-      const originalText = submitBtn.innerHTML;
-      submitBtn.innerHTML = '<span class="loading"></span> កំពុងនាំចូល...';
-      submitBtn.disabled = true;
-
-      try {
-        const data = await readFile(selectedFile);
-        const factories = parseData(data, selectedFile.name);
-        
-        if (factories.length === 0) {
-          showMessage('No valid factory data found in the file.', 'Import Error');
-          return;
-        }
-
-        // Show preview before importing
-        openMessageModal(
-          'Confirm Import', 
-          `Found ${factories.length} factories to import. Do you want to continue?`,
-          'confirm',
-          async (confirmed) => {
-            if (confirmed) {
-              await saveFactories(factories);
-            }
-          }
-        );
-
-      } catch (error) {
-        console.error('Import error:', error);
-        showMessage('Failed to import data: ' + error.message, 'Import Error');
-      } finally {
-        submitBtn.innerHTML = originalText;
-        submitBtn.disabled = false;
-      }
-    }
-
-    function readFile(file) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        
-        reader.onload = function(e) {
-          resolve(e.target.result);
-        };
-        
-        reader.onerror = function() {
-          reject(new Error('Failed to read file'));
-        };
-
-        if (file.name.endsWith('.csv')) {
-          reader.readAsText(file);
-        } else {
-          reader.readAsArrayBuffer(file);
-        }
-      });
-    }
-
-    function parseData(data, filename) {
-      let factories = [];
-      
-      if (filename.endsWith('.csv')) {
-        // Parse CSV
-        const lines = data.split('\n');
-        const headers = lines[0].split(',').map(h => h.trim());
-        
-        for (let i = 1; i < lines.length; i++) {
-          if (lines[i].trim() === '') continue;
-          
-          const values = lines[i].split(',').map(v => v.trim());
-          const factory = {};
-          
-          headers.forEach((header, index) => {
-            if (values[index]) {
-              factory[header] = values[index];
-            }
-          });
-          
-          if (factory.factoryname && factory.address) {
-            factories.push(factory);
-          }
-        }
-      } else {
-        // Parse Excel
-        const workbook = XLSX.read(data, { type: 'array' });
-        const sheetName = workbook.SheetNames[0];
-        const worksheet = workbook.Sheets[sheetName];
-        const jsonData = XLSX.utils.sheet_to_json(worksheet);
-        
-        factories = jsonData.filter(row => row.factoryname && row.address);
-      }
-      
-      return factories;
-    }
-
-    async function saveFactories(factories) {
-      try {
-        let successCount = 0;
-        let errorCount = 0;
-        
-        for (const factory of factories) {
-          try {
-            // Generate a simple ID if not provided
-            if (!factory.no) {
-              factory.no = 'FAC' + Date.now() + Math.random().toString(36).substr(2, 5);
-            }
-            
-            const res = await fetch(FACTORY_API, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(factory)
-            });
-            
-            if (res.ok) {
-              successCount++;
-            } else {
-              errorCount++;
-            }
-          } catch (error) {
-            errorCount++;
-            console.error('Error saving factory:', error);
-          }
-        }
-        
-        showMessage(
-          `Import completed! Success: ${successCount}, Failed: ${errorCount}`,
-          'Import Result'
-        );
-        
-        // Refresh the factory list
-        fetchFactories();
-        
-        // Reset import
-        resetImport();
-        
-      } catch (error) {
-        console.error('Save factories error:', error);
-        showMessage('Failed to save factories to server.', 'Import Error');
-      }
-    }
-
-    function resetImport() {
-      selectedFile = null;
-      fileInput.value = '';
-      fileInfo.classList.add('hidden');
-      importBtn.disabled = true;
-    }
-
-    function downloadTemplate() {
-      // Create template data
-      const templateData = [
-        {
-          no: 'FAC001',
-          factoryname: 'រោងចក្រ ក',
-          factoryname_en: 'Factory A',
-          sector: 'Manufacturing',
-          address: 'ផ្លូវជាតិលេខ ៥, ភូមិ ក',
-          village: 'ភូមិ ក',
-          commune: 'ឃុំ ក',
-          district: 'ស្រុក ក',
-          province: 'ខេត្ត ក',
-          total_workers: 150,
-          female_workers: 80,
-          admin_name: 'អ្នកគ្រប់គ្រង ក',
-          admin_phone: '012345678'
-        },
-        {
-          no: 'FAC002', 
-          factoryname: 'រោងចក្រ ខ',
-          factoryname_en: 'Factory B',
-          sector: 'Services',
-          address: 'ផ្លូវជាតិលេខ ៦, ភូមិ ខ',
-          village: 'ភូមិ ខ',
-          commune: 'ឃុំ ខ',
-          district: 'ស្រុក ខ',
-          province: 'ខេត្ត ខ',
-          total_workers: 200,
-          female_workers: 120,
-          admin_name: 'អ្នកគ្រប់គ្រង ខ',
-          admin_phone: '098765432'
-        }
-      ];
-      
-      const ws = XLSX.utils.json_to_sheet(templateData);
-      const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, "Factories Template");
-      XLSX.writeFile(wb, "factory_template.xlsx");
-    }
-
-    // --- Custom Message/Confirmation Functions ---
-    function openMessageModal(title, text, type, callback) {
-      messageTitle.textContent = title;
-      messageText.textContent = text;
-      messageButtons.innerHTML = '';
-      
-      if (type === 'confirm') {
-        const confirmBtn = document.createElement('button');
-        confirmBtn.className = 'btn btn-primary';
-        confirmBtn.textContent = 'Yes, Delete';
-        confirmBtn.onclick = () => {
-          callback(true);
-          closeModal('messageModal');
-        };
-        messageButtons.appendChild(confirmBtn);
-
-        const cancelBtn = document.createElement('button');
-        cancelBtn.className = 'btn';
-        cancelBtn.textContent = 'Cancel';
-        cancelBtn.onclick = () => {
-          callback(false);
-          closeModal('messageModal');
-        };
-        messageButtons.appendChild(cancelBtn);
-        
-      } else {
-        const closeBtn = document.createElement('button');
-        closeBtn.className = 'btn';
-        closeBtn.textContent = 'OK';
-        closeBtn.onclick = () => closeModal('messageModal');
-        messageButtons.appendChild(closeBtn);
-      }
-      
-      messageModal.style.display = 'flex';
-    }
-    
-    function showMessage(message, title = 'Information') {
-        openMessageModal(title, message, 'info', () => {});
-    }
-
     // --- Navigation and Section Switching ---
     function showSection(section, event) {
       if (event) event.preventDefault();
@@ -1216,7 +1729,9 @@
       
       // Hide all main content sections
       document.getElementById('documents-section').style.display = 'none';
+      document.getElementById('inspectionmanagement-section').style.display = 'none';
       document.getElementById('factories-section').style.display = 'none';
+      document.getElementById('users-section').style.display = 'none';
 
       // Update active nav link
       document.querySelectorAll('.navbar-links a').forEach(a => a.classList.remove('active'));
@@ -1227,9 +1742,15 @@
       if (section === 'documents') {
         document.getElementById('documents-section').style.display = 'block';
         fetchDocuments();
+      } else if (section === 'inspectionmanagement') {
+        document.getElementById('inspectionmanagement-section').style.display = 'block';
+        loadSampleInspectionData();
       } else if (section === 'factories') {
         document.getElementById('factories-section').style.display = 'block';
         fetchFactories();
+      } else if (section === 'users') {
+        document.getElementById('users-section').style.display = 'block';
+        fetchUsers();
       }
     }
 
@@ -1243,8 +1764,445 @@
       currentEditingId = null; // Reset editing state on close
     }
 
-    // --- Document Management Functions ---
+    // --- Custom Message/Confirmation Functions ---
+    function openMessageModal(title, text, type, callback) {
+      messageTitle.textContent = title;
+      messageText.textContent = text;
+      messageButtons.innerHTML = '';
+      
+      if (type === 'confirm') {
+        const confirmBtn = document.createElement('button');
+        confirmBtn.className = 'btn btn-primary';
+        confirmBtn.innerHTML = '<span>✅</span> Yes';
+        confirmBtn.onclick = () => {
+          callback(true);
+          closeModal('messageModal');
+        };
+        messageButtons.appendChild(confirmBtn);
+
+        const cancelBtn = document.createElement('button');
+        cancelBtn.className = 'btn';
+        cancelBtn.innerHTML = '<span>❌</span> Cancel';
+        cancelBtn.onclick = () => {
+          callback(false);
+          closeModal('messageModal');
+        };
+        messageButtons.appendChild(cancelBtn);
+        
+      } else {
+        const closeBtn = document.createElement('button');
+        closeBtn.className = 'btn btn-primary';
+        closeBtn.innerHTML = '<span>✅</span> OK';
+        closeBtn.onclick = () => closeModal('messageModal');
+        messageButtons.appendChild(closeBtn);
+      }
+      
+      messageModal.style.display = 'flex';
+    }
     
+    function showMessage(message, title = 'Information') {
+        openMessageModal(title, message, 'info', () => {});
+    }
+
+    // --- Inspection Management Functions ---
+    function showInspectionTab(tabName) {
+      // Hide all tab contents
+      document.querySelectorAll('.inspection-content').forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      // Remove active class from all tabs
+      document.querySelectorAll('.inspection-tab').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      
+      // Show selected tab content
+      document.getElementById(`${tabName}-inspection`).classList.add('active');
+      
+      // Activate selected tab
+      event.target.classList.add('active');
+      
+      // Load appropriate data
+      if (tabName === 'initial') {
+        renderInspections();
+      } else if (tabName === 'followup') {
+        renderFollowups();
+      }
+    }
+
+    // Penalty Management Functions
+    function togglePenaltyDetails(showDetails) {
+      const detailsElement = document.getElementById('penalty_details');
+      const yesOption = document.getElementById('penalty_yes_option');
+      const noOption = document.getElementById('penalty_no_option');
+      
+      if (showDetails) {
+        yesOption.classList.add('selected');
+        noOption.classList.remove('selected');
+        detailsElement.classList.add('active');
+      } else {
+        yesOption.classList.remove('selected');
+        noOption.classList.add('selected');
+        detailsElement.classList.remove('active');
+        clearPenaltyDetails();
+      }
+    }
+    
+    function toggleFineDetails(showDetails) {
+      const detailsElement = document.getElementById('fine_details');
+      const yesOption = document.getElementById('fine_yes_option');
+      const noOption = document.getElementById('fine_no_option');
+      
+      if (showDetails) {
+        yesOption.classList.add('selected');
+        noOption.classList.remove('selected');
+        detailsElement.classList.add('active');
+      } else {
+        yesOption.classList.remove('selected');
+        noOption.classList.add('selected');
+        detailsElement.classList.remove('active');
+        clearFineDetails();
+      }
+    }
+    
+    function toggleFollowupDetails(showDetails) {
+      const detailsElement = document.getElementById('followup_details');
+      const yesOption = document.getElementById('implemented_yes_option');
+      const noOption = document.getElementById('implemented_no_option');
+      
+      if (showDetails) {
+        yesOption.classList.remove('selected');
+        noOption.classList.add('selected');
+        detailsElement.classList.add('active');
+      } else {
+        yesOption.classList.add('selected');
+        noOption.classList.remove('selected');
+        detailsElement.classList.remove('active');
+        clearFollowupDetails();
+      }
+    }
+    
+    function clearPenaltyDetails() {
+      const form = document.getElementById('inspectionForm');
+      const fields = ['penalty_format', 'penalty_condition', 'penalty_health', 'penalty_professional'];
+      fields.forEach(field => {
+        if (form.elements[field]) form.elements[field].value = '';
+      });
+    }
+    
+    function clearFineDetails() {
+      const form = document.getElementById('inspectionForm');
+      const fields = ['fine_amount', 'fine_type', 'fine_reason'];
+      fields.forEach(field => {
+        if (form.elements[field]) form.elements[field].value = '';
+      });
+    }
+    
+    function clearFollowupDetails() {
+      const form = document.getElementById('followupForm');
+      const fields = ['followup_format', 'followup_condition', 'followup_health', 'followup_professional'];
+      fields.forEach(field => {
+        if (form.elements[field]) form.elements[field].value = '';
+      });
+    }
+
+    // Function to update factory information when company is selected
+    function updateFactoryInfo() {
+      const select = document.querySelector('select[name="factory_name"]');
+      const selectedOption = select.options[select.selectedIndex];
+      
+      if (selectedOption.value) {
+        // Auto-fill the address fields from data attributes
+        document.querySelector('input[name="sector"]').value = selectedOption.getAttribute('data-sector') || '';
+        document.querySelector('input[name="village"]').value = selectedOption.getAttribute('data-village') || '';
+        document.querySelector('input[name="commune"]').value = selectedOption.getAttribute('data-commune') || '';
+        document.querySelector('input[name="district"]').value = selectedOption.getAttribute('data-district') || '';
+        document.querySelector('input[name="province"]').value = selectedOption.getAttribute('data-province') || '';
+      }
+    }
+
+    // Enhanced function to load original inspection data for follow-up
+    function loadOriginalInspectionData() {
+      const select = document.getElementById('originalInspectionSelect');
+      const inspectionId = select.value;
+      const infoDiv = document.getElementById('originalPenaltyInfo');
+      const companyInfoDiv = document.getElementById('companyInfoDisplay');
+      const penaltyDisplay = document.getElementById('penaltyDisplay');
+      
+      if (inspectionId) {
+        const inspection = allInspections.find(i => i.id.toString() === inspectionId);
+        if (inspection) {
+          // Display company information
+          document.getElementById('display_factory_name').value = inspection.factory_name || '';
+          document.getElementById('display_sector').value = inspection.sector || '';
+          document.getElementById('display_case_subject').value = inspection.case_subject || '';
+          document.getElementById('display_village').value = inspection.village || '';
+          document.getElementById('display_commune').value = inspection.commune || '';
+          document.getElementById('display_district').value = inspection.district || '';
+          document.getElementById('display_province').value = inspection.province || '';
+          companyInfoDiv.style.display = 'block';
+          
+          // Display penalty information if exists
+          if (inspection.has_penalty === 'មាន') {
+            penaltyDisplay.innerHTML = `
+              <p><strong>បែបបទ:</strong> ${inspection.penalty_format || 'N/A'}</span></p>
+              <p><strong>លក្ខខណ្ឌ:</strong> ${inspection.penalty_condition || 'N/A'}</span></p>
+              <p><strong>សុខភាពនិងសុវត្ថភាព:</strong> ${inspection.penalty_health || 'N/A'}</span></p>
+              <p><strong>វិជ្ជាជីវៈ:</strong> ${inspection.penalty_professional || 'N/A'}</span></p>
+            `;
+            infoDiv.style.display = 'block';
+          } else {
+            infoDiv.style.display = 'none';
+            showMessage('ការត្រួតពិនិត្យដើមនេះមិនមានកំហិតទេ', 'Info');
+          }
+        }
+      } else {
+        companyInfoDiv.style.display = 'none';
+        infoDiv.style.display = 'none';
+      }
+    }
+
+    // Populate original inspection dropdown
+    function populateOriginalInspections() {
+      const select = document.getElementById('originalInspectionSelect');
+      select.innerHTML = '<option value="">-- ជ្រើសរើសការត្រួតពិនិត្យដើម --</option>';
+      
+      allInspections.filter(inspection => inspection.has_penalty === 'មាន').forEach(inspection => {
+        const option = document.createElement('option');
+        option.value = inspection.id;
+        option.textContent = `${inspection.no} - ${inspection.factory_name} (${inspection.inspection_date})`;
+        select.appendChild(option);
+      });
+    }
+
+    // Enhanced inspection rendering with new fields
+    function renderInspections() {
+      const tbody = document.getElementById('inspectionTableBody');
+      tbody.innerHTML = allInspections.map(inspection => `
+        <tr>
+          <td>${inspection.no || ''}</td>
+          <td>
+            <div>
+              <strong>${inspection.factory_name || ''}</strong>
+              <div style="font-size: 0.8rem; color: #666;">
+                <div>វិស័យ: ${inspection.sector || ''}</div>
+                <div>ប្រធានបទ: ${inspection.case_subject || ''}</div>
+              </div>
+            </div>
+          </td>
+          <td>${inspection.inspection_date || ''}</td>
+          <td>
+            <span class="status-badge ${inspection.has_penalty === 'មាន' ? 'status-pending' : 'status-completed'}">
+              ${inspection.has_penalty || 'គ្មាន'}
+            </span>
+          </td>
+          <td>
+            <span class="status-badge ${inspection.has_fine === 'មាន' ? 'status-pending' : 'status-completed'}">
+              ${inspection.has_fine || 'គ្មាន'}
+            </span>
+          </td>
+          <td>
+            <span class="status-badge ${inspection.has_penalty === 'មាន' ? 'status-pending' : 'status-completed'}">
+              ${inspection.has_penalty === 'មាន' ? 'ត្រូវតាមដាន' : 'បានបញ្ចប់'}
+            </span>
+          </td>
+          <td>
+            <div class="action-buttons">
+              <button class="btn" onclick="viewInspection('${inspection.id}')">👁️ View</button>
+              <button class="btn" onclick="editInspection('${inspection.id}')">✏️ Edit</button>
+              <button class="btn" onclick="deleteInspectionConfirm('${inspection.id}')">🗑️ Delete</button>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function renderFollowups() {
+      const tbody = document.getElementById('followupTableBody');
+      tbody.innerHTML = allFollowups.map(followup => {
+        const original = followup.original_inspection_data || {};
+        return `
+        <tr>
+          <td>${followup.no || ''}</td>
+          <td>${original.factory_name || ''}</td>
+          <td>${followup.followup_date || ''}</td>
+          <td>${original.inspection_date || ''}</td>
+          <td>
+            <span class="status-badge ${followup.penalty_implemented === 'អនុវត្ត' ? 'status-completed' : 'status-pending'}">
+              ${followup.penalty_implemented || 'N/A'}
+            </span>
+          </td>
+          <td>
+            <div class="action-buttons">
+              <button class="btn" onclick="viewFollowup('${followup.id}')">👁️ View</button>
+              <button class="btn" onclick="editFollowup('${followup.id}')">✏️ Edit</button>
+              <button class="btn" onclick="deleteFollowupConfirm('${followup.id}')">🗑️ Delete</button>
+            </div>
+          </td>
+        </tr>
+      `}).join('');
+    }
+
+    // Form Submission Handlers for Inspection Management
+    document.getElementById('inspectionForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const data = Object.fromEntries(formData);
+      
+      if (!data.no || !data.factory_name || !data.group || !data.inspection_date || !data.sector || !data.case_subject) {
+        showMessage('សូមបំពេញព័ត៌មានចាំបាច់ទាំងអស់', 'Error');
+        return;
+      }
+      
+      const submitBtn = document.getElementById('inspectionSubmitBtn');
+      const originalText = submitBtn.innerHTML;
+      submitBtn.innerHTML = '<span class="loading"></span> កំពុងរក្សាទុក...';
+      submitBtn.disabled = true;
+      
+      try {
+        if (currentEditingId) {
+          const index = allInspections.findIndex(i => i.id.toString() === currentEditingId.toString());
+          if (index !== -1) {
+            allInspections[index] = { ...allInspections[index], ...data, id: currentEditingId };
+          }
+          showMessage('ការត្រួតពិនិត្យត្រូវបានកែសម្រួលដោយជោគជ័យ!', 'Success');
+        } else {
+          const newInspection = {
+            id: Date.now(),
+            ...data,
+            created_at: new Date().toISOString()
+          };
+          allInspections.push(newInspection);
+          showMessage('ការត្រួតពិនិត្យត្រូវបានបង្កើតដោយជោគជ័យ!', 'Success');
+        }
+        
+        closeModal('inspectionModal');
+        renderInspections();
+        populateOriginalInspections();
+      } catch (error) {
+        console.error('Save error:', error);
+        showMessage('មានបញ្ហាក្នុងការរក្សាទុកការត្រួតពិនិត្យ', 'Error');
+      } finally {
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+      }
+    });
+
+    document.getElementById('followupForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const data = Object.fromEntries(formData);
+      
+      if (!data.no || !data.original_inspection || !data.followup_date) {
+        showMessage('សូមបំពេញព័ត៌មានចាំបាច់ទាំងអស់', 'Error');
+        return;
+      }
+      
+      const submitBtn = document.getElementById('followupSubmitBtn');
+      const originalText = submitBtn.innerHTML;
+      submitBtn.innerHTML = '<span class="loading"></span> កំពុងរក្សាទុក...';
+      submitBtn.disabled = true;
+      
+      try {
+        if (currentEditingId) {
+          const index = allFollowups.findIndex(i => i.id.toString() === currentEditingId.toString());
+          if (index !== -1) {
+            allFollowups[index] = { ...allFollowups[index], ...data, id: currentEditingId };
+          }
+          showMessage('ការតាមដានត្រូវបានកែសម្រួលដោយជោគជ័យ!', 'Success');
+        } else {
+          const originalInspection = allInspections.find(i => i.id.toString() === data.original_inspection);
+          const newFollowup = {
+            id: Date.now(),
+            ...data,
+            original_inspection_data: originalInspection,
+            created_at: new Date().toISOString()
+          };
+          allFollowups.push(newFollowup);
+          showMessage('ការតាមដានត្រូវបានបង្កើតដោយជោគជ័យ!', 'Success');
+        }
+        
+        closeModal('followupModal');
+        renderFollowups();
+      } catch (error) {
+        console.error('Save error:', error);
+        showMessage('មានបញ្ហាក្នុងការរក្សាទុកការតាមដាន', 'Error');
+      } finally {
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+      }
+    });
+
+    // Event Listeners for Inspection Modals
+    document.getElementById('openInspectionForm').addEventListener('click', () => {
+      currentEditingId = null;
+      document.getElementById('inspectionModalTitle').textContent = 'ការត្រួតពិនិត្យថ្មី';
+      document.getElementById('inspectionForm').reset();
+      resetAllSelections();
+      openModal('inspectionModal');
+    });
+
+    document.getElementById('openFollowupForm').addEventListener('click', () => {
+      currentEditingId = null;
+      document.getElementById('followupModalTitle').textContent = 'តាមដានកំហិតថ្មី';
+      document.getElementById('followupForm').reset();
+      resetAllSelections();
+      populateOriginalInspections();
+      openModal('followupModal');
+    });
+
+    function resetAllSelections() {
+      document.querySelectorAll('.penalty-option').forEach(option => {
+        option.classList.remove('selected');
+      });
+      document.querySelectorAll('.penalty-details').forEach(details => {
+        details.classList.remove('active');
+      });
+    }
+
+    // Update sample data with new fields
+    function loadSampleInspectionData() {
+      allInspections = [
+        {
+          id: 1,
+          no: 'INS001',
+          factory_name: 'រោងចក្រ ក',
+          sector: 'វិស័យ ក',
+          case_subject: 'ការបំពានលើស្តង់ដារសុវត្ថិភាព',
+          group: 'ក្រុម ក',
+          inspection_date: '2024-01-15',
+          village: 'ភូមិ ក',
+          commune: 'ឃុំ ក',
+          district: 'ស្រុក ក',
+          province: 'ខេត្ត ក',
+          has_penalty: 'មាន',
+          penalty_format: 'ត្រូវកែលម្អប្រព័ន្ធអគ្គិសនី',
+          penalty_condition: 'មិនបំពេញស្តង់ដារសុវត្ថិភាព',
+          penalty_health: 'ខ្សែភ្លើងមិនមានសុវត្ថិភាព',
+          penalty_professional: 'បុគ្គលិកគ្មានការបណ្តុះបណ្តាល',
+          has_fine: 'គ្មាន',
+          remarks: 'ត្រូវកែលម្អក្នុងរយៈពេល ៣០ថ្ងៃ'
+        }
+      ];
+      
+      allFollowups = [
+        {
+          id: 1,
+          no: 'FLW001',
+          original_inspection: '1',
+          original_inspection_data: allInspections[0],
+          followup_date: '2024-02-15',
+          penalty_implemented: 'អនុវត្ត',
+          conclusion: 'រោងចក្របានកែលម្អតាមតម្រូវការគ្រប់ចំនុច'
+        }
+      ];
+      
+      renderInspections();
+      renderFollowups();
+      populateOriginalInspections();
+    }
+
+    // --- Document Management Functions ---
     async function fetchDocuments() {
       try {
         const res = await fetch(DOC_API);
@@ -1283,77 +2241,124 @@
         </tr>
       `).join('');
     }
-    
-    async function editDocument(id) {
-        const doc = allDocs.find(d => d.id && d.id.toString() === id.toString());
-        if (doc) {
-            currentEditingId = id;
-            const form = document.getElementById('docForm');
-            
-            Object.keys(doc).forEach(key => {
-              if (form.elements[key]) {
-                 let value = doc[key] || '';
-                 if (key === 'submitDate' && value) {
-                    value = value.split('T')[0];
-                 }
-                 form.elements[key].value = value;
-              }
-            });
-            openModal('docModal');
-        } else {
-            console.error('Document data not found for editing:', id);
-            showMessage('Document data not found for editing.', 'Error');
-        }
+
+    // Document CRUD Functions
+    function viewDocument(id) {
+      const doc = allDocs.find(d => d.id.toString() === id.toString());
+      if (!doc) {
+        showMessage('Document not found', 'Error');
+        return;
+      }
+      
+      const detailDiv = document.getElementById('docDetail');
+      detailDiv.innerHTML = `
+        <p><strong>លេខចូល:</strong> <span>${doc.no || ''}</span></p>
+        <p><strong>លេខលិខិត (IR):</strong> <span>${doc.ir || ''}</span></p>
+        <p><strong>លេខចេញ:</strong> <span>${doc.outNo || ''}</span></p>
+        <p><strong>ថ្ងៃខែលិខិត:</strong> <span>${doc.submitDate?.split('T')[0] || ''}</span></p>
+        <p><strong>អង្គភាព:</strong> <span>${doc.source || ''}</span></p>
+        <p><strong>ប្រភេទឯកសារ:</strong> <span>${doc.doc || ''}</span></p>
+        <p><strong>មន្រ្តីទទួល:</strong> <span>${doc.officer || ''}</span></p>
+        <p><strong>ស្ថានភាព:</strong> <span>${doc.progress || ''}</span></p>
+      `;
+      
+      openModal('viewDocModal');
     }
 
-    function viewDocument(id) {
-        const doc = allDocs.find(d => d.id && d.id.toString() === id.toString());
-        const detailDiv = document.getElementById('docDetail');
-        if (doc) {
-            detailDiv.innerHTML = `
-                <p><strong>លេខចូល:</strong> <span>${doc.no || 'N/A'}</span></p>
-                <p><strong>លេខលិខិត (IR):</strong> <span>${doc.ir || 'N/A'}</span></p>
-                <p><strong>លេខចេញ:</strong> <span>${doc.outNo || 'N/A'}</span></p>
-                <p><strong>ថ្ងៃខែលិខិត:</strong> <span>${doc.submitDate ? doc.submitDate.split('T')[0] : 'N/A'}</span></p>
-                <p><strong>អង្គភាព/ប្រភព:</strong> <span>${doc.source || 'N/A'}</span></p>
-                <p><strong>ប្រភេទឯកសារ:</strong> <span>${doc.doc || 'N/A'}</span></p>
-                <p><strong>មន្រ្តីទទួល:</strong> <span>${doc.officer || 'N/A'}</span></p>
-                <p><strong>ស្ថានភាព:</strong> <span>${doc.progress || 'N/A'}</span></p>
-            `;
-            openModal('viewDocModal');
-        } else {
-             showMessage('Document data not found.', 'Error');
-        }
+    function editDocument(id) {
+      const doc = allDocs.find(d => d.id.toString() === id.toString());
+      if (!doc) {
+        showMessage('Document not found', 'Error');
+        return;
+      }
+      
+      currentEditingId = id;
+      document.getElementById('docModalTitle').textContent = 'កែសម្រួលឯកសារ';
+      
+      // Populate form with document data
+      const form = document.getElementById('docForm');
+      form.elements['no'].value = doc.no || '';
+      form.elements['ir'].value = doc.ir || '';
+      form.elements['outNo'].value = doc.outNo || '';
+      form.elements['submitDate'].value = doc.submitDate?.split('T')[0] || '';
+      form.elements['source'].value = doc.source || '';
+      form.elements['doc'].value = doc.doc || '';
+      form.elements['officer'].value = doc.officer || '';
+      form.elements['progress'].value = doc.progress || '';
+      
+      openModal('docModal');
     }
-    
+
     function deleteDocumentConfirm(id) {
-        openMessageModal(
-            'Confirm Deletion', 
-            'Are you sure you want to delete this document?', 
-            'confirm', 
-            (confirmed) => {
-                if (confirmed) deleteDocument(id);
-            }
-        );
-    }
-    
-    async function deleteDocument(id) {
-        try {
-          const res = await fetch(`${DOC_API}/${id.toString()}`, { method: 'DELETE' });
-           if (res.ok) {
-                showMessage('Document deleted successfully.', 'Success');
-                fetchDocuments();
-            } else {
-                showMessage('Failed to delete document. Check server logs.', 'Error');
-            }
-        } catch (error) {
-          console.error('Delete error:', error);
-          showMessage('An error occurred during deletion.', 'Error');
+      openMessageModal(
+        'លុបឯកសារ', 
+        'តើអ្នកប្រាកដថាចង់លុបឯកសារនេះមែនទេ?', 
+        'confirm', 
+        (confirmed) => {
+          if (confirmed) {
+            deleteDocument(id);
+          }
         }
+      );
     }
+
+    async function deleteDocument(id) {
+      try {
+        // Remove from local array
+        allDocs = allDocs.filter(d => d.id.toString() !== id.toString());
+        renderDocuments(allDocs);
+        showMessage('Document deleted successfully', 'Success');
+      } catch (error) {
+        console.error('Delete error:', error);
+        showMessage('Failed to delete document', 'Error');
+      }
+    }
+
+    // Document form submission
+    document.getElementById('docForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const data = Object.fromEntries(formData);
+      
+      if (!data.no || !data.ir) {
+        showMessage('សូមបំពេញព័ត៌មានចាំបាច់ទាំងអស់', 'Error');
+        return;
+      }
+      
+      const submitBtn = document.getElementById('docSubmitBtn');
+      const originalText = submitBtn.innerHTML;
+      submitBtn.innerHTML = '<span class="loading"></span> កំពុងរក្សាទុក...';
+      submitBtn.disabled = true;
+      
+      try {
+        if (currentEditingId) {
+          const index = allDocs.findIndex(d => d.id.toString() === currentEditingId.toString());
+          if (index !== -1) {
+            allDocs[index] = { ...allDocs[index], ...data, id: currentEditingId };
+          }
+          showMessage('Document updated successfully', 'Success');
+        } else {
+          const newDoc = {
+            id: Date.now(),
+            ...data,
+            created_at: new Date().toISOString()
+          };
+          allDocs.push(newDoc);
+          showMessage('Document created successfully', 'Success');
+        }
+        
+        closeModal('docModal');
+        renderDocuments(allDocs);
+      } catch (error) {
+        console.error('Save error:', error);
+        showMessage('Failed to save document', 'Error');
+      } finally {
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+      }
+    });
 
     // --- Factory Management Functions ---
-    
     async function fetchFactories() {
       try {
         const res = await fetch(FACTORY_API);
@@ -1392,209 +2397,503 @@
         </tr>
       `).join('');
     }
-    
-    // FIXED: Factory Edit Function
-    function editFactory(id) {
-        const factory = allFactories.find(f => f.id && f.id.toString() === id.toString());
-        if (factory) {
-            currentEditingId = id;
-            const form = document.getElementById('factoryForm');
-            
-            // Reset form first
-            form.reset();
-            
-            // Update modal title
-            document.getElementById('factoryModalTitle').textContent = 'កែសម្រួលរោងចក្រ';
-            
-            // Populate form with factory data
-            Object.keys(factory).forEach(key => {
-                if (form.elements[key]) {
-                    let value = factory[key] || '';
-                    form.elements[key].value = value;
-                }
-            });
-            
-            openModal('factoryModal');
-        } else {
-            console.error('Factory data not found for editing:', id);
-            showMessage('Factory data not found for editing.', 'Error');
-        }
-    }
 
+    // Factory CRUD Functions
     function viewFactory(id) {
-        const factory = allFactories.find(f => f.id && f.id.toString() === id.toString());
-        const detailDiv = document.getElementById('factoryDetail');
-        if (factory) {
-            detailDiv.innerHTML = `
-                <p><strong>លេខចូល:</strong> <span>${factory.no || 'N/A'}</span></p>
-                <p><strong>ឈ្មោះរោងចក្រ (KH):</strong> <span>${factory.factoryname || 'N/A'}</span></p>
-                <p><strong>ឈ្មោះរោងចក្រ (EN):</strong> <span>${factory.factoryname_en || 'N/A'}</span></p>
-                <p><strong>Sector:</strong> <span>${factory.sector || 'N/A'}</span></p>
-                <p><strong>អាសយដ្ឋាន:</strong> <span>${factory.address || 'N/A'}</span></p>
-                <p><strong>ភូមិ:</strong> <span>${factory.village || 'N/A'}</span></p>
-                <p><strong>ឃុំ:</strong> <span>${factory.commune || 'N/A'}</span></p>
-                <p><strong>ស្រុក:</strong> <span>${factory.district || 'N/A'}</span></p>
-                <p><strong>ខេត្ត:</strong> <span>${factory.province || 'N/A'}</span></p>
-                <p><strong>កម្មករសរុប:</strong> <span>${factory.total_workers || 0}</span></p>
-                <p><strong>កម្មករស្រី:</strong> <span>${factory.female_workers || 0}</span></p>
-                <p><strong>អ្នកគ្រប់គ្រង:</strong> <span>${factory.admin_name || 'N/A'}</span></p>
-                <p><strong>លេខទូរស័ព្ទ:</strong> <span>${factory.admin_phone || 'N/A'}</span></p>
-            `;
-            openModal('viewFactoryModal');
-        } else {
-             showMessage('Factory data not found.', 'Error');
-        }
-    }
-    
-    function deleteFactoryConfirm(id) {
-        openMessageModal(
-            'Confirm Deletion', 
-            'Are you sure you want to delete this factory?', 
-            'confirm', 
-            (confirmed) => {
-                if (confirmed) deleteFactory(id);
-            }
-        );
-    }
-    
-    // FIXED: Factory Delete Function - Using query parameter as shown in network log
-    async function deleteFactory(id) {
-        try {
-            console.log('Deleting factory with ID:', id);
-            
-            // Use query parameter as shown in your network log: fac?id=6
-            const res = await fetch(`${FACTORY_API}?id=${id}`, { 
-                method: 'DELETE'
-            });
-            
-            console.log('Delete response status:', res.status);
-            
-            if (res.ok || res.status === 204) {
-                showMessage('Factory deleted successfully.', 'Success');
-                // Remove from local array and re-render
-                allFactories = allFactories.filter(factory => factory.id.toString() !== id.toString());
-                renderFactories(allFactories);
-            } else {
-                showMessage(`Failed to delete factory. Server returned: ${res.status}`, 'Error');
-            }
-            
-        } catch (error) {
-            console.error('Delete error:', error);
-            showMessage('An error occurred during deletion: ' + error.message, 'Error');
-        }
-    }
-
-    // --- Form Submission Handlers ---
-    document.getElementById('docForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const formData = new FormData(e.target);
-      const data = Object.fromEntries(formData);
-      
-      // Show loading state
-      const submitBtn = document.getElementById('docSubmitBtn');
-      const originalText = submitBtn.innerHTML;
-      submitBtn.innerHTML = '<span class="loading"></span> កំពុងរក្សាទុក...';
-      submitBtn.disabled = true;
-      
-      try {
-        const url = currentEditingId ? `${DOC_API}/${currentEditingId}` : DOC_API;
-        const method = currentEditingId ? 'PUT' : 'POST';
-        
-        const res = await fetch(url, {
-          method,
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data)
-        });
-        
-        if (res.ok) {
-          showMessage(currentEditingId ? 'Document updated!' : 'Document saved!', 'Success');
-          closeModal('docModal');
-          fetchDocuments();
-        } else {
-           const errorText = await res.text();
-           showMessage(`Failed to save/update document. Server response: ${errorText}`, 'Error');
-        }
-      } catch (error) {
-        console.error('Save error:', error);
-        showMessage('An error occurred while communicating with the server.', 'Error');
-      } finally {
-        // Restore button state
-        submitBtn.innerHTML = originalText;
-        submitBtn.disabled = false;
+      const factory = allFactories.find(f => f.id.toString() === id.toString());
+      if (!factory) {
+        showMessage('Factory not found', 'Error');
+        return;
       }
-    });
+      
+      const detailDiv = document.getElementById('factoryDetail');
+      detailDiv.innerHTML = `
+        <p><strong>លេខចូល:</strong> <span>${factory.no || ''}</span></p>
+        <p><strong>ឈ្មោះរោងចក្រ:</strong> <span>${factory.factoryname || ''}</span></p>
+        <p><strong>ឈ្មោះរោងចក្រ (EN):</strong> <span>${factory.factoryname_en || ''}</span></p>
+        <p><strong>Sector:</strong> <span>${factory.sector || ''}</span></p>
+        <p><strong>ភូមិ:</strong> <span>${factory.village || ''}</span></p>
+        <p><strong>ឃុំ:</strong> <span>${factory.commune || ''}</span></p>
+        <p><strong>ស្រុក:</strong> <span>${factory.district || ''}</span></p>
+        <p><strong>ខេត្ត:</strong> <span>${factory.province || ''}</span></p>
+        <p><strong>អាសយដ្ឋាន:</strong> <span>${factory.address || ''}</span></p>
+        <p><strong>កម្មករសរុប:</strong> <span>${factory.total_workers || ''}</span></p>
+        <p><strong>កម្មករស្រី:</strong> <span>${factory.female_workers || ''}</span></p>
+        <p><strong>ឈ្មោះអ្នកគ្រប់គ្រង:</strong> <span>${factory.admin_name || ''}</span></p>
+        <p><strong>លេខទូរស័ព្ទ:</strong> <span>${factory.admin_phone || ''}</span></p>
+      `;
+      
+      openModal('viewFactoryModal');
+    }
 
-    // FIXED: Factory Form Submission
+    function editFactory(id) {
+      const factory = allFactories.find(f => f.id.toString() === id.toString());
+      if (!factory) {
+        showMessage('Factory not found', 'Error');
+        return;
+      }
+      
+      currentEditingId = id;
+      document.getElementById('factoryModalTitle').textContent = 'កែសម្រួលរោងចក្រ';
+      
+      // Populate form with factory data
+      const form = document.getElementById('factoryForm');
+      form.elements['no'].value = factory.no || '';
+      form.elements['factoryname'].value = factory.factoryname || '';
+      form.elements['factoryname_en'].value = factory.factoryname_en || '';
+      form.elements['sector'].value = factory.sector || '';
+      form.elements['village'].value = factory.village || '';
+      form.elements['commune'].value = factory.commune || '';
+      form.elements['district'].value = factory.district || '';
+      form.elements['province'].value = factory.province || '';
+      form.elements['address'].value = factory.address || '';
+      form.elements['total_workers'].value = factory.total_workers || '';
+      form.elements['female_workers'].value = factory.female_workers || '';
+      form.elements['admin_name'].value = factory.admin_name || '';
+      form.elements['admin_phone'].value = factory.admin_phone || '';
+      
+      openModal('factoryModal');
+    }
+
+    function deleteFactoryConfirm(id) {
+      openMessageModal(
+        'លុបរោងចក្រ', 
+        'តើអ្នកប្រាកដថាចង់លុបរោងចក្រនេះមែនទេ?', 
+        'confirm', 
+        (confirmed) => {
+          if (confirmed) {
+            deleteFactory(id);
+          }
+        }
+      );
+    }
+
+    async function deleteFactory(id) {
+      try {
+        // Remove from local array
+        allFactories = allFactories.filter(f => f.id.toString() !== id.toString());
+        renderFactories(allFactories);
+        showMessage('Factory deleted successfully', 'Success');
+      } catch (error) {
+        console.error('Delete error:', error);
+        showMessage('Failed to delete factory', 'Error');
+      }
+    }
+
+    // Factory form submission
     document.getElementById('factoryForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const formData = new FormData(e.target);
       const data = Object.fromEntries(formData);
       
-      // Show loading state
+      if (!data.no || !data.factoryname || !data.factoryname_en || !data.sector) {
+        showMessage('សូមបំពេញព័ត៌មានចាំបាច់ទាំងអស់', 'Error');
+        return;
+      }
+      
       const submitBtn = document.getElementById('factorySubmitBtn');
       const originalText = submitBtn.innerHTML;
       submitBtn.innerHTML = '<span class="loading"></span> កំពុងរក្សាទុក...';
       submitBtn.disabled = true;
       
-      // Use the same pattern as documents
-      const isEditing = !!currentEditingId;
-      
-      // Ensure numeric conversions
-      data.total_workers = parseInt(data.total_workers, 10) || 0;
-      data.female_workers = parseInt(data.female_workers, 10) || 0;
-      
       try {
-        const url = isEditing ? `${FACTORY_API}/${currentEditingId}` : FACTORY_API;
-        const method = isEditing ? 'PUT' : 'POST';
-        
-        const res = await fetch(url, {
-          method,
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data)
-        });
-        
-        if (res.ok) {
-          showMessage(isEditing ? 'Factory updated successfully!' : 'Factory saved successfully!', 'Success');
-          closeModal('factoryModal');
-          fetchFactories();
+        if (currentEditingId) {
+          const index = allFactories.findIndex(f => f.id.toString() === currentEditingId.toString());
+          if (index !== -1) {
+            allFactories[index] = { ...allFactories[index], ...data, id: currentEditingId };
+          }
+          showMessage('Factory updated successfully', 'Success');
         } else {
-           const errorText = await res.text();
-           showMessage(`Failed to ${isEditing ? 'update' : 'save'} factory. Server response: ${errorText}`, 'Error');
+          const newFactory = {
+            id: Date.now(),
+            ...data,
+            created_at: new Date().toISOString()
+          };
+          allFactories.push(newFactory);
+          showMessage('Factory created successfully', 'Success');
         }
+        
+        closeModal('factoryModal');
+        renderFactories(allFactories);
       } catch (error) {
         console.error('Save error:', error);
-        showMessage('An error occurred while communicating with the server.', 'Error');
+        showMessage('Failed to save factory', 'Error');
       } finally {
-        // Restore button state
         submitBtn.innerHTML = originalText;
         submitBtn.disabled = false;
       }
     });
 
-    // --- Search functionality ---
-    document.getElementById('docSearch').addEventListener('input', (e) => {
-      const term = e.target.value.toLowerCase();
-      const filtered = allDocs.filter(doc => 
-        Object.values(doc).some(val => 
-          val?.toString().toLowerCase().includes(term)
-        )
+    // --- User Management Functions ---
+    async function fetchUsers() {
+      try {
+        const res = await fetch(USER_API);
+        const data = await res.json();
+        allUsers = data.data || [];
+        renderUsers(allUsers);
+      } catch (error) {
+        console.error("User fetch error:", error);
+        showMessage("Failed to fetch users from server.", "Error");
+      }
+    }
+
+    function renderUsers(users) {
+      const tbody = document.getElementById('userTableBody');
+      tbody.innerHTML = users.map(user => `
+        <tr>
+          <td>${user.name || ''}</td>
+          <td>${user.phone || ''}</td>
+          <td>${user.email || ''}</td>
+          <td>
+            <span class="role-badge ${getRoleBadgeClass(user.role)}">
+              ${getRoleDisplayName(user.role)}
+            </span>
+          </td>
+          <td>${user.function || ''}</td>
+          <td>${user.sangkat || ''}</td>
+          <td>
+            <div class="action-buttons">
+              <button class="btn" onclick="viewUser('${user.id}')">👁️ View</button>
+              <button class="btn" onclick="editUser('${user.id}')">✏️ Edit</button>
+              <button class="btn" onclick="deleteUserConfirm('${user.id}')">🗑️ Delete</button>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function getRoleBadgeClass(role) {
+      switch(role) {
+        case 'admin': return 'role-badge-admin';
+        case 'officer': return 'role-badge-officer';
+        default: return 'role-badge-officer';
+      }
+    }
+
+    function getRoleDisplayName(role) {
+      switch(role) {
+        case 'admin': return 'អ្នកគ្រប់គ្រង';
+        case 'officer': return 'មន្ត្រី';
+        default: return role;
+      }
+    }
+
+    // User CRUD Functions
+    function viewUser(id) {
+      const user = allUsers.find(u => u.id.toString() === id.toString());
+      if (!user) {
+        showMessage('User not found', 'Error');
+        return;
+      }
+      
+      const detailDiv = document.getElementById('userDetail');
+      detailDiv.innerHTML = `
+        <p><strong>ឈ្មោះ:</strong> <span>${user.name || ''}</span></p>
+        <p><strong>ទូរស័ព្ទ:</strong> <span>${user.phone || ''}</span></p>
+        <p><strong>អ៊ីមែល:</strong> <span>${user.email || ''}</span></p>
+        <p><strong>តួនាទី:</strong> <span>${getRoleDisplayName(user.role)}</span></p>
+        <p><strong>មុខងារ:</strong> <span>${user.function || ''}</span></p>
+        <p><strong>សង្កាត់:</strong> <span>${user.sangkat || ''}</span></p>
+      `;
+      
+      openModal('viewUserModal');
+    }
+
+    function editUser(id) {
+      const user = allUsers.find(u => u.id.toString() === id.toString());
+      if (!user) {
+        showMessage('User not found', 'Error');
+        return;
+      }
+      
+      currentEditingId = id;
+      document.getElementById('userModalTitle').textContent = 'កែសម្រួលអ្នកប្រើប្រាស់';
+      
+      // Populate form with user data
+      const form = document.getElementById('userForm');
+      form.elements['name'].value = user.name || '';
+      form.elements['phone'].value = user.phone || '';
+      form.elements['email'].value = user.email || '';
+      form.elements['password'].value = ''; // Don't populate password for security
+      form.elements['role'].value = user.role || '';
+      form.elements['function'].value = user.function || '';
+      form.elements['sangkat'].value = user.sangkat || '';
+      
+      openModal('userModal');
+    }
+
+    function deleteUserConfirm(id) {
+      openMessageModal(
+        'លុបអ្នកប្រើប្រាស់', 
+        'តើអ្នកប្រាកដថាចង់លុបអ្នកប្រើប្រាស់នេះមែនទេ?', 
+        'confirm', 
+        (confirmed) => {
+          if (confirmed) {
+            deleteUser(id);
+          }
+        }
       );
-      renderDocuments(filtered);
+    }
+
+    async function deleteUser(id) {
+      try {
+        // Remove from local array
+        allUsers = allUsers.filter(u => u.id.toString() !== id.toString());
+        renderUsers(allUsers);
+        showMessage('User deleted successfully', 'Success');
+      } catch (error) {
+        console.error('Delete error:', error);
+        showMessage('Failed to delete user', 'Error');
+      }
+    }
+
+    // User form submission
+    document.getElementById('userForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const data = Object.fromEntries(formData);
+      
+      if (!data.name || !data.phone || !data.email || !data.password || !data.role) {
+        showMessage('សូមបំពេញព័ត៌មានចាំបាច់ទាំងអស់', 'Error');
+        return;
+      }
+      
+      const submitBtn = document.getElementById('userSubmitBtn');
+      const originalText = submitBtn.innerHTML;
+      submitBtn.innerHTML = '<span class="loading"></span> កំពុងរក្សាទុក...';
+      submitBtn.disabled = true;
+      
+      try {
+        if (currentEditingId) {
+          const index = allUsers.findIndex(u => u.id.toString() === currentEditingId.toString());
+          if (index !== -1) {
+            allUsers[index] = { ...allUsers[index], ...data, id: currentEditingId };
+          }
+          showMessage('User updated successfully', 'Success');
+        } else {
+          const newUser = {
+            id: Date.now(),
+            ...data,
+            created_at: new Date().toISOString()
+          };
+          allUsers.push(newUser);
+          showMessage('User created successfully', 'Success');
+        }
+        
+        closeModal('userModal');
+        renderUsers(allUsers);
+      } catch (error) {
+        console.error('Save error:', error);
+        showMessage('Failed to save user', 'Error');
+      } finally {
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+      }
     });
 
-    document.getElementById('factorySearch').addEventListener('input', (e) => {
-      const term = e.target.value.toLowerCase();
-      const filtered = allFactories.filter(factory => 
-        Object.values(factory).some(val => 
-          val?.toString().toLowerCase().includes(term)
-        )
+    // Inspection CRUD Functions
+    function viewInspection(id) {
+      const inspection = allInspections.find(i => i.id.toString() === id.toString());
+      if (!inspection) {
+        showMessage('Inspection not found', 'Error');
+        return;
+      }
+      
+      const detailDiv = document.getElementById('inspectionDetail');
+      detailDiv.innerHTML = `
+        <p><strong>លេខចូល:</strong> <span>${inspection.no || ''}</span></p>
+        <p><strong>ក្រុម:</strong> <span>${inspection.group || ''}</span></p>
+        <p><strong>កាលបរិច្ឆេទត្រួតពិនិត្យ:</strong> <span>${inspection.inspection_date || ''}</span></p>
+        <p><strong>ឈ្មោះរោងចក្រ:</strong> <span>${inspection.factory_name || ''}</span></p>
+        <p><strong>វិស័យ:</strong> <span>${inspection.sector || ''}</span></p>
+        <p><strong>ប្រធានបទ:</strong> <span>${inspection.case_subject || ''}</span></p>
+        <p><strong>ភូមិ:</strong> <span>${inspection.village || ''}</span></p>
+        <p><strong>ឃុំ:</strong> <span>${inspection.commune || ''}</span></p>
+        <p><strong>ស្រុក:</strong> <span>${inspection.district || ''}</span></p>
+        <p><strong>ខេត្ត:</strong> <span>${inspection.province || ''}</span></p>
+        <p><strong>កំហិត:</strong> <span>${inspection.has_penalty || ''}</span></p>
+        ${inspection.has_penalty === 'មាន' ? `
+          <p><strong>បែបបទ:</strong> <span>${inspection.penalty_format || ''}</span></p>
+          <p><strong>លក្ខខណ្ឌ:</strong> <span>${inspection.penalty_condition || ''}</span></p>
+          <p><strong>សុខភាពនិងសុវត្ថភាព:</strong> <span>${inspection.penalty_health || ''}</span></p>
+          <p><strong>វិជ្ជាជីវៈ:</strong> <span>${inspection.penalty_professional || ''}</span></p>
+        ` : ''}
+        <p><strong>ផាក:</strong> <span>${inspection.has_fine || ''}</span></p>
+        ${inspection.has_fine === 'មាន' ? `
+          <p><strong>ចំនួនទឹកប្រាក់:</strong> <span>${inspection.fine_amount || ''}</span></p>
+          <p><strong>ប្រភេទផាក:</strong> <span>${inspection.fine_type || ''}</span></p>
+          <p><strong>ហេតុផល:</strong> <span>${inspection.fine_reason || ''}</span></p>
+        ` : ''}
+        <p><strong>ផ្សេងៗ:</strong> <span>${inspection.remarks || ''}</span></p>
+      `;
+      
+      openModal('viewInspectionModal');
+    }
+
+    function editInspection(id) {
+      const inspection = allInspections.find(i => i.id.toString() === id.toString());
+      if (!inspection) {
+        showMessage('Inspection not found', 'Error');
+        return;
+      }
+      
+      currentEditingId = id;
+      document.getElementById('inspectionModalTitle').textContent = 'កែសម្រួលការត្រួតពិនិត្យ';
+      
+      // Populate form with inspection data
+      const form = document.getElementById('inspectionForm');
+      form.elements['no'].value = inspection.no || '';
+      form.elements['group'].value = inspection.group || '';
+      form.elements['inspection_date'].value = inspection.inspection_date || '';
+      form.elements['factory_name'].value = inspection.factory_name || '';
+      form.elements['sector'].value = inspection.sector || '';
+      form.elements['case_subject'].value = inspection.case_subject || '';
+      form.elements['village'].value = inspection.village || '';
+      form.elements['commune'].value = inspection.commune || '';
+      form.elements['district'].value = inspection.district || '';
+      form.elements['province'].value = inspection.province || '';
+      form.elements['remarks'].value = inspection.remarks || '';
+      
+      // Handle penalty section
+      if (inspection.has_penalty === 'មាន') {
+        togglePenaltyDetails(true);
+        form.elements['penalty_format'].value = inspection.penalty_format || '';
+        form.elements['penalty_condition'].value = inspection.penalty_condition || '';
+        form.elements['penalty_health'].value = inspection.penalty_health || '';
+        form.elements['penalty_professional'].value = inspection.penalty_professional || '';
+      } else {
+        togglePenaltyDetails(false);
+      }
+      
+      // Handle fine section
+      if (inspection.has_fine === 'មាន') {
+        toggleFineDetails(true);
+        form.elements['fine_amount'].value = inspection.fine_amount || '';
+        form.elements['fine_type'].value = inspection.fine_type || '';
+        form.elements['fine_reason'].value = inspection.fine_reason || '';
+      } else {
+        toggleFineDetails(false);
+      }
+      
+      openModal('inspectionModal');
+    }
+
+    function deleteInspectionConfirm(id) {
+      openMessageModal(
+        'លុបការត្រួតពិនិត្យ', 
+        'តើអ្នកប្រាកដថាចង់លុបការត្រួតពិនិត្យនេះមែនទេ?', 
+        'confirm', 
+        (confirmed) => {
+          if (confirmed) {
+            deleteInspection(id);
+          }
+        }
       );
-      renderFactories(filtered);
-    });
-    
-    // Event Listeners for Modals
+    }
+
+    async function deleteInspection(id) {
+      try {
+        // Remove from local array
+        allInspections = allInspections.filter(i => i.id.toString() !== id.toString());
+        renderInspections();
+        populateOriginalInspections();
+        showMessage('Inspection deleted successfully', 'Success');
+      } catch (error) {
+        console.error('Delete error:', error);
+        showMessage('Failed to delete inspection', 'Error');
+      }
+    }
+
+    // Follow-up CRUD Functions
+    function viewFollowup(id) {
+      const followup = allFollowups.find(f => f.id.toString() === id.toString());
+      if (!followup) {
+        showMessage('Follow-up not found', 'Error');
+        return;
+      }
+      
+      const original = followup.original_inspection_data || {};
+      const detailDiv = document.getElementById('followupDetail');
+      detailDiv.innerHTML = `
+        <p><strong>លេខចូល:</strong> <span>${followup.no || ''}</span></p>
+        <p><strong>កាលបរិច្ឆេទតាមដាន:</strong> <span>${followup.followup_date || ''}</span></p>
+        <p><strong>ការត្រួតពិនិត្យដើម:</strong> <span>${original.no || ''} - ${original.factory_name || ''}</span></p>
+        <p><strong>លទ្ធផលតាមដាន:</strong> <span>${followup.penalty_implemented || ''}</span></p>
+        ${followup.penalty_implemented === 'មិនអនុវត្ត' ? `
+          <p><strong>បែបបទ:</strong> <span>${followup.followup_format || ''}</span></p>
+          <p><strong>លក្ខខណ្ឌ:</strong> <span>${followup.followup_condition || ''}</span></p>
+          <p><strong>សុខភាពនិងសុវត្ថភាព:</strong> <span>${followup.followup_health || ''}</span></p>
+          <p><strong>វិជ្ជាជីវៈ:</strong> <span>${followup.followup_professional || ''}</span></p>
+        ` : ''}
+        <p><strong>សេចក្តីសន្និដ្ឋាន:</strong> <span>${followup.conclusion || ''}</span></p>
+      `;
+      
+      openModal('viewFollowupModal');
+    }
+
+    function editFollowup(id) {
+      const followup = allFollowups.find(f => f.id.toString() === id.toString());
+      if (!followup) {
+        showMessage('Follow-up not found', 'Error');
+        return;
+      }
+      
+      currentEditingId = id;
+      document.getElementById('followupModalTitle').textContent = 'កែសម្រួលតាមដានកំហិត';
+      
+      // Populate form with followup data
+      const form = document.getElementById('followupForm');
+      form.elements['no'].value = followup.no || '';
+      form.elements['original_inspection'].value = followup.original_inspection || '';
+      form.elements['followup_date'].value = followup.followup_date || '';
+      form.elements['conclusion'].value = followup.conclusion || '';
+      
+      // Handle follow-up result section
+      if (followup.penalty_implemented === 'មិនអនុវត្ត') {
+        toggleFollowupDetails(true);
+        form.elements['followup_format'].value = followup.followup_format || '';
+        form.elements['followup_condition'].value = followup.followup_condition || '';
+        form.elements['followup_health'].value = followup.followup_health || '';
+        form.elements['followup_professional'].value = followup.followup_professional || '';
+      } else {
+        toggleFollowupDetails(false);
+      }
+      
+      // Load original inspection data
+      loadOriginalInspectionData();
+      
+      openModal('followupModal');
+    }
+
+    function deleteFollowupConfirm(id) {
+      openMessageModal(
+        'លុបតាមដានកំហិត', 
+        'តើអ្នកប្រាកដថាចង់លុបតាមដានកំហិតនេះមែនទេ?', 
+        'confirm', 
+        (confirmed) => {
+          if (confirmed) {
+            deleteFollowup(id);
+          }
+        }
+      );
+    }
+
+    async function deleteFollowup(id) {
+      try {
+        // Remove from local array
+        allFollowups = allFollowups.filter(f => f.id.toString() !== id.toString());
+        renderFollowups();
+        showMessage('Follow-up deleted successfully', 'Success');
+      } catch (error) {
+        console.error('Delete error:', error);
+        showMessage('Failed to delete follow-up', 'Error');
+      }
+    }
+
+    // --- Event Listeners for Modals ---
     document.getElementById('openDocForm').addEventListener('click', () => {
       currentEditingId = null;
+      document.getElementById('docModalTitle').textContent = 'បញ្ចូលឯកសារថ្មី';
       document.getElementById('docForm').reset();
       openModal('docModal');
     });
@@ -1606,19 +2905,11 @@
       openModal('factoryModal');
     });
 
-    // Excel Export Functions
-    document.getElementById('exportDocExcel').addEventListener('click', () => {
-      const ws = XLSX.utils.json_to_sheet(allDocs);
-      const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, "Documents");
-      XLSX.writeFile(wb, "documents.xlsx");
-    });
-
-    document.getElementById('exportFactoryExcel').addEventListener('click', () => {
-      const ws = XLSX.utils.json_to_sheet(allFactories);
-      const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, "Factories");
-      XLSX.writeFile(wb, "factories.xlsx");
+    document.getElementById('openUserForm').addEventListener('click', () => {
+      currentEditingId = null;
+      document.getElementById('userModalTitle').textContent = 'បញ្ចូលអ្នកប្រើប្រាស់ថ្មី';
+      document.getElementById('userForm').reset();
+      openModal('userModal');
     });
 
     // Initialize the application
