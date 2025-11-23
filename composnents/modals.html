@@ -1,0 +1,243 @@
+<!-- Document Modal -->
+<div class="modal fade" id="docModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header bg-light">
+        <h5 class="modal-title" id="docModalTitle">បញ្ចូលឯកសារថ្មី</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="docForm">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label">លេខចូល *</label>
+              <input type="text" class="form-control" name="no" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">លេខលិខិត(IR) *</label>
+              <input type="text" class="form-control" name="ir" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">លេខចេញ</label>
+              <input type="text" class="form-control" name="outNo">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">ថ្ងៃខែលិខិត</label>
+              <input type="date" class="form-control" name="submitDate">
+            </div>
+            <div class="col-12">
+              <label class="form-label">អង្គភាព/ប្រភពលិខិត</label>
+              <input type="text" class="form-control" name="source">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">ប្រភេទឯកសារ</label>
+              <input type="text" class="form-control" name="doc">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">មន្រ្តីទទួល</label>
+              <input type="text" class="form-control" name="officer">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">ស្ថានភាព</label>
+              <select class="form-select" name="progress">
+                <option value="">ជ្រើសរើស</option>
+                <option value="មិនទាន់ធ្វើចេញ">មិនទាន់ធ្វើចេញ</option>
+                <option value="បានធ្វើចេញ">បានធ្វើចេញ</option>
+              </select>
+            </div>
+          </div>
+          <div class="modal-footer mt-4">
+            <button type="submit" class="btn btn-primary" id="docSubmitBtn">
+              <i class="bi bi-save"></i> រក្សាទុក
+            </button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">បិទ</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Factory Modal -->
+<div class="modal fade" id="factoryModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header bg-light">
+        <h5 class="modal-title" id="factoryModalTitle">បញ្ចូលរោងចក្រថ្មី</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="factoryForm">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label">លេខចូល *</label>
+              <input type="text" class="form-control" name="no" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">ឈ្មោះរោងចក្រ *</label>
+              <input type="text" class="form-control" name="factoryname" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">ឈ្មោះរោងចក្រ (EN) *</label>
+              <input type="text" class="form-control" name="factoryname_en" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Sector *</label>
+              <input type="text" class="form-control" name="sector" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">ភូមិ *</label>
+              <input type="text" class="form-control" name="village" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">ឃុំ *</label>
+              <input type="text" class="form-control" name="commune" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">ស្រុក *</label>
+              <input type="text" class="form-control" name="district" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">ខេត្ត *</label>
+              <input type="text" class="form-control" name="province" required>
+            </div>
+            <div class="col-12">
+              <label class="form-label">អាសយដ្ឋាន *</label>
+              <input type="text" class="form-control" name="address" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">កម្មករសរុប *</label>
+              <input type="number" class="form-control" name="total_workers" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">កម្មករស្រី *</label>
+              <input type="number" class="form-control" name="female_workers" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">ឈ្មោះអ្នកគ្រប់គ្រង *</label>
+              <input type="text" class="form-control" name="admin_name" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">លេខទូរស័ព្ទ *</label>
+              <input type="text" class="form-control" name="admin_phone" required>
+            </div>
+          </div>
+          <div class="modal-footer mt-4">
+            <button type="submit" class="btn btn-primary" id="factorySubmitBtn">
+              <i class="bi bi-save"></i> រក្សាទុក
+            </button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">បិទ</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- User Modal -->
+<div class="modal fade" id="userModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header bg-light">
+        <h5 class="modal-title" id="userModalTitle">បញ្ចូលអ្នកប្រើប្រាស់ថ្មី</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="userForm">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label">ឈ្មោះ *</label>
+              <input type="text" class="form-control" name="name" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">ទូរស័ព្ទ *</label>
+              <input type="text" class="form-control" name="phone" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">អ៊ីមែល *</label>
+              <input type="email" class="form-control" name="email" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">ពាក្យសម្ងាត់ *</label>
+              <input type="password" class="form-control" name="password" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">តួនាទី *</label>
+              <select class="form-select" name="role" required>
+                <option value="">-- ជ្រើសរើសតួនាទី --</option>
+                <option value="admin">អ្នកគ្រប់គ្រង</option>
+                <option value="officer">មន្ត្រី</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">មុខងារ *</label>
+              <input type="text" class="form-control" name="function" required>
+            </div>
+            <div class="col-12">
+              <label class="form-label">សង្កាត់ *</label>
+              <input type="text" class="form-control" name="sangkat" required>
+            </div>
+          </div>
+          <div class="modal-footer mt-4">
+            <button type="submit" class="btn btn-primary" id="userSubmitBtn">
+              <i class="bi bi-save"></i> រក្សាទុក
+            </button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">បិទ</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- View Modals -->
+<div class="modal fade" id="viewDocModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header bg-light">
+        <h5 class="modal-title">ព័ត៌មានលម្អិតឯកសារ</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div id="docDetail" class="detail-view"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">បិទ (Close)</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="viewFactoryModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header bg-light">
+        <h5 class="modal-title">ព័ត៌មានលម្អិតរោងចក្រ</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div id="factoryDetail" class="detail-view"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">បិទ (Close)</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="viewUserModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header bg-light">
+        <h5 class="modal-title">ព័ត៌មានលម្អិតអ្នកប្រើប្រាស់</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div id="userDetail" class="detail-view"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">បិទ (Close)</button>
+      </div>
+    </div>
+  </div>
+</div>

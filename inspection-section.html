@@ -1,0 +1,2861 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inspection Management System</title>
+  
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+  <!-- XLSX Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <!-- FileSaver for downloading files -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+  <!-- Docx for generating Word documents -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/docx/7.1.0/docx.min.js"></script>
+  
+  <style>
+    :root {
+      --primary-color: #3498db;
+      --success-color: #27ae60;
+      --warning-color: #f39c12;
+      --danger-color: #e74c3c;
+    }
+    
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f8f9fa;
+      color: #2c3e50;
+      line-height: 1.6;
+      margin: 0;
+      padding: 20px;
+    }
+    
+    .page-header {
+      background: #fff;
+      color: #2c3e50;
+      padding: 30px;
+      border-radius: 10px;
+      margin-bottom: 25px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+      border: 1px solid #e1e5e9;
+    }
+    
+    /* Statistics Cards */
+    .stats-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-bottom: 25px;
+    }
+    
+    .stat-card {
+      background: #fff;
+      padding: 25px;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+      border: 1px solid #e1e5e9;
+      transition: transform 0.3s ease;
+    }
+    
+    .stat-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+    
+    .stat-inspections { color: var(--primary-color); }
+    .stat-penalties { color: var(--warning-color); }
+    .stat-fines { color: var(--danger-color); }
+    .stat-followups { color: var(--success-color); }
+    
+    .stat-label {
+      font-size: 0.9rem;
+      color: #6c757d;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    
+    .stat-icon {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+    
+    .icon-inspections { color: var(--primary-color); }
+    .icon-penalties { color: var(--warning-color); }
+    .icon-fines { color: var(--danger-color); }
+    .icon-followups { color: var(--success-color); }
+    
+    /* Inspection Tabs */
+    .inspection-tabs {
+      background: #fff;
+      border-radius: 10px;
+      margin-bottom: 25px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+      border: 1px solid #e1e5e9;
+      overflow: hidden;
+    }
+    
+    .inspection-tab {
+      flex: 1;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      border-bottom: 3px solid transparent;
+    }
+    
+    .inspection-tab.active {
+      background: #f8f9fa;
+      border-bottom-color: var(--primary-color);
+      font-weight: 600;
+      color: var(--primary-color);
+    }
+    
+    .inspection-tab:hover {
+      background: #f8f9fa;
+    }
+    
+    .inspection-content {
+      display: none;
+    }
+    
+    .inspection-content.active {
+      display: block;
+    }
+    
+    .control-section {
+      background: #fff;
+      padding: 25px;
+      border-radius: 10px;
+      margin-bottom: 25px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+      border: 1px solid #e1e5e9;
+    }
+    
+    .table-container {
+      background: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 25px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+      border: 1px solid #e1e5e9;
+    }
+    
+    .table-wrapper {
+      overflow-x: auto;
+    }
+    
+    /* Status badges */
+    .status-badge {
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .status-pending {
+      background: #fff3cd;
+      color: #856404;
+      border: 1px solid #ffeaa7;
+    }
+    
+    .status-completed {
+      background: #d1ecf1;
+      color: #0c5460;
+      border: 1px solid #b8e0e6;
+    }
+    
+    .status-warning {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+    
+    .status-success {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+    
+    /* Penalty sections */
+    .penalty-section {
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      border: 1px solid #e1e5e9;
+    }
+    
+    .penalty-options {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+    }
+    
+    .penalty-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border: 2px solid #d1d9e6;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s;
+      background: #f8f9fa;
+    }
+    
+    .penalty-option.selected {
+      background: var(--primary-color);
+      border-color: var(--primary-color);
+      color: white;
+    }
+    
+    .penalty-details {
+      display: none;
+      background: #f8f9fa;
+      padding: 20px;
+      border-radius: 8px;
+      margin-top: 15px;
+      border: 1px solid #e1e5e9;
+    }
+    
+    .penalty-details.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+    
+    .company-info-section {
+      background: #f8f9fa;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      border: 1px solid #e1e5e9;
+    }
+    
+    .followup-info {
+      background: #e8f5e8;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 10px 0;
+      border-left: 4px solid #2ecc71;
+    }
+    
+    .document-flow {
+      background: #e8f4fd;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 10px 0;
+      border-left: 4px solid #3498db;
+    }
+    
+    .flow-step {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 0;
+    }
+    
+    .flow-step.completed {
+      color: var(--success-color);
+    }
+    
+    .flow-step.pending {
+      color: var(--warning-color);
+    }
+    
+    .document-format-section {
+      background: #f0f8ff;
+      padding: 20px;
+      border-radius: 8px;
+      margin: 15px 0;
+      border: 1px dashed #3498db;
+    }
+    
+    .format-preview {
+      background: white;
+      padding: 15px;
+      border-radius: 5px;
+      border: 1px solid #e1e5e9;
+      margin-top: 10px;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+    
+    .loading {
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(52, 152, 219, 0.3);
+      border-radius: 50%;
+      border-top-color: var(--primary-color);
+      animation: spin 1s ease-in-out infinite;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .btn-group-vertical .btn {
+      margin-bottom: 5px;
+    }
+    
+    .document-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+    }
+    
+    .template-upload-area {
+      border: 2px dashed #dee2e6;
+      border-radius: 5px;
+      padding: 20px;
+      text-align: center;
+      background: #f8f9fa;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .template-upload-area:hover {
+      border-color: var(--primary-color);
+      background: #e3f2fd;
+    }
+  </style>
+</head>
+<body>
+  <div class="container-fluid">
+    
+    <!-- Inspection Management Section -->
+    <section id="inspectionmanagement-section">
+      <header class="page-header">
+        <h1 class="mb-2"><i class="bi bi-search"></i> គ្រប់គ្រងអធិការកិច្ច</h1>
+        <p class="text-muted mb-0">Inspection Management System</p>
+      </header>
+
+      <!-- Statistics Cards -->
+      <div class="stats-container">
+        <div class="stat-card">
+          <div class="stat-icon icon-inspections">
+            <i class="bi bi-clipboard-check"></i>
+          </div>
+          <div class="stat-number stat-inspections" id="totalInspections">0</div>
+          <div class="stat-label">ការត្រួតពិនិត្យសរុប</div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-icon icon-penalties">
+            <i class="bi bi-exclamation-triangle"></i>
+          </div>
+          <div class="stat-number stat-penalties" id="inspectionsWithPenalties">0</div>
+          <div class="stat-label">ការត្រួតពិនិត្យមានកំហិត</div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-icon icon-fines">
+            <i class="bi bi-cash-coin"></i>
+          </div>
+          <div class="stat-number stat-fines" id="inspectionsWithFines">0</div>
+          <div class="stat-label">ការត្រួតពិនិត្យមានផាក</div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-icon icon-followups">
+            <i class="bi bi-arrow-repeat"></i>
+          </div>
+          <div class="stat-number stat-followups" id="totalFollowups">0</div>
+          <div class="stat-label">ការតាមដានសរុប</div>
+        </div>
+      </div>
+
+      <!-- Inspection Tabs -->
+      <div class="inspection-tabs d-flex">
+        <div class="inspection-tab active" data-tab="initial">
+          <i class="bi bi-clipboard"></i>
+          <span>ការត្រួតពិនិត្យដំបូង</span>
+        </div>
+        <div class="inspection-tab" data-tab="penalty-followup">
+          <i class="bi bi-arrow-repeat"></i>
+          <span>តាមដានកំហិត</span>
+        </div>
+        <div class="inspection-tab" data-tab="fine-followup">
+          <i class="bi bi-file-earmark-text"></i>
+          <span>តាមដានឯកសារផាក</span>
+        </div>
+        <div class="inspection-tab" data-tab="document-templates">
+          <i class="bi bi-file-earmark-arrow-up"></i>
+          <span>ទំរង់ឯកសារ</span>
+        </div>
+      </div>
+
+      <!-- Initial Inspection Tab -->
+      <div class="inspection-content active" id="initial-inspection">
+        <div class="control-section d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+          <button class="btn btn-primary" id="openInspectionForm">
+            <i class="bi bi-plus-circle"></i> ការត្រួតពិនិត្យថ្មី
+          </button>
+          <div class="d-flex flex-wrap gap-2 align-items-center">
+            <input type="search" class="form-control" id="inspectionSearch" placeholder="ស្វែងរកការត្រួតពិនិត្យ..." style="width: auto;">
+            <button class="btn btn-outline-secondary" id="exportInspectionExcel">
+              <i class="bi bi-download"></i> ទាញយក Excel
+            </button>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <div class="table-wrapper">
+            <table class="table table-hover mb-0" id="inspectionTable">
+              <thead class="table-light">
+                <tr>
+                  <th>#</th>
+                  <th>លេខចូល</th>
+                  <th>រោងចក្រ</th>
+                  <th>កាលបរិច្ឆេទ</th>
+                  <th>កំហិត</th>
+                  <th>ផាក</th>
+                  <th>ស្ថានភាព</th>
+                  <th>សកម្មភាព</th>
+                </tr>
+              </thead>
+              <tbody id="inspectionTableBody">
+                <tr>
+                  <td colspan="8" class="text-center text-muted py-4">
+                    <div class="loading"></div> កំពុងផ្ទុកទិន្នន័យ...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Penalty Follow-up Tab -->
+      <div class="inspection-content" id="penalty-followup-inspection">
+        <div class="control-section d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+          <button class="btn btn-primary" id="openPenaltyFollowupForm">
+            <i class="bi bi-plus-circle"></i> តាមដានកំហិតថ្មី
+          </button>
+          <div class="d-flex flex-wrap gap-2 align-items-center">
+            <input type="search" class="form-control" id="penaltyFollowupSearch" placeholder="ស្វែងរកការតាមដាន..." style="width: auto;">
+            <button class="btn btn-outline-secondary" id="exportPenaltyFollowupExcel">
+              <i class="bi bi-download"></i> ទាញយក Excel
+            </button>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <div class="table-wrapper">
+            <table class="table table-hover mb-0" id="penaltyFollowupTable">
+              <thead class="table-light">
+                <tr>
+                  <th>#</th>
+                  <th>លេខចូល</th>
+                  <th>រោងចក្រ</th>
+                  <th>កាលបរិច្ឆេទតាមដាន</th>
+                  <th>កាលបរិច្ឆេទកំហិតដើម</th>
+                  <th>ស្ថានភាពតាមដាន</th>
+                  <th>សកម្មភាព</th>
+                </tr>
+              </thead>
+              <tbody id="penaltyFollowupTableBody">
+                <tr>
+                  <td colspan="7" class="text-center text-muted py-4">
+                    <div class="loading"></div> កំពុងផ្ទុកទិន្នន័យ...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fine Document Follow-up Tab -->
+      <div class="inspection-content" id="fine-followup-inspection">
+        <div class="control-section d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+          <button class="btn btn-primary" id="openFineFollowupForm">
+            <i class="bi bi-plus-circle"></i> តាមដានឯកសារផាកថ្មី
+          </button>
+          <div class="d-flex flex-wrap gap-2 align-items-center">
+            <input type="search" class="form-control" id="fineFollowupSearch" placeholder="ស្វែងរកការតាមដានឯកសារ..." style="width: auto;">
+            <button class="btn btn-outline-secondary" id="exportFineFollowupExcel">
+              <i class="bi bi-download"></i> ទាញយក Excel
+            </button>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <div class="table-wrapper">
+            <table class="table table-hover mb-0" id="fineFollowupTable">
+              <thead class="table-light">
+                <tr>
+                  <th>#</th>
+                  <th>លេខចូល</th>
+                  <th>រោងចក្រ</th>
+                  <th>កាលបរិច្ឆេទចេញលិខិត</th>
+                  <th>ចំនួនទឹកប្រាក់</th>
+                  <th>ស្ថានភាពឯកសារ</th>
+                  <th>សកម្មភាព</th>
+                </tr>
+              </thead>
+              <tbody id="fineFollowupTableBody">
+                <tr>
+                  <td colspan="7" class="text-center text-muted py-4">
+                    <div class="loading"></div> កំពុងផ្ទុកទិន្នន័យ...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Document Templates Tab -->
+      <div class="inspection-content" id="document-templates-inspection">
+        <div class="control-section">
+          <h4><i class="bi bi-file-earmark-text"></i> គ្រប់គ្រងទំរង់ឯកសារ</h4>
+          <p class="text-muted">អាចបង្កើត និងគ្រប់គ្រងទំរង់ឯកសារ DOCX សម្រាប់ដំណាក់កាលទាំងបីនៃការត្រួតពិនិត្យ</p>
+        </div>
+
+        <div class="row">
+          <!-- Inspection Document Template -->
+          <div class="col-md-4 mb-4">
+            <div class="card h-100">
+              <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="bi bi-clipboard"></i> ទំរង់អធិការកិច្ច</h5>
+              </div>
+              <div class="card-body">
+                <p>ទំរង់សម្រាប់ការត្រួតពិនិត្យដំបូង</p>
+                <div class="document-format-section">
+                  <h6>ទំរង់បច្ចុប្បន្ន</h6>
+                  <div class="format-preview" id="inspectionTemplatePreview">
+                    <p>ទំរង់លំនាំដើម - អធិការកិច្ច</p>
+                  </div>
+                  <div class="document-actions">
+                    <button class="btn btn-sm btn-outline-primary" id="uploadInspectionTemplate">
+                      <i class="bi bi-upload"></i> ផ្ទុកឡើង DOCX
+                    </button>
+                    <button class="btn btn-sm btn-outline-success" id="downloadInspectionTemplate">
+                      <i class="bi bi-download"></i> ទាញយក DOCX
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Penalty Follow-up Document Template -->
+          <div class="col-md-4 mb-4">
+            <div class="card h-100">
+              <div class="card-header bg-warning text-dark">
+                <h5 class="mb-0"><i class="bi bi-arrow-repeat"></i> ទំរង់តាមដានកំហិត</h5>
+              </div>
+              <div class="card-body">
+                <p>ទំរង់សម្រាប់ការតាមដានការអនុវត្តកំហិត</p>
+                <div class="document-format-section">
+                  <h6>ទំរង់បច្ចុប្បន្ន</h6>
+                  <div class="format-preview" id="penaltyTemplatePreview">
+                    <p>ទំរង់លំនាំដើម - តាមដានកំហិត</p>
+                  </div>
+                  <div class="document-actions">
+                    <button class="btn btn-sm btn-outline-primary" id="uploadPenaltyTemplate">
+                      <i class="bi bi-upload"></i> ផ្ទុកឡើង DOCX
+                    </button>
+                    <button class="btn btn-sm btn-outline-success" id="downloadPenaltyTemplate">
+                      <i class="bi bi-download"></i> ទាញយក DOCX
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Fine Document Template -->
+          <div class="col-md-4 mb-4">
+            <div class="card h-100">
+              <div class="card-header bg-danger text-white">
+                <h5 class="mb-0"><i class="bi bi-file-earmark-text"></i> ទំរង់តាមដានឯកសារផាក</h5>
+              </div>
+              <div class="card-body">
+                <p>ទំរង់សម្រាប់ការតាមដានឯកសារផាក</p>
+                <div class="document-format-section">
+                  <h6>ទំរង់បច្ចុប្បន្ន</h6>
+                  <div class="format-preview" id="fineTemplatePreview">
+                    <p>ទំរង់លំនាំដើម - តាមដានឯកសារផាក</p>
+                  </div>
+                  <div class="document-actions">
+                    <button class="btn btn-sm btn-outline-primary" id="uploadFineTemplate">
+                      <i class="bi bi-upload"></i> ផ្ទុកឡើង DOCX
+                    </button>
+                    <button class="btn btn-sm btn-outline-success" id="downloadFineTemplate">
+                      <i class="bi bi-download"></i> ទាញយក DOCX
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- All Modals (Inspection, Penalty Follow-up, Fine Follow-up) -->
+  <!-- Initial Inspection Modal -->
+  <div class="modal fade" id="inspectionModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header bg-light">
+          <h5 class="modal-title" id="inspectionModalTitle">ការត្រួតពិនិត្យថ្មី</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="inspectionForm">
+            <div class="row g-3">
+              <!-- Basic Information -->
+              <div class="col-md-4">
+                <label class="form-label">លេខចូល *</label>
+                <input type="text" class="form-control" name="no" required>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">ក្រុម *</label>
+                <select class="form-select" name="group" required>
+                  <option value="">-- ជ្រើសរើសក្រុម --</option>
+                  <option value="ក្រុម ក">ក្រុម ក</option>
+                  <option value="ក្រុម ខ">ក្រុម ខ</option>
+                  <option value="ក្រុម គ">ក្រុម គ</option>
+                </select>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">កាលបរិច្ឆេទត្រួតពិនិត្យ *</label>
+                <input type="date" class="form-control" name="inspection_date" required>
+              </div>
+              
+              <!-- Inspection Type -->
+              <div class="col-md-6">
+                <label class="form-label">ប្រភេទអធិការកិច្ច *</label>
+                <select class="form-select" name="inspection_type" required>
+                  <option value="">-- ជ្រើសរើសប្រភេទ --</option>
+                  <option value="អធិការពិសេស">អធិការពិសេស</option>
+                  <option value="អធិការសាមញ្ញ">អធិការសាមញ្ញ</option>
+                </select>
+              </div>
+
+              <!-- Company Information Section -->
+              <div class="col-12">
+                <div class="company-info-section">
+                  <h5 class="mb-3"><i class="bi bi-building"></i> ព័ត៌មានរោងចក្រ</h5>
+                  <div class="row g-3">
+                    <div class="col-md-4">
+                      <label class="form-label">ឈ្មោះរោងចក្រ *</label>
+                      <select class="form-select" name="factory_name" required onchange="updateFactoryInfo()">
+                        <option value="">-- ជ្រើសរើសរោងចក្រ --</option>
+                        <option value="រោងចក្រ ក" data-sector="វិស័យ ក" data-village="ភូមិ ក" data-commune="ឃុំ ក" data-district="ស្រុក ក" data-province="ខេត្ត ក">រោងចក្រ ក</option>
+                        <option value="រោងចក្រ ខ" data-sector="វិស័យ ខ" data-village="ភូមិ ខ" data-commune="ឃុំ ខ" data-district="ស្រុក ខ" data-province="ខេត្ត ខ">រោងចក្រ ខ</option>
+                        <option value="រោងចក្រ គ" data-sector="វិស័យ គ" data-village="ភូមិ គ" data-commune="ឃុំ គ" data-district="ស្រុក គ" data-province="ខេត្ត គ">រោងចក្រ គ</option>
+                        <option value="រោងចក្រ ឃ" data-sector="វិស័យ ឃ" data-village="ភូមិ ឃ" data-commune="ឃុំ ឃ" data-district="ស្រុក ឃ" data-province="ខេត្ត ឃ">រោងចក្រ ឃ</option>
+                        <option value="រោងចក្រ ង" data-sector="វិស័យ ង" data-village="ភូមិ ង" data-commune="ឃុំ ង" data-district="ស្រុក ង" data-province="ខេត្ត ង">រោងចក្រ ង</option>
+                      </select>
+                    </div>
+                    
+                    <div class="col-md-4">
+                      <label class="form-label">វិស័យ *</label>
+                      <input type="text" class="form-control" name="sector" required placeholder="បញ្ចូលវិស័យ...">
+                    </div>
+                    
+                    <div class="col-md-4">
+                      <label class="form-label">ប្រធានបទ *</label>
+                      <input type="text" class="form-control" name="case_subject" required placeholder="បញ្ចូលប្រធានបទ...">
+                    </div>
+                  </div>
+                  
+                  <!-- Address Fields -->
+                  <div class="row g-3 mt-2">
+                    <div class="col-md-3">
+                      <label class="form-label">ភូមិ *</label>
+                      <input type="text" class="form-control" name="village" required placeholder="បញ្ចូលភូមិ...">
+                    </div>
+                    <div class="col-md-3">
+                      <label class="form-label">ឃុំ *</label>
+                      <input type="text" class="form-control" name="commune" required placeholder="បញ្ចូលឃុំ...">
+                    </div>
+                    <div class="col-md-3">
+                      <label class="form-label">ស្រុក *</label>
+                      <input type="text" class="form-control" name="district" required placeholder="បញ្ចូលស្រុក...">
+                    </div>
+                    <div class="col-md-3">
+                      <label class="form-label">ខេត្ត *</label>
+                      <input type="text" class="form-control" name="province" required placeholder="បញ្ចូលខេត្ត...">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- កំហិត Section -->
+              <div class="col-12">
+                <div class="penalty-section">
+                  <h5 class="mb-3"><i class="bi bi-exclamation-triangle"></i> កំហិត (អ្វីដែលរោងចក្រត្រូវកែលម្អ)</h5>
+                  <div class="penalty-options">
+                    <label class="penalty-option" id="penalty_yes_option">
+                      <input type="radio" name="has_penalty" value="មាន" onchange="togglePenaltyDetails(true)">
+                      <span>មាន</span>
+                    </label>
+                    <label class="penalty-option" id="penalty_no_option">
+                      <input type="radio" name="has_penalty" value="គ្មាន" onchange="togglePenaltyDetails(false)">
+                      <span>គ្មាន</span>
+                    </label>
+                  </div>
+                  
+                  <div class="penalty-details" id="penalty_details">
+                    <div class="row g-3">
+                      <div class="col-md-6">
+                        <label class="form-label">បែបបទ</label>
+                        <input type="text" class="form-control" name="penalty_format" placeholder="បញ្ចូលបែបបទកំហិត...">
+                      </div>
+                      <div class="col-md-6">
+                        <label class="form-label">លក្ខខណ្ឌ</label>
+                        <input type="text" class="form-control" name="penalty_condition" placeholder="បញ្ចូលលក្ខខណ្ឌកំហិត...">
+                      </div>
+                      <div class="col-md-6">
+                        <label class="form-label">សុខភាពនិងសុវត្ថភាព</label>
+                        <textarea class="form-control" name="penalty_health" rows="3" placeholder="បញ្ចូលព័ត៌មានសុខភាពនិងសុវត្ថភាព..."></textarea>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="form-label">វិជ្ជាជីវៈ</label>
+                        <textarea class="form-control" name="penalty_professional" rows="3" placeholder="បញ្ចូលព័ត៌មានវិជ្ជាជីវៈ..."></textarea>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- ផាក Section -->
+              <div class="col-12">
+                <div class="penalty-section">
+                  <h5 class="mb-3"><i class="bi bi-cash-coin"></i> ផាក</h5>
+                  <div class="penalty-options">
+                    <label class="penalty-option" id="fine_yes_option">
+                      <input type="radio" name="has_fine" value="មាន" onchange="toggleFineDetails(true)">
+                      <span>មាន</span>
+                    </label>
+                    <label class="penalty-option" id="fine_no_option">
+                      <input type="radio" name="has_fine" value="គ្មាន" onchange="toggleFineDetails(false)">
+                      <span>គ្មាន</span>
+                    </label>
+                  </div>
+                  
+                  <div class="penalty-details" id="fine_details">
+                    <div class="row g-3">
+                      <div class="col-md-6">
+                        <label class="form-label">បែបបទ</label>
+                        <input type="text" class="form-control" name="penalty_format" placeholder="បញ្ចូលបែបបទត្រូវផាក ">
+                      </div>
+                      <div class="col-md-6">
+                        <label class="form-label">លក្ខខណ្ឌ</label>
+                        <input type="text" class="form-control" name="penalty_condition" placeholder="បញ្ចូលបែបបទត្រូវផាក ">
+                      </div>
+                      <div class="col-md-6">
+                        <label class="form-label">សុខភាពនិងសុវត្ថភាព</label>
+                        <textarea class="form-control" name="penalty_health" rows="3" placeholder="បញ្ចូលបែបបទត្រូវផាក "></textarea>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="form-label">វិជ្ជាជីវៈ</label>
+                        <textarea class="form-control" name="penalty_professional" rows="3" placeholder="បញ្ចូលបែបបទត្រូវផាក "></textarea>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-12">
+                <label class="form-label">ផ្សេងៗ</label>
+                <textarea class="form-control" name="remarks" rows="3" placeholder="បញ្ចូលផ្សេងៗ..."></textarea>
+              </div>
+            </div>
+            <div class="modal-footer mt-4">
+              <button type="submit" class="btn btn-primary" id="inspectionSubmitBtn">
+                <i class="bi bi-save"></i> រក្សាទុក
+              </button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">បិទ</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Penalty Follow-up Modal -->
+  <div class="modal fade" id="penaltyFollowupModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header bg-light">
+          <h5 class="modal-title" id="penaltyFollowupModalTitle">តាមដានកំហិតថ្មី</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="penaltyFollowupForm">
+            <div class="row g-3">
+              <div class="col-md-4">
+                <label class="form-label">លេខចូល *</label>
+                <input type="text" class="form-control" name="no" required>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">ការត្រួតពិនិត្យដើម *</label>
+                <select class="form-select" name="original_inspection" id="originalInspectionSelect" required onchange="loadOriginalInspectionData()">
+                  <option value="">-- ជ្រើសរើសការត្រួតពិនិត្យដើម --</option>
+                </select>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">កាលបរិច្ឆេទតាមដាន *</label>
+                <input type="date" class="form-control" name="followup_date" required>
+              </div>
+              
+              <!-- Company Information Display (Read-only) -->
+              <div class="col-12">
+                <div class="company-info-section d-none" id="companyInfoDisplay">
+                  <h5 class="mb-3"><i class="bi bi-building"></i> ព័ត៌មានរោងចក្រ</h5>
+                  <div class="row g-3">
+                    <div class="col-md-4">
+                      <label class="form-label">ឈ្មោះរោងចក្រ</label>
+                      <input type="text" class="form-control" id="display_factory_name" readonly style="background: #f8f9fa;">
+                    </div>
+                    <div class="col-md-4">
+                      <label class="form-label">វិស័យ</label>
+                      <input type="text" class="form-control" id="display_sector" readonly style="background: #f8f9fa;">
+                    </div>
+                    <div class="col-md-4">
+                      <label class="form-label">ប្រធានបទ</label>
+                      <input type="text" class="form-control" id="display_case_subject" readonly style="background: #f8f9fa;">
+                    </div>
+                  </div>
+                  
+                  <div class="row g-3 mt-2">
+                    <div class="col-md-3">
+                      <label class="form-label">ភូមិ</label>
+                      <input type="text" class="form-control" id="display_village" readonly style="background: #f8f9fa;">
+                    </div>
+                    <div class="col-md-3">
+                      <label class="form-label">ឃុំ</label>
+                      <input type="text" class="form-control" id="display_commune" readonly style="background: #f8f9fa;">
+                    </div>
+                    <div class="col-md-3">
+                      <label class="form-label">ស្រុក</label>
+                      <input type="text" class="form-control" id="display_district" readonly style="background: #f8f9fa;">
+                    </div>
+                    <div class="col-md-3">
+                      <label class="form-label">ខេត្ត</label>
+                      <input type="text" class="form-control" id="display_province" readonly style="background: #f8f9fa;">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Original Penalty Information (Read-only) -->
+              <div class="col-12">
+                <div id="originalPenaltyInfo" class="followup-info d-none">
+                  <h5 class="mb-2">កំហិតដើម</h5>
+                  <div id="penaltyDisplay"></div>
+                </div>
+              </div>
+
+              <!-- Follow-up Result -->
+              <div class="col-12">
+                <div class="penalty-section">
+                  <h5 class="mb-3"><i class="bi bi-clipboard-check"></i> លទ្ធផលតាមដាន</h5>
+                  <div class="penalty-options">
+                    <label class="penalty-option" id="implemented_yes_option">
+                      <input type="radio" name="penalty_implemented" value="អនុវត្ត" onchange="toggleFollowupDetails(false)">
+                      <span>អនុវត្ត</span>
+                    </label>
+                    <label class="penalty-option" id="implemented_no_option">
+                      <input type="radio" name="penalty_implemented" value="មិនអនុវត្ត" onchange="toggleFollowupDetails(true)">
+                      <span>មិនអនុវត្ត</span>
+                    </label>
+                  </div>
+                  
+                  <div class="penalty-details" id="followup_details">
+                    <div class="row g-3">
+                      <div class="col-md-6">
+                        <label class="form-label">បែបបទ</label>
+                        <input type="text" class="form-control" name="followup_format" placeholder="បញ្ចូលបែបបទតាមដាន...">
+                      </div>
+                      <div class="col-md-6">
+                        <label class="form-label">លក្ខខណ្ឌ</label>
+                        <input type="text" class="form-control" name="followup_condition" placeholder="បញ្ចូលលក្ខខណ្ឌតាមដាន...">
+                      </div>
+                      <div class="col-md-6">
+                        <label class="form-label">សុខភាពនិងសុវត្ថភាព</label>
+                        <textarea class="form-control" name="followup_health" rows="3" placeholder="បញ្ចូលព័ត៌មានសុខភាពនិងសុវត្ថភាពតាមដាន..."></textarea>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="form-label">វិជ្ជាជីវៈ</label>
+                        <textarea class="form-control" name="followup_professional" rows="3" placeholder="បញ្ចូលព័ត៌មានវិជ្ជាជីវៈតាមដាន..."></textarea>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-12">
+                <label class="form-label">សេចក្តីសន្និដ្ឋាន</label>
+                <textarea class="form-control" name="conclusion" rows="3" placeholder="បញ្ចូលសេចក្តីសន្និដ្ឋាន..."></textarea>
+              </div>
+            </div>
+            <div class="modal-footer mt-4">
+              <button type="submit" class="btn btn-primary" id="penaltyFollowupSubmitBtn">
+                <i class="bi bi-save"></i> រក្សាទុក
+              </button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">បិទ</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fine Document Follow-up Modal -->
+  <div class="modal fade" id="fineFollowupModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header bg-light">
+          <h5 class="modal-title" id="fineFollowupModalTitle">តាមដានឯកសារផាកថ្មី</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="fineFollowupForm">
+            <div class="row g-3">
+              <div class="col-md-4">
+                <label class="form-label">លេខចូល *</label>
+                <input type="text" class="form-control" name="no" required>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">ការត្រួតពិនិត្យដើម *</label>
+                <select class="form-select" name="original_inspection" id="fineOriginalInspectionSelect" required onchange="loadFineOriginalInspectionData()">
+                  <option value="">-- ជ្រើសរើសការត្រួតពិនិត្យដើម --</option>
+                </select>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">កាលបរិច្ឆេទចេញលិខិត *</label>
+                <input type="date" class="form-control" name="document_date" required>
+              </div>
+              
+              <!-- Company Information Display (Read-only) -->
+              <div class="col-12">
+                <div class="company-info-section d-none" id="fineCompanyInfoDisplay">
+                  <h5 class="mb-3"><i class="bi bi-building"></i> ព័ត៌មានរោងចក្រ</h5>
+                  <div class="row g-3">
+                    <div class="col-md-4">
+                      <label class="form-label">ឈ្មោះរោងចក្រ</label>
+                      <input type="text" class="form-control" id="fine_display_factory_name" readonly style="background: #f8f9fa;">
+                    </div>
+                    <div class="col-md-4">
+                      <label class="form-label">វិស័យ</label>
+                      <input type="text" class="form-control" id="fine_display_sector" readonly style="background: #f8f9fa;">
+                    </div>
+                    <div class="col-md-4">
+                      <label class="form-label">ប្រធានបទ</label>
+                      <input type="text" class="form-control" id="fine_display_case_subject" readonly style="background: #f8f9fa;">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Original Fine Information (Read-only) -->
+              <div class="col-12">
+                <div id="originalFineInfo" class="followup-info d-none">
+                  <h5 class="mb-2">ព័ត៌មានផាកដើម</h5>
+                  <div id="fineDisplay"></div>
+                </div>
+              </div>
+
+              <!-- Fine Amount -->
+              <div class="col-md-6">
+                <label class="form-label">ចំនួនទឹកប្រាក់ផាក *</label>
+                <input type="text" class="form-control" name="fine_amount" required placeholder="បញ្ចូលចំនួនទឹកប្រាក់...">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">ប្រភេទផាក *</label>
+                <input type="text" class="form-control" name="fine_type" required placeholder="បញ្ចូលប្រភេទផាក...">
+              </div>
+
+              <!-- Document Flow Status -->
+              <div class="col-12">
+                <div class="penalty-section">
+                  <h5 class="mb-3"><i class="bi bi-diagram-3"></i> ស្ថានភាពលំហូរឯកសារ</h5>
+                  <div class="document-flow">
+                    <div class="flow-step" id="step_department">
+                      <i class="bi bi-circle"></i>
+                      <span>បានចេញលិខិតផាក ទៅនាយកដ្ឋាន</span>
+                    </div>
+                    <div class="flow-step" id="step_general">
+                      <i class="bi bi-circle"></i>
+                      <span>ទៅអគ្គ</span>
+                    </div>
+                    <div class="flow-step" id="step_minister">
+                      <i class="bi bi-circle"></i>
+                      <span>ទៅរដ្ឋមន្ត្រី</span>
+                    </div>
+                  </div>
+                  
+                  <div class="mt-3">
+                    <label class="form-label">ធ្វើបច្ចុប្បន្នភាពស្ថានភាពឯកសារ</label>
+                    <select class="form-select" name="document_status" onchange="updateDocumentFlow(this.value)">
+                      <option value="">-- ជ្រើសរើសស្ថានភាព --</option>
+                      <option value="department">បានចេញលិខិតផាក ទៅនាយកដ្ឋាន</option>
+                      <option value="general">ទៅអគ្គ</option>
+                      <option value="minister">ទៅរដ្ឋមន្ត្រី</option>
+                      <option value="completed">បានបញ្ចប់</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-12">
+                <label class="form-label">ផ្សេងៗ</label>
+                <textarea class="form-control" name="remarks" rows="3" placeholder="បញ្ចូលផ្សេងៗ..."></textarea>
+              </div>
+            </div>
+            <div class="modal-footer mt-4">
+              <button type="submit" class="btn btn-primary" id="fineFollowupSubmitBtn">
+                <i class="bi bi-save"></i> រក្សាទុក
+              </button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">បិទ</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Message Modal -->
+  <div class="modal fade" id="messageModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header bg-light">
+          <h5 class="modal-title" id="messageTitle">Information</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p id="messageText"></p>
+        </div>
+        <div class="modal-footer" id="messageButtons">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hidden file input for template uploads -->
+  <input type="file" id="hiddenFileInput" style="display: none;" accept=".docx">
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <!-- JavaScript for Inspection Management -->
+  <script>
+    // Global variables
+    let allInspections = [];
+    let allPenaltyFollowups = [];
+    let allFineFollowups = [];
+    let currentEditingId = null;
+
+    // Utility functions
+    function showMessage(message, title = 'Information') {
+      const messageModal = new bootstrap.Modal(document.getElementById('messageModal'));
+      document.getElementById('messageTitle').textContent = title;
+      document.getElementById('messageText').textContent = message;
+      messageModal.show();
+    }
+
+    function formatNumber(num) {
+      return new Intl.NumberFormat().format(num);
+    }
+
+    // DOCX Document Generator
+    class DocxGenerator {
+      constructor() {
+        this.templates = {
+          inspection: this.getDefaultInspectionTemplate(),
+          penaltyFollowup: this.getDefaultPenaltyFollowupTemplate(),
+          fineFollowup: this.getDefaultFineFollowupTemplate()
+        };
+      }
+
+      getDefaultInspectionTemplate() {
+        return {
+          title: "របាយការណ៍អធិការកិច្ច",
+          sections: [
+            { label: "លេខចូល", key: "no" },
+            { label: "ក្រុម", key: "group" },
+            { label: "កាលបរិច្ឆេទត្រួតពិនិត្យ", key: "inspection_date" },
+            { label: "ប្រភេទអធិការកិច្ច", key: "inspection_type" },
+            { label: "ឈ្មោះរោងចក្រ", key: "factory_name" },
+            { label: "វិស័យ", key: "sector" },
+            { label: "ប្រធានបទ", key: "case_subject" },
+            { label: "ទីតាំង", key: "address", composite: true }
+          ],
+          conditionalSections: {
+            penalty: {
+              condition: "has_penalty",
+              value: "មាន",
+              sections: [
+                { label: "បែបបទ", key: "penalty_format" },
+                { label: "លក្ខខណ្ឌ", key: "penalty_condition" },
+                { label: "សុខភាពនិងសុវត្ថភាព", key: "penalty_health" },
+                { label: "វិជ្ជាជីវៈ", key: "penalty_professional" }
+              ]
+            },
+            fine: {
+              condition: "has_fine",
+              value: "មាន",
+              sections: [
+                { label: "បែបបទ", key: "fine_format" },
+                { label: "លក្ខខណ្ឌ", key: "fine_condition" },
+                { label: "សុខភាពនិងសុវត្ថភាព", key: "finey_health" },
+                { label: "វិជ្ជាជីវៈ", key: "fine_professional" }
+              ]
+            }
+          },
+          remarks: { label: "ផ្សេងៗ", key: "remarks" }
+        };
+      }
+
+      getDefaultPenaltyFollowupTemplate() {
+        return {
+          title: "របាយការណ៍តាមដានកំហិត",
+          sections: [
+            { label: "លេខចូល", key: "no" },
+            { label: "កាលបរិច្ឆេទតាមដាន", key: "followup_date" },
+            { label: "ការត្រួតពិនិត្យដើម", key: "original_inspection", composite: true },
+            { label: "លទ្ធផលតាមដាន", key: "penalty_implemented" }
+          ],
+          conditionalSections: {
+            additional: {
+              condition: "penalty_implemented",
+              value: "មិនអនុវត្ត",
+              sections: [
+                { label: "បែបបទ", key: "followup_format" },
+                { label: "លក្ខខណ្ឌ", key: "followup_condition" },
+                { label: "សុខភាពនិងសុវត្ថភាព", key: "followup_health" },
+                { label: "វិជ្ជាជីវៈ", key: "followup_professional" }
+              ]
+            }
+          },
+          remarks: { label: "សេចក្តីសន្និដ្ឋាន", key: "conclusion" }
+        };
+      }
+
+      getDefaultFineFollowupTemplate() {
+        return {
+          title: "របាយការណ៍តាមដានឯកសារផាក",
+          sections: [
+            { label: "លេខចូល", key: "no" },
+            { label: "កាលបរិច្ឆេទចេញលិខិត", key: "document_date" },
+            { label: "ការត្រួតពិនិត្យដើម", key: "original_inspection", composite: true },
+            { label: "ចំនួនទឹកប្រាក់ផាក", key: "fine_amount", composite: true },
+            { label: "ស្ថានភាពឯកសារ", key: "document_status_display" }
+          ],
+          remarks: { label: "ផ្សេងៗ", key: "remarks" }
+        };
+      }
+
+      async generateDocument(templateType, data) {
+        const template = this.templates[templateType];
+        if (!template) {
+          throw new Error(`Template not found for type: ${templateType}`);
+        }
+
+        const { Document, Paragraph, TextRun, HeadingLevel, AlignmentType } = docx;
+
+        const doc = new Document({
+          sections: [{
+            properties: {},
+            children: [
+              new Paragraph({
+                text: template.title,
+                heading: HeadingLevel.HEADING_1,
+                alignment: AlignmentType.CENTER,
+                spacing: { after: 400 }
+              }),
+              ...this.generateContent(template, data)
+            ]
+          }]
+        });
+
+        return doc;
+      }
+
+      generateContent(template, data) {
+        const { Paragraph, TextRun, AlignmentType } = docx;
+        const content = [];
+
+        // Add main sections
+        template.sections.forEach(section => {
+          if (section.composite) {
+            const value = this.getCompositeValue(section.key, data);
+            if (value) {
+              content.push(
+                new Paragraph({
+                  children: [
+                    new TextRun({ text: `${section.label}: `, bold: true }),
+                    new TextRun({ text: value })
+                  ],
+                  spacing: { after: 200 }
+                })
+              );
+            }
+          } else {
+            const value = this.getValue(section.key, data);
+            if (value) {
+              content.push(
+                new Paragraph({
+                  children: [
+                    new TextRun({ text: `${section.label}: `, bold: true }),
+                    new TextRun({ text: value })
+                  ],
+                  spacing: { after: 200 }
+                })
+              );
+            }
+          }
+        });
+
+        // Add conditional sections
+        if (template.conditionalSections) {
+          Object.values(template.conditionalSections).forEach(conditional => {
+            if (data[conditional.condition] === conditional.value) {
+              conditional.sections.forEach(section => {
+                const value = this.getValue(section.key, data);
+                if (value) {
+                  content.push(
+                    new Paragraph({
+                      children: [
+                        new TextRun({ text: `${section.label}: `, bold: true }),
+                        new TextRun({ text: value })
+                      ],
+                      spacing: { after: 200 }
+                    })
+                  );
+                }
+              });
+            }
+          });
+        }
+
+        // Add remarks
+        if (template.remarks && data[template.remarks.key]) {
+          content.push(
+            new Paragraph({
+              children: [
+                new TextRun({ text: `${template.remarks.label}: `, bold: true }),
+                new TextRun({ text: data[template.remarks.key] })
+              ],
+              spacing: { after: 200 }
+            })
+          );
+        }
+
+        return content;
+      }
+
+      getValue(key, data) {
+        return data[key] || '';
+      }
+
+      getCompositeValue(type, data) {
+        switch(type) {
+          case 'address':
+            return `${data.village || ''}, ${data.commune || ''}, ${data.district || ''}, ${data.province || ''}`;
+          case 'original_inspection':
+            const original = data.original_inspection_data || {};
+            return `${original.no || ''} - ${original.factory_name || ''}`;
+          case 'fine_amount':
+            return `${data.fine_amount || ''} ${data.fine_type || ''}`;
+          case 'document_status_display':
+            switch(data.document_status) {
+              case 'department': return 'បានចេញលិខិតផាក ទៅនាយកដ្ឋាន';
+              case 'general': return 'ទៅអគ្គ';
+              case 'minister': return 'ទៅរដ្ឋមន្ត្រី';
+              case 'completed': return 'បានបញ្ចប់';
+              default: return data.document_status || '';
+            }
+          default:
+            return '';
+        }
+      }
+
+      async downloadDocument(doc, filename) {
+        const blob = await docx.Packer.toBlob(doc);
+        saveAs(blob, `${filename}.docx`);
+      }
+    }
+
+    // Inspection Management functionality
+    class InspectionManager {
+      constructor() {
+        this.allInspections = [];
+        this.allPenaltyFollowups = [];
+        this.allFineFollowups = [];
+        this.docxGenerator = new DocxGenerator();
+        this.currentTemplateType = null;
+
+        this.openInspectionForm = this.openInspectionForm.bind(this);
+      }
+
+      init() {
+        this.bindEvents();
+        this.fetchInspect();
+      }
+
+      bindEvents() {
+        // Tab switching
+        document.querySelectorAll('.inspection-tab').forEach(tab => {
+          tab.addEventListener('click', (e) => {
+            const tabName = e.currentTarget.getAttribute('data-tab');
+            this.showInspectionTab(tabName);
+          });
+        });
+
+        // Inspection buttons
+        document.getElementById('openInspectionForm').addEventListener('click', () => {
+          console.log("testing")
+          this.openInspectionForm();
+        });
+
+        document.getElementById('exportInspectionExcel').addEventListener('click', () => {
+          this.exportInspectionsToExcel();
+        });
+
+        // Penalty Followup buttons
+        document.getElementById('openPenaltyFollowupForm').addEventListener('click', () => {
+          this.openPenaltyFollowupForm();
+        });
+
+        document.getElementById('exportPenaltyFollowupExcel').addEventListener('click', () => {
+          this.exportPenaltyFollowupsToExcel();
+        });
+
+        // Fine Followup buttons
+        document.getElementById('openFineFollowupForm').addEventListener('click', () => {
+          this.openFineFollowupForm();
+        });
+
+        document.getElementById('exportFineFollowupExcel').addEventListener('click', () => {
+          this.exportFineFollowupsToExcel();
+        });
+
+        // Document template buttons
+        document.getElementById('uploadInspectionTemplate').addEventListener('click', () => {
+          this.uploadTemplate('inspection');
+        });
+
+        document.getElementById('downloadInspectionTemplate').addEventListener('click', () => {
+          this.downloadTemplate('inspection');
+        });
+
+        document.getElementById('uploadPenaltyTemplate').addEventListener('click', () => {
+          this.uploadTemplate('penaltyFollowup');
+        });
+
+        document.getElementById('downloadPenaltyTemplate').addEventListener('click', () => {
+          this.downloadTemplate('penaltyFollowup');
+        });
+
+        document.getElementById('uploadFineTemplate').addEventListener('click', () => {
+          this.uploadTemplate('fineFollowup');
+        });
+
+        document.getElementById('downloadFineTemplate').addEventListener('click', () => {
+          this.downloadTemplate('fineFollowup');
+        });
+
+        // Search functionality
+        document.getElementById('inspectionSearch').addEventListener('input', (e) => {
+          this.searchInspections(e.target.value);
+        });
+
+        document.getElementById('penaltyFollowupSearch').addEventListener('input', (e) => {
+          this.searchPenaltyFollowups(e.target.value);
+        });
+
+        document.getElementById('fineFollowupSearch').addEventListener('input', (e) => {
+          this.searchFineFollowups(e.target.value);
+        });
+
+        // Form submissions
+        document.getElementById('inspectionForm').addEventListener('submit', (e) => {
+          this.handleInspectionFormSubmit(e);
+        });
+
+        document.getElementById('penaltyFollowupForm').addEventListener('submit', (e) => {
+          this.handlePenaltyFollowupFormSubmit(e);
+        });
+
+        document.getElementById('fineFollowupForm').addEventListener('submit', (e) => {
+          this.handleFineFollowupFormSubmit(e);
+        });
+
+        // Event delegation for action buttons
+        document.getElementById('inspectionTableBody').addEventListener('click', (e) => {
+          const row = e.target.closest('tr');
+          if (!row) return;
+
+          const id = row.getAttribute('data-id');
+          if (!id) return;
+
+          if (e.target.closest('.btn-outline-primary')) {
+            this.viewInspection(id);
+          } else if (e.target.closest('.btn-outline-secondary')) {
+            this.editInspection(id);
+          } else if (e.target.closest('.btn-outline-info')) {
+            this.generateInspectionDocument(id);
+          } else if (e.target.closest('.btn-outline-danger')) {
+            this.deleteInspectionConfirm(id);
+          }
+        });
+
+        document.getElementById('penaltyFollowupTableBody').addEventListener('click', (e) => {
+          const row = e.target.closest('tr');
+          if (!row) return;
+
+          const id = row.getAttribute('data-id');
+          if (!id) return;
+
+          if (e.target.closest('.btn-outline-primary')) {
+            this.viewPenaltyFollowup(id);
+          } else if (e.target.closest('.btn-outline-secondary')) {
+            this.editPenaltyFollowup(id);
+          } else if (e.target.closest('.btn-outline-info')) {
+            this.generatePenaltyFollowupDocument(id);
+          } else if (e.target.closest('.btn-outline-danger')) {
+            this.deletePenaltyFollowupConfirm(id);
+          }
+        });
+
+        document.getElementById('fineFollowupTableBody').addEventListener('click', (e) => {
+          const row = e.target.closest('tr');
+          if (!row) return;
+
+          const id = row.getAttribute('data-id');
+          if (!id) return;
+
+          if (e.target.closest('.btn-outline-primary')) {
+            this.viewFineFollowup(id);
+          } else if (e.target.closest('.btn-outline-secondary')) {
+            this.editFineFollowup(id);
+          } else if (e.target.closest('.btn-outline-info')) {
+            this.generateFineFollowupDocument(id);
+          } else if (e.target.closest('.btn-outline-danger')) {
+            this.deleteFineFollowupConfirm(id);
+          }
+        });
+      }
+
+  async fetchInspect(){
+      try{
+        const res =await (fetch("https://uat-api-office2.thithabirdnest.com/inspect"));
+
+        if (!res.ok){
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+
+        const data = await res.json();
+
+    
+        this.allInspections = data.data;    //get from local
+        console.log(this.allInspections);
+        this.renderInspections(this.allInspections);   //get to frontend
+      }catch(error){
+
+      }
+  }
+
+
+      // loadSampleData() {
+      //   // Sample inspection data
+      //   this.allInspections = [
+      //     {
+      //       id: 1,
+      //       no: 'INS001',
+      //       factory_name: 'រោងចក្រ ក',
+      //       sector: 'វិស័យ ក',
+      //       case_subject: 'ការបំពានលើស្តង់ដារសុវត្ថិភាព',
+      //       group: 'ក្រុម ក',
+      //       inspection_date: '2024-01-15',
+      //       inspection_type: 'អធិការពិសេស',
+      //       village: 'ភូមិ ក',
+      //       commune: 'ឃុំ ក',
+      //       district: 'ស្រុក ក',
+      //       province: 'ខេត្ត ក',
+      //       has_penalty: 'មាន',
+      //       penalty_format: 'ត្រូវកែលម្អប្រព័ន្ធអគ្គិសនី',
+      //       penalty_condition: 'មិនបំពេញស្តង់ដារសុវត្ថិភាព',
+      //       penalty_health: 'ខ្សែភ្លើងមិនមានសុវត្ថិភាព',
+      //       penalty_professional: 'បុគ្គលិកគ្មានការបណ្តុះបណ្តាល',
+      //       has_fine: 'មាន',
+      //       penalty_format: 'ធ្វើការលើសម៉ោង',
+      //       penalty_condition: 'គ្មានបទបញ្ជាផ្ទៃក្នុង',
+      //       penalty_health: 'គ្មានពេទ្យ',
+      //       penalty_professional: 'អត់បង់បសស',
+      //       remarks: 'ត្រូវកែលម្អក្នុងរយៈពេល ៣០ថ្ងៃ'
+      //     },
+      //     {
+      //       id: 2,
+      //       no: 'INS002',
+      //       factory_name: 'រោងចក្រ ខ',
+      //       sector: 'វិស័យ ខ',
+      //       case_subject: 'ការបំពានលើស្តង់ដារបរិស្ថាន',
+      //       group: 'ក្រុម ខ',
+      //       inspection_date: '2024-01-20',
+      //       inspection_type: 'អធិការសាមញ្ញ',
+      //       village: 'ភូមិ ខ',
+      //       commune: 'ឃុំ ខ',
+      //       district: 'ស្រុក ខ',
+      //       province: 'ខេត្ត ខ',
+      //       has_penalty: 'គ្មាន',
+      //       has_fine: 'មាន',
+      //       fine_amount: '500,000',
+      //       fine_type: 'ប្រាក់ដុល្លារ',
+      //       fine_reason: 'បញ្ចេញទឹកស្អុយដោយគ្មានការអនុញ្ញាត',
+      //       remarks: 'ត្រូវបង់ផាកក្នុងរយៈពេល ១៥ថ្ងៃ'
+      //     }
+      //   ];
+        
+        // Sample penalty followup data
+      //   this.allPenaltyFollowups = [
+      //     {
+      //       id: 1,
+      //       no: 'FLW001',
+      //       original_inspection: '1',
+      //       original_inspection_data: this.allInspections[0],
+      //       followup_date: '2024-02-15',
+      //       penalty_implemented: 'អនុវត្ត',
+      //       conclusion: 'រោងចក្របានកែលម្អតាមតម្រូវការគ្រប់ចំនុច'
+      //     }
+      //   ];
+        
+      //   // Sample fine followup data
+      //   this.allFineFollowups = [
+      //     {
+      //       id: 1,
+      //       no: 'DOC001',
+      //       original_inspection: '2',
+      //       original_inspection_data: this.allInspections[1],
+      //       document_date: '2024-01-25',
+      //       fine_amount: '500,000',
+      //       fine_type: 'ប្រាក់ដុល្លារ',
+      //       document_status: 'general',
+      //       remarks: 'លិខិតកំពុងដំណើរការនៅអគ្គ'
+      //     }
+      //   ];
+        
+      //   this.renderInspections();
+      //   this.renderPenaltyFollowups();
+      //   this.renderFineFollowups();
+      //   this.updateStatistics();
+      //   this.populateOriginalInspections();
+      // }
+
+      updateStatistics() {
+        const totalInspections = this.allInspections.length;
+        const inspectionsWithPenalties = this.allInspections.filter(i => i.has_penalty === 'មាន').length;
+        const inspectionsWithFines = this.allInspections.filter(i => i.has_fine === 'មាន').length;
+        const totalFollowups = this.allPenaltyFollowups.length + this.allFineFollowups.length;
+
+        document.getElementById('totalInspections').textContent = formatNumber(totalInspections);
+        document.getElementById('inspectionsWithPenalties').textContent = formatNumber(inspectionsWithPenalties);
+        document.getElementById('inspectionsWithFines').textContent = formatNumber(inspectionsWithFines);
+        document.getElementById('totalFollowups').textContent = formatNumber(totalFollowups);
+      }
+
+      showInspectionTab(tabName) {
+        // Hide all tab contents
+        document.querySelectorAll('.inspection-content').forEach(content => {
+          content.classList.remove('active');
+        });
+        
+        // Remove active class from all tabs
+        document.querySelectorAll('.inspection-tab').forEach(tab => {
+          tab.classList.remove('active');
+        });
+        
+        // Show selected tab content
+        document.getElementById(`${tabName}-inspection`).classList.add('active');
+        
+        // Activate selected tab
+        document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+      }
+
+      renderInspections(inspect) {
+        const tbody = document.getElementById('inspectionTableBody');
+
+        if (this.allInspections.length === 0) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="8" class="text-center text-muted py-4">
+                មិនមានទិន្នន័យ
+              </td>
+            </tr>
+          `;
+          return;
+        }
+
+        tbody.innerHTML = this.allInspections.map((inspection, index) => {
+          let status = '';
+          let statusClass = '';
+          
+          if (inspection.has_penalty === 'មាន') {
+            status = 'ត្រូវតាមដានកំហិត';
+            statusClass = 'status-pending';
+          } else if (inspection.has_fine === 'មាន') {
+            status = 'ត្រូវតាមដានផាក';
+            statusClass = 'status-warning';
+          } else {
+            status = 'បានបញ្ចប់';
+            statusClass = 'status-completed';
+          }
+          
+          return `
+          <tr data-id="${inspection.id}">
+            <td class="text-muted">${index + 1}</td>
+            <td>${inspection.no || ''}</td>
+            <td>
+              <div class="fw-semibold">${inspection.factory_name || ''}</div>
+              <div class="text-muted small">
+                <div>${inspection.case_subject || ''}</div>
+                <div>${inspection.group || ''}</div>
+                <div>${inspection.inspection_type || ''}</div>
+              </div>
+            </td>
+            <td>${inspection.inspection_date || ''}</td>
+            <td>
+              <span class="status-badge ${inspection.has_penalty === 'មាន' ? 'status-warning' : 'status-completed'}">
+                ${inspection.has_penalty || 'គ្មាន'}
+              </span>
+            </td>
+            <td>
+              <span class="status-badge ${inspection.has_fine === 'មាន' ? 'status-warning' : 'status-completed'}">
+                ${inspection.has_fine || 'គ្មាន'}
+              </span>
+            </td>
+            <td>
+              <span class="status-badge ${statusClass}">
+                ${status}
+              </span>
+            </td>
+            <td>
+              <div class="btn-group-vertical btn-group-sm">
+                <button class="btn btn-outline-primary" title="View">
+                  <i class="bi bi-eye"></i>
+                </button>
+                <button class="btn btn-outline-secondary" title="Edit">
+                  <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn btn-outline-info" title="Generate Document">
+                  <i class="bi bi-file-earmark-word"></i>
+                </button>
+                <button class="btn btn-outline-danger" title="Delete">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `}).join('');
+
+        this.updateStatistics();
+      }
+
+      renderPenaltyFollowups() {
+        const tbody = document.getElementById('penaltyFollowupTableBody');
+
+        if (this.allPenaltyFollowups.length === 0) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="7" class="text-center text-muted py-4">
+                មិនមានទិន្នន័យ
+              </td>
+            </tr>
+          `;
+          return;
+        }
+
+        tbody.innerHTML = this.allPenaltyFollowups.map((followup, index) => {
+          const original = followup.original_inspection_data || {};
+          const statusClass = followup.penalty_implemented === 'អនុវត្ត' ? 'status-success' : 'status-warning';
+          
+          return `
+          <tr data-id="${followup.id}">
+            <td class="text-muted">${index + 1}</td>
+            <td>${followup.no || ''}</td>
+            <td>
+              <div class="fw-semibold">${original.factory_name || ''}</div>
+              <div class="text-muted small">${original.case_subject || ''}</div>
+            </td>
+            <td>${followup.followup_date || ''}</td>
+            <td>${original.inspection_date || ''}</td>
+            <td>
+              <span class="status-badge ${statusClass}">
+                ${followup.penalty_implemented || 'N/A'}
+              </span>
+            </td>
+            <td>
+              <div class="btn-group-vertical btn-group-sm">
+                <button class="btn btn-outline-primary" title="View">
+                  <i class="bi bi-eye"></i>
+                </button>
+                <button class="btn btn-outline-secondary" title="Edit">
+                  <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn btn-outline-info" title="Generate Document">
+                  <i class="bi bi-file-earmark-word"></i>
+                </button>
+                <button class="btn btn-outline-danger" title="Delete">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `}).join('');
+      }
+
+      renderFineFollowups() {
+        const tbody = document.getElementById('fineFollowupTableBody');
+
+        if (this.allFineFollowups.length === 0) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="7" class="text-center text-muted py-4">
+                មិនមានទិន្នន័យ
+              </td>
+            </tr>
+          `;
+          return;
+        }
+
+        tbody.innerHTML = this.allFineFollowups.map((followup, index) => {
+          const original = followup.original_inspection_data || {};
+          let statusText = '';
+          let statusClass = '';
+          
+          switch(followup.document_status) {
+            case 'department':
+              statusText = 'ទៅនាយកដ្ឋាន';
+              statusClass = 'status-pending';
+              break;
+            case 'general':
+              statusText = 'ទៅអគ្គ';
+              statusClass = 'status-warning';
+              break;
+            case 'minister':
+              statusText = 'ទៅរដ្ឋមន្ត្រី';
+              statusClass = 'status-warning';
+              break;
+            case 'completed':
+              statusText = 'បានបញ្ចប់';
+              statusClass = 'status-success';
+              break;
+            default:
+              statusText = 'មិនស្គាល់';
+              statusClass = 'status-pending';
+          }
+          
+          return `
+          <tr data-id="${followup.id}">
+            <td class="text-muted">${index + 1}</td>
+            <td>${followup.no || ''}</td>
+            <td>
+              <div class="fw-semibold">${original.factory_name || ''}</div>
+              <div class="text-muted small">${original.case_subject || ''}</div>
+            </td>
+            <td>${followup.document_date || ''}</td>
+            <td>${followup.fine_amount || ''} ${followup.fine_type || ''}</td>
+            <td>
+              <span class="status-badge ${statusClass}">
+                ${statusText}
+              </span>
+            </td>
+            <td>
+              <div class="btn-group-vertical btn-group-sm">
+                <button class="btn btn-outline-primary" title="View">
+                  <i class="bi bi-eye"></i>
+                </button>
+                <button class="btn btn-outline-secondary" title="Edit">
+                  <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn btn-outline-info" title="Generate Document">
+                  <i class="bi bi-file-earmark-word"></i>
+                </button>
+                <button class="btn btn-outline-danger" title="Delete">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `}).join('');
+      }
+
+      // Search functionality
+      searchInspections(query) {
+        if (!query.trim()) {
+          this.renderInspections();
+          return;
+        }
+
+        const filteredInspections = this.allInspections.filter(inspection =>
+          Object.values(inspection).some(value =>
+            value && value.toString().toLowerCase().includes(query.toLowerCase())
+          )
+        );
+        
+        const tbody = document.getElementById('inspectionTableBody');
+        if (filteredInspections.length === 0) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="8" class="text-center text-muted py-4">
+                មិនមានទិន្នន័យត្រូវនឹងការស្វែងរក
+              </td>
+            </tr>
+          `;
+          return;
+        }
+
+        // Re-render with filtered data
+        tbody.innerHTML = filteredInspections.map((inspection, index) => {
+          let status = '';
+          let statusClass = '';
+          
+          if (inspection.has_penalty === 'មាន') {
+            status = 'ត្រូវតាមដានកំហិត';
+            statusClass = 'status-pending';
+          } else if (inspection.has_fine === 'មាន') {
+            status = 'ត្រូវតាមដានផាក';
+            statusClass = 'status-warning';
+          } else {
+            status = 'បានបញ្ចប់';
+            statusClass = 'status-completed';
+          }
+          
+          return `
+          <tr data-id="${inspection.id}">
+            <td class="text-muted">${index + 1}</td>
+            <td>${inspection.no || ''}</td>
+            <td>
+              <div class="fw-semibold">${inspection.factory_name || ''}</div>
+              <div class="text-muted small">
+                <div>${inspection.case_subject || ''}</div>
+                <div>${inspection.group || ''}</div>
+                <div>${inspection.inspection_type || ''}</div>
+              </div>
+            </td>
+            <td>${inspection.inspection_date || ''}</td>
+            <td>
+              <span class="status-badge ${inspection.has_penalty === 'មាន' ? 'status-warning' : 'status-completed'}">
+                ${inspection.has_penalty || 'គ្មាន'}
+              </span>
+            </td>
+            <td>
+              <span class="status-badge ${inspection.has_fine === 'មាន' ? 'status-warning' : 'status-completed'}">
+                ${inspection.has_fine || 'គ្មាន'}
+              </span>
+            </td>
+            <td>
+              <span class="status-badge ${statusClass}">
+                ${status}
+              </span>
+            </td>
+            <td>
+              <div class="btn-group-vertical btn-group-sm">
+                <button class="btn btn-outline-primary" title="View">
+                  <i class="bi bi-eye"></i>
+                </button>
+                <button class="btn btn-outline-secondary" title="Edit">
+                  <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn btn-outline-info" title="Generate Document">
+                  <i class="bi bi-file-earmark-word"></i>
+                </button>
+                <button class="btn btn-outline-danger" title="Delete">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `}).join('');
+      }
+
+      searchPenaltyFollowups(query) {
+        if (!query.trim()) {
+          this.renderPenaltyFollowups();
+          return;
+        }
+
+        const filteredFollowups = this.allPenaltyFollowups.filter(followup =>
+          Object.values(followup).some(value =>
+            value && value.toString().toLowerCase().includes(query.toLowerCase())
+          )
+        );
+        
+        const tbody = document.getElementById('penaltyFollowupTableBody');
+        if (filteredFollowups.length === 0) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="7" class="text-center text-muted py-4">
+                មិនមានទិន្នន័យត្រូវនឹងការស្វែងរក
+              </td>
+            </tr>
+          `;
+          return;
+        }
+
+        tbody.innerHTML = filteredFollowups.map((followup, index) => {
+          const original = followup.original_inspection_data || {};
+          const statusClass = followup.penalty_implemented === 'អនុវត្ត' ? 'status-success' : 'status-warning';
+          
+          return `
+          <tr data-id="${followup.id}">
+            <td class="text-muted">${index + 1}</td>
+            <td>${followup.no || ''}</td>
+            <td>
+              <div class="fw-semibold">${original.factory_name || ''}</div>
+              <div class="text-muted small">${original.case_subject || ''}</div>
+            </td>
+            <td>${followup.followup_date || ''}</td>
+            <td>${original.inspection_date || ''}</td>
+            <td>
+              <span class="status-badge ${statusClass}">
+                ${followup.penalty_implemented || 'N/A'}
+              </span>
+            </td>
+            <td>
+              <div class="btn-group-vertical btn-group-sm">
+                <button class="btn btn-outline-primary" title="View">
+                  <i class="bi bi-eye"></i>
+                </button>
+                <button class="btn btn-outline-secondary" title="Edit">
+                  <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn btn-outline-info" title="Generate Document">
+                  <i class="bi bi-file-earmark-word"></i>
+                </button>
+                <button class="btn btn-outline-danger" title="Delete">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `}).join('');
+      }
+
+      searchFineFollowups(query) {
+        if (!query.trim()) {
+          this.renderFineFollowups();
+          return;
+        }
+
+        const filteredFollowups = this.allFineFollowups.filter(followup =>
+          Object.values(followup).some(value =>
+            value && value.toString().toLowerCase().includes(query.toLowerCase())
+          )
+        );
+        
+        const tbody = document.getElementById('fineFollowupTableBody');
+        if (filteredFollowups.length === 0) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="7" class="text-center text-muted py-4">
+                មិនមានទិន្នន័យត្រូវនឹងការស្វែងរក
+              </td>
+            </tr>
+          `;
+          return;
+        }
+
+        tbody.innerHTML = filteredFollowups.map((followup, index) => {
+          const original = followup.original_inspection_data || {};
+          let statusText = '';
+          let statusClass = '';
+          
+          switch(followup.document_status) {
+            case 'department':
+              statusText = 'ទៅនាយកដ្ឋាន';
+              statusClass = 'status-pending';
+              break;
+            case 'general':
+              statusText = 'ទៅអគ្គ';
+              statusClass = 'status-warning';
+              break;
+            case 'minister':
+              statusText = 'ទៅរដ្ឋមន្ត្រី';
+              statusClass = 'status-warning';
+              break;
+            case 'completed':
+              statusText = 'បានបញ្ចប់';
+              statusClass = 'status-success';
+              break;
+            default:
+              statusText = 'មិនស្គាល់';
+              statusClass = 'status-pending';
+          }
+          
+          return `
+          <tr data-id="${followup.id}">
+            <td class="text-muted">${index + 1}</td>
+            <td>${followup.no || ''}</td>
+            <td>
+              <div class="fw-semibold">${original.factory_name || ''}</div>
+              <div class="text-muted small">${original.case_subject || ''}</div>
+            </td>
+            <td>${followup.document_date || ''}</td>
+            <td>${followup.fine_amount || ''} ${followup.fine_type || ''}</td>
+            <td>
+              <span class="status-badge ${statusClass}">
+                ${statusText}
+              </span>
+            </td>
+            <td>
+              <div class="btn-group-vertical btn-group-sm">
+                <button class="btn btn-outline-primary" title="View">
+                  <i class="bi bi-eye"></i>
+                </button>
+                <button class="btn btn-outline-secondary" title="Edit">
+                  <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn btn-outline-info" title="Generate Document">
+                  <i class="bi bi-file-earmark-word"></i>
+                </button>
+                <button class="btn btn-outline-danger" title="Delete">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `}).join('');
+      }
+
+      // Form handling methods
+      openInspectionForm(editId = null) {
+        console.log("Open Inspection Form");
+        currentEditingId = editId;
+        const modal = new bootstrap.Modal(document.getElementById('inspectionModal'));
+        const modalTitle = document.getElementById('inspectionModalTitle');
+        const form = document.getElementById('inspectionForm');
+
+        modalTitle.textContent = editId ? 'កែសម្រួលការត្រួតពិនិត្យ' : 'ការត្រួតពិនិត្យថ្មី';
+        form.reset();
+        this.resetAllSelections();
+
+        if (editId) {
+          this.populateInspectionForm(editId);
+        }
+
+        modal.show();
+      }
+
+      populateInspectionForm(id) {
+        const inspection = this.allInspections.find(i => i.id.toString() === id.toString());
+        if (!inspection) return;
+
+        const form = document.getElementById('inspectionForm');
+        const elements = form.elements;
+        
+        elements['no'].value = inspection.no || '';
+        elements['group'].value = inspection.group || '';
+        elements['inspection_date'].value = inspection.inspection_date || '';
+        elements['inspection_type'].value = inspection.inspection_type || '';
+        elements['factory_name'].value = inspection.factory_name || '';
+        elements['sector'].value = inspection.sector || '';
+        elements['case_subject'].value = inspection.case_subject || '';
+        elements['village'].value = inspection.village || '';
+        elements['commune'].value = inspection.commune || '';
+        elements['district'].value = inspection.district || '';
+        elements['province'].value = inspection.province || '';
+        elements['remarks'].value = inspection.remarks || '';
+        
+        // Handle penalty section
+        if (inspection.has_penalty === 'មាន') {
+          togglePenaltyDetails(true);
+          elements['penalty_format'].value = inspection.penalty_format || '';
+          elements['penalty_condition'].value = inspection.penalty_condition || '';
+          elements['penalty_health'].value = inspection.penalty_health || '';
+          elements['penalty_professional'].value = inspection.penalty_professional || '';
+        } else {
+          togglePenaltyDetails(false);
+        }
+        
+        // Handle fine section
+        if (inspection.has_fine === 'មាន') {
+          toggleFineDetails(true);
+          elements['fine_amount'].value = inspection.fine_amount || '';
+          elements['fine_type'].value = inspection.fine_type || '';
+          elements['fine_reason'].value = inspection.fine_reason || '';
+        } else {
+          toggleFineDetails(false);
+        }
+      }
+
+      openPenaltyFollowupForm(editId = null) {
+        currentEditingId = editId;
+        const modal = new bootstrap.Modal(document.getElementById('penaltyFollowupModal'));
+        const modalTitle = document.getElementById('penaltyFollowupModalTitle');
+        const form = document.getElementById('penaltyFollowupForm');
+
+        modalTitle.textContent = editId ? 'កែសម្រួលតាមដានកំហិត' : 'តាមដានកំហិតថ្មី';
+        form.reset();
+        this.resetAllSelections();
+        this.populateOriginalInspections();
+
+        if (editId) {
+          this.populatePenaltyFollowupForm(editId);
+        }
+
+        modal.show();
+      }
+
+      populatePenaltyFollowupForm(id) {
+        const followup = this.allPenaltyFollowups.find(f => f.id.toString() === id.toString());
+        if (!followup) return;
+
+        const form = document.getElementById('penaltyFollowupForm');
+        const elements = form.elements;
+        
+        elements['no'].value = followup.no || '';
+        elements['original_inspection'].value = followup.original_inspection || '';
+        elements['followup_date'].value = followup.followup_date || '';
+        elements['conclusion'].value = followup.conclusion || '';
+        
+        // Handle follow-up result section
+        if (followup.penalty_implemented === 'មិនអនុវត្ត') {
+          toggleFollowupDetails(true);
+          elements['followup_format'].value = followup.followup_format || '';
+          elements['followup_condition'].value = followup.followup_condition || '';
+          elements['followup_health'].value = followup.followup_health || '';
+          elements['followup_professional'].value = followup.followup_professional || '';
+        } else {
+          toggleFollowupDetails(false);
+        }
+        
+        // Load original inspection data
+        loadOriginalInspectionData();
+      }
+
+      openFineFollowupForm(editId = null) {
+        currentEditingId = editId;
+        const modal = new bootstrap.Modal(document.getElementById('fineFollowupModal'));
+        const modalTitle = document.getElementById('fineFollowupModalTitle');
+        const form = document.getElementById('fineFollowupForm');
+
+        modalTitle.textContent = editId ? 'កែសម្រួលតាមដានឯកសារផាក' : 'តាមដានឯកសារផាកថ្មី';
+        form.reset();
+        this.resetAllSelections();
+        this.populateOriginalInspections();
+
+        if (editId) {
+          this.populateFineFollowupForm(editId);
+        }
+
+        modal.show();
+      }
+
+      populateFineFollowupForm(id) {
+        const followup = this.allFineFollowups.find(f => f.id.toString() === id.toString());
+        if (!followup) return;
+
+        const form = document.getElementById('fineFollowupForm');
+        const elements = form.elements;
+        
+        elements['no'].value = followup.no || '';
+        elements['original_inspection'].value = followup.original_inspection || '';
+        elements['document_date'].value = followup.document_date || '';
+        elements['fine_amount'].value = followup.fine_amount || '';
+        elements['fine_type'].value = followup.fine_type || '';
+        elements['remarks'].value = followup.remarks || '';
+        
+        // Set document status
+        if (followup.document_status) {
+          elements['document_status'].value = followup.document_status;
+          updateDocumentFlow(followup.document_status);
+        }
+        
+        // Load original inspection data
+        loadFineOriginalInspectionData();
+      }
+
+      resetAllSelections() {
+        document.querySelectorAll('.penalty-option').forEach(option => {
+          option.classList.remove('selected');
+        });
+        document.querySelectorAll('.penalty-details').forEach(details => {
+          details.classList.remove('active');
+        });
+      }
+
+      async handleInspectionFormSubmit(e) {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const data = Object.fromEntries(formData);
+        
+        if (!data.no || !data.factory_name || !data.group || !data.inspection_date || !data.sector || !data.case_subject || !data.inspection_type) {
+          showMessage('សូមបំពេញព័ត៌មានចាំបាច់ទាំងអស់', 'Error');
+          return;
+        }
+        
+        const submitBtn = document.getElementById('inspectionSubmitBtn');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<span class="loading"></span> កំពុងរក្សាទុក...';
+        submitBtn.disabled = true;
+        
+        try {
+          if (currentEditingId) {
+            const index = this.allInspections.findIndex(i => i.id.toString() === currentEditingId.toString());
+            if (index !== -1) {
+              this.allInspections[index] = { ...this.allInspections[index], ...data, id: currentEditingId };
+            }
+            showMessage('ការត្រួតពិនិត្យត្រូវបានកែសម្រួលដោយជោគជ័យ!', 'Success');
+          } else {
+            const newInspection = {
+              id: Date.now(),
+              ...data,
+              created_at: new Date().toISOString()
+            };
+            this.allInspections.push(newInspection);
+            showMessage('ការត្រួតពិនិត្យត្រូវបានបង្កើតដោយជោគជ័យ!', 'Success');
+          }
+          
+          const modal = bootstrap.Modal.getInstance(document.getElementById('inspectionModal'));
+          modal.hide();
+          this.renderInspections();
+          this.populateOriginalInspections();
+        } catch (error) {
+          console.error('Save error:', error);
+          showMessage('មានបញ្ហាក្នុងការរក្សាទុកការត្រួតពិនិត្យ', 'Error');
+        } finally {
+          submitBtn.innerHTML = originalText;
+          submitBtn.disabled = false;
+        }
+      }
+
+      async handlePenaltyFollowupFormSubmit(e) {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const data = Object.fromEntries(formData);
+        
+        if (!data.no || !data.original_inspection || !data.followup_date) {
+          showMessage('សូមបំពេញព័ត៌មានចាំបាច់ទាំងអស់', 'Error');
+          return;
+        }
+        
+        const submitBtn = document.getElementById('penaltyFollowupSubmitBtn');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<span class="loading"></span> កំពុងរក្សាទុក...';
+        submitBtn.disabled = true;
+        
+        try {
+          if (currentEditingId) {
+            const index = this.allPenaltyFollowups.findIndex(i => i.id.toString() === currentEditingId.toString());
+            if (index !== -1) {
+              this.allPenaltyFollowups[index] = { ...this.allPenaltyFollowups[index], ...data, id: currentEditingId };
+            }
+            showMessage('ការតាមដានត្រូវបានកែសម្រួលដោយជោគជ័យ!', 'Success');
+          } else {
+            const originalInspection = this.allInspections.find(i => i.id.toString() === data.original_inspection);
+            const newFollowup = {
+              id: Date.now(),
+              ...data,
+              original_inspection_data: originalInspection,
+              created_at: new Date().toISOString()
+            };
+            this.allPenaltyFollowups.push(newFollowup);
+            showMessage('ការតាមដានត្រូវបានបង្កើតដោយជោគជ័យ!', 'Success');
+          }
+          
+          const modal = bootstrap.Modal.getInstance(document.getElementById('penaltyFollowupModal'));
+          modal.hide();
+          this.renderPenaltyFollowups();
+        } catch (error) {
+          console.error('Save error:', error);
+          showMessage('មានបញ្ហាក្នុងការរក្សាទុកការតាមដាន', 'Error');
+        } finally {
+          submitBtn.innerHTML = originalText;
+          submitBtn.disabled = false;
+        }
+      }
+
+      async handleFineFollowupFormSubmit(e) {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const data = Object.fromEntries(formData);
+        
+        if (!data.no || !data.original_inspection || !data.document_date || !data.fine_amount || !data.fine_type) {
+          showMessage('សូមបំពេញព័ត៌មានចាំបាច់ទាំងអស់', 'Error');
+          return;
+        }
+        
+        const submitBtn = document.getElementById('fineFollowupSubmitBtn');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<span class="loading"></span> កំពុងរក្សាទុក...';
+        submitBtn.disabled = true;
+        
+        try {
+          if (currentEditingId) {
+            const index = this.allFineFollowups.findIndex(i => i.id.toString() === currentEditingId.toString());
+            if (index !== -1) {
+              this.allFineFollowups[index] = { ...this.allFineFollowups[index], ...data, id: currentEditingId };
+            }
+            showMessage('ការតាមដានឯកសារផាកត្រូវបានកែសម្រួលដោយជោគជ័យ!', 'Success');
+          } else {
+            const originalInspection = this.allInspections.find(i => i.id.toString() === data.original_inspection);
+            const newFollowup = {
+              id: Date.now(),
+              ...data,
+              original_inspection_data: originalInspection,
+              created_at: new Date().toISOString()
+            };
+            this.allFineFollowups.push(newFollowup);
+            showMessage('ការតាមដានឯកសារផាកត្រូវបានបង្កើតដោយជោគជ័យ!', 'Success');
+          }
+          
+          const modal = bootstrap.Modal.getInstance(document.getElementById('fineFollowupModal'));
+          modal.hide();
+          this.renderFineFollowups();
+        } catch (error) {
+          console.error('Save error:', error);
+          showMessage('មានបញ្ហាក្នុងការរក្សាទុកការតាមដានឯកសារផាក', 'Error');
+        } finally {
+          submitBtn.innerHTML = originalText;
+          submitBtn.disabled = false;
+        }
+      }
+
+      // Document generation methods
+      async generateInspectionDocument(id) {
+        const inspection = this.allInspections.find(i => i.id.toString() === id.toString());
+        if (!inspection) {
+          showMessage('Inspection not found', 'Error');
+          return;
+        }
+        
+        try {
+          const doc = await this.docxGenerator.generateDocument('inspection', inspection);
+          await this.docxGenerator.downloadDocument(doc, `Inspection_${inspection.no}`);
+          showMessage('ឯកសារ DOCX ត្រូវបានបង្កើតដោយជោគជ័យ!', 'Success');
+        } catch (error) {
+          console.error('Document generation error:', error);
+          showMessage('មានបញ្ហាក្នុងការបង្កើតឯកសារ', 'Error');
+        }
+      }
+
+      async generatePenaltyFollowupDocument(id) {
+        const followup = this.allPenaltyFollowups.find(f => f.id.toString() === id.toString());
+        if (!followup) {
+          showMessage('Follow-up not found', 'Error');
+          return;
+        }
+        
+        try {
+          const doc = await this.docxGenerator.generateDocument('penaltyFollowup', followup);
+          await this.docxGenerator.downloadDocument(doc, `PenaltyFollowup_${followup.no}`);
+          showMessage('ឯកសារ DOCX ត្រូវបានបង្កើតដោយជោគជ័យ!', 'Success');
+        } catch (error) {
+          console.error('Document generation error:', error);
+          showMessage('មានបញ្ហាក្នុងការបង្កើតឯកសារ', 'Error');
+        }
+      }
+
+      async generateFineFollowupDocument(id) {
+        const followup = this.allFineFollowups.find(f => f.id.toString() === id.toString());
+        if (!followup) {
+          showMessage('Fine document follow-up not found', 'Error');
+          return;
+        }
+        
+        try {
+          const doc = await this.docxGenerator.generateDocument('fineFollowup', followup);
+          await this.docxGenerator.downloadDocument(doc, `FineFollowup_${followup.no}`);
+          showMessage('ឯកសារ DOCX ត្រូវបានបង្កើតដោយជោគជ័យ!', 'Success');
+        } catch (error) {
+          console.error('Document generation error:', error);
+          showMessage('មានបញ្ហាក្នុងការបង្កើតឯកសារ', 'Error');
+        }
+      }
+
+      // Template management methods
+      uploadTemplate(templateType) {
+        const fileInput = document.getElementById('hiddenFileInput');
+        fileInput.onchange = (e) => {
+          const file = e.target.files[0];
+          if (file && file.name.endsWith('.docx')) {
+            // In a real application, you would upload and process the DOCX template
+            showMessage('ទំរង់ DOCX ត្រូវបានផ្ទុកឡើងដោយជោគជ័យ!', 'Success');
+          } else {
+            showMessage('សូមជ្រើសរើសឯកសារ DOCX', 'Error');
+          }
+        };
+        fileInput.click();
+      }
+
+      downloadTemplate(templateType) {
+        // In a real application, you would download the actual template
+        showMessage('ទំរង់លំនាំដើមត្រូវបានទាញយកដោយជោគជ័យ!', 'Success');
+      }
+
+      // View methods
+      viewInspection(id) {
+        const inspection = this.allInspections.find(i => i.id.toString() === id.toString());
+        if (!inspection) {
+          showMessage('Inspection not found', 'Error');
+          return;
+        }
+        
+        let detailHTML = `
+            <strong>លេខចូល:</strong> ${inspection.no || ''}<br>
+            <strong>ក្រុម:</strong> ${inspection.group || ''}<br>
+            <strong>កាលបរិច្ឆេទត្រួតពិនិត្យ:</strong> ${inspection.inspection_date || ''}<br>
+            <strong>ប្រភេទអធិការកិច្ច:</strong> ${inspection.inspection_type || ''}<br>
+            <strong>ឈ្មោះរោងចក្រ:</strong> ${inspection.factory_name || ''}<br>
+            <strong>វិស័យ:</strong> ${inspection.sector || ''}<br>
+            <strong>ប្រធានបទ:</strong> ${inspection.case_subject || ''}<br>
+            <strong>ទីតាំង:</strong> ${inspection.village || ''}, ${inspection.commune || ''}, ${inspection.district || ''}, ${inspection.province || ''}<br>
+            <strong>កំហិត:</strong> ${inspection.has_penalty || ''}<br>
+        `;
+        
+        if (inspection.has_penalty === 'មាន') {
+            detailHTML += `
+                <strong>បែបបទ:</strong> ${inspection.penalty_format || ''}<br>
+                <strong>លក្ខខណ្ឌ:</strong> ${inspection.penalty_condition || ''}<br>
+                <strong>សុខភាពនិងសុវត្ថភាព:</strong> ${inspection.penalty_health || ''}<br>
+                <strong>វិជ្ជាជីវៈ:</strong> ${inspection.penalty_professional || ''}<br>
+            `;
+        }
+        
+        detailHTML += `<strong>ផាក:</strong> ${inspection.has_fine || ''}<br>`;
+        
+        if (inspection.has_fine === 'មាន') {
+            detailHTML += `
+                <strong>ចំនួនទឹកប្រាក់:</strong> ${inspection.fine_amount || ''}<br>
+                <strong>ប្រភេទផាក:</strong> ${inspection.fine_type || ''}<br>
+                <strong>ហេតុផល:</strong> ${inspection.fine_reason || ''}<br>
+            `;
+        }
+        
+        detailHTML += `<strong>ផ្សេងៗ:</strong> ${inspection.remarks || ''}`;
+        
+        showMessage(detailHTML, 'ព័ត៌មានលម្អិតការត្រួតពិនិត្យ');
+      }
+
+      viewPenaltyFollowup(id) {
+        const followup = this.allPenaltyFollowups.find(f => f.id.toString() === id.toString());
+        if (!followup) {
+          showMessage('Follow-up not found', 'Error');
+          return;
+        }
+        
+        const original = followup.original_inspection_data || {};
+        let detailHTML = `
+            <strong>លេខចូល:</strong> ${followup.no || ''}<br>
+            <strong>កាលបរិច្ឆេទតាមដាន:</strong> ${followup.followup_date || ''}<br>
+            <strong>ការត្រួតពិនិត្យដើម:</strong> ${original.no || ''} - ${original.factory_name || ''}<br>
+            <strong>លទ្ធផលតាមដាន:</strong> ${followup.penalty_implemented || ''}<br>
+        `;
+        
+        if (followup.penalty_implemented === 'មិនអនុវត្ត') {
+            detailHTML += `
+                <strong>បែបបទ:</strong> ${followup.followup_format || ''}<br>
+                <strong>លក្ខខណ្ឌ:</strong> ${followup.followup_condition || ''}<br>
+                <strong>សុខភាពនិងសុវត្ថភាព:</strong> ${followup.followup_health || ''}<br>
+                <strong>វិជ្ជាជីវៈ:</strong> ${followup.followup_professional || ''}<br>
+            `;
+        }
+        
+        detailHTML += `<strong>សេចក្តីសន្និដ្ឋាន:</strong> ${followup.conclusion || ''}`;
+        
+        showMessage(detailHTML, 'ព័ត៌មានលម្អិតតាមដានកំហិត');
+      }
+
+      viewFineFollowup(id) {
+        const followup = this.allFineFollowups.find(f => f.id.toString() === id.toString());
+        if (!followup) {
+          showMessage('Fine document follow-up not found', 'Error');
+          return;
+        }
+        
+        const original = followup.original_inspection_data || {};
+        let statusText = '';
+        switch(followup.document_status) {
+          case 'department': statusText = 'បានចេញលិខិតផាក ទៅនាយកដ្ឋាន'; break;
+          case 'general': statusText = 'ទៅអគ្គ'; break;
+          case 'minister': statusText = 'ទៅរដ្ឋមន្ត្រី'; break;
+          case 'completed': statusText = 'បានបញ្ចប់'; break;
+          default: statusText = 'មិនស្គាល់';
+        }
+        
+        let detailHTML = `
+            <strong>លេខចូល:</strong> ${followup.no || ''}<br>
+            <strong>កាលបរិច្ឆេទចេញលិខិត:</strong> ${followup.document_date || ''}<br>
+            <strong>ការត្រួតពិនិត្យដើម:</strong> ${original.no || ''} - ${original.factory_name || ''}<br>
+            <strong>ចំនួនទឹកប្រាក់ផាក:</strong> ${followup.fine_amount || ''} ${followup.fine_type || ''}<br>
+            <strong>ស្ថានភាពឯកសារ:</strong> ${statusText}<br>
+            <strong>ផ្សេងៗ:</strong> ${followup.remarks || ''}
+        `;
+        
+        showMessage(detailHTML, 'ព័ត៌មានលម្អិតតាមដានឯកសារផាក');
+      }
+
+      // Edit methods
+      editInspection(id) {
+        this.openInspectionForm(id);
+      }
+
+      editPenaltyFollowup(id) {
+        this.openPenaltyFollowupForm(id);
+      }
+
+      editFineFollowup(id) {
+        this.openFineFollowupForm(id);
+      }
+
+      // Delete confirmation methods
+      deleteInspectionConfirm(id) {
+        if (confirm('តើអ្នកប្រាកដថាចង់លុបការត្រួតពិនិត្យនេះមែនទេ?')) {
+          this.deleteInspection(id);
+        }
+      }
+
+      deletePenaltyFollowupConfirm(id) {
+        if (confirm('តើអ្នកប្រាកដថាចង់លុបតាមដានកំហិតនេះមែនទេ?')) {
+          this.deletePenaltyFollowup(id);
+        }
+      }
+
+      deleteFineFollowupConfirm(id) {
+        if (confirm('តើអ្នកប្រាកដថាចង់លុបតាមដានឯកសារផាកនេះមែនទេ?')) {
+          this.deleteFineFollowup(id);
+        }
+      }
+
+      // Delete methods
+      deleteInspection(id) {
+        try {
+          this.allInspections = this.allInspections.filter(i => i.id.toString() !== id.toString());
+          this.renderInspections();
+          this.populateOriginalInspections();
+          showMessage('ការត្រួតពិនិត្យត្រូវបានលុបដោយជោគជ័យ!', 'Success');
+        } catch (error) {
+          console.error('Delete error:', error);
+          showMessage('មានបញ្ហាក្នុងការលុបការត្រួតពិនិត្យ', 'Error');
+        }
+      }
+
+      deletePenaltyFollowup(id) {
+        try {
+          this.allPenaltyFollowups = this.allPenaltyFollowups.filter(f => f.id.toString() !== id.toString());
+          this.renderPenaltyFollowups();
+          showMessage('ការតាមដានកំហិតត្រូវបានលុបដោយជោគជ័យ!', 'Success');
+        } catch (error) {
+          console.error('Delete error:', error);
+          showMessage('មានបញ្ហាក្នុងការលុបការតាមដានកំហិត', 'Error');
+        }
+      }
+
+      deleteFineFollowup(id) {
+        try {
+          this.allFineFollowups = this.allFineFollowups.filter(f => f.id.toString() !== id.toString());
+          this.renderFineFollowups();
+          showMessage('ការតាមដានឯកសារផាកត្រូវបានលុបដោយជោគជ័យ!', 'Success');
+        } catch (error) {
+          console.error('Delete error:', error);
+          showMessage('មានបញ្ហាក្នុងការលុបការតាមដានឯកសារផាក', 'Error');
+        }
+      }
+
+      populateOriginalInspections() {
+        const select = document.getElementById('originalInspectionSelect');
+        const fineSelect = document.getElementById('fineOriginalInspectionSelect');
+        
+        if (select) {
+          select.innerHTML = '<option value="">-- ជ្រើសរើសការត្រួតពិនិត្យដើម --</option>';
+          
+          this.allInspections.filter(inspection => inspection.has_penalty === 'មាន').forEach(inspection => {
+            const option = document.createElement('option');
+            option.value = inspection.id;
+            option.textContent = `${inspection.no} - ${inspection.factory_name} (${inspection.inspection_date})`;
+            select.appendChild(option);
+          });
+        }
+        
+        if (fineSelect) {
+          fineSelect.innerHTML = '<option value="">-- ជ្រើសរើសការត្រួតពិនិត្យដើម --</option>';
+          
+          this.allInspections.filter(inspection => inspection.has_fine === 'មាន').forEach(inspection => {
+            const option = document.createElement('option');
+            option.value = inspection.id;
+            option.textContent = `${inspection.no} - ${inspection.factory_name} (${inspection.inspection_date})`;
+            fineSelect.appendChild(option);
+          });
+        }
+      }
+
+      // Export methods
+      exportInspectionsToExcel() {
+        try {
+          const ws = XLSX.utils.json_to_sheet(this.allInspections);
+          const wb = XLSX.utils.book_new();
+          XLSX.utils.book_append_sheet(wb, ws, "Inspections");
+          XLSX.writeFile(wb, "inspections.xlsx");
+          showMessage('Excel file downloaded successfully', 'Success');
+        } catch (error) {
+          console.error('Export error:', error);
+          showMessage('Failed to export to Excel', 'Error');
+        }
+      }
+
+      exportPenaltyFollowupsToExcel() {
+        try {
+          const exportData = this.allPenaltyFollowups.map(followup => ({
+            'លេខចូល': followup.no,
+            'រោងចក្រ': followup.original_inspection_data?.factory_name || '',
+            'កាលបរិច្ឆេទតាមដាន': followup.followup_date,
+            'កាលបរិច្ឆេទកំហិតដើម': followup.original_inspection_data?.inspection_date || '',
+            'ស្ថានភាពតាមដាន': followup.penalty_implemented,
+            'សេចក្តីសន្និដ្ឋាន': followup.conclusion
+          }));
+
+          const ws = XLSX.utils.json_to_sheet(exportData);
+          const wb = XLSX.utils.book_new();
+          XLSX.utils.book_append_sheet(wb, ws, "PenaltyFollowups");
+          XLSX.writeFile(wb, "penalty_followups.xlsx");
+          showMessage('Excel file downloaded successfully', 'Success');
+        } catch (error) {
+          console.error('Export error:', error);
+          showMessage('Failed to export to Excel', 'Error');
+        }
+      }
+
+      exportFineFollowupsToExcel() {
+        try {
+          const exportData = this.allFineFollowups.map(followup => ({
+            'លេខចូល': followup.no,
+            'រោងចក្រ': followup.original_inspection_data?.factory_name || '',
+            'កាលបរិច្ឆេទចេញលិខិត': followup.document_date,
+            'ចំនួនទឹកប្រាក់': followup.fine_amount,
+            'ប្រភេទផាក': followup.fine_type,
+            'ស្ថានភាពឯកសារ': followup.document_status,
+            'ផ្សេងៗ': followup.remarks
+          }));
+
+          const ws = XLSX.utils.json_to_sheet(exportData);
+          const wb = XLSX.utils.book_new();
+          XLSX.utils.book_append_sheet(wb, ws, "FineFollowups");
+          XLSX.writeFile(wb, "fine_followups.xlsx");
+          showMessage('Excel file downloaded successfully', 'Success');
+        } catch (error) {
+          console.error('Export error:', error);
+          showMessage('Failed to export to Excel', 'Error');
+        }
+      }
+    }
+
+    // Global functions for modal interactions
+    function togglePenaltyDetails(showDetails) {
+      const detailsElement = document.getElementById('penalty_details');
+      const yesOption = document.getElementById('penalty_yes_option');
+      const noOption = document.getElementById('penalty_no_option');
+      
+      if (showDetails) {
+        yesOption.classList.add('selected');
+        noOption.classList.remove('selected');
+        detailsElement.classList.add('active');
+      } else {
+        yesOption.classList.remove('selected');
+        noOption.classList.add('selected');
+        detailsElement.classList.remove('active');
+      }
+    }
+
+    function toggleFineDetails(showDetails) {
+      const detailsElement = document.getElementById('fine_details');
+      const yesOption = document.getElementById('fine_yes_option');
+      const noOption = document.getElementById('fine_no_option');
+      
+      if (showDetails) {
+        yesOption.classList.add('selected');
+        noOption.classList.remove('selected');
+        detailsElement.classList.add('active');
+      } else {
+        yesOption.classList.remove('selected');
+        noOption.classList.add('selected');
+        detailsElement.classList.remove('active');
+      }
+    }
+
+    function toggleFollowupDetails(showDetails) {
+      const detailsElement = document.getElementById('followup_details');
+      const yesOption = document.getElementById('implemented_yes_option');
+      const noOption = document.getElementById('implemented_no_option');
+      
+      if (showDetails) {
+        yesOption.classList.remove('selected');
+        noOption.classList.add('selected');
+        detailsElement.classList.add('active');
+      } else {
+        yesOption.classList.add('selected');
+        noOption.classList.remove('selected');
+        detailsElement.classList.remove('active');
+      }
+    }
+
+    function updateDocumentFlow(status) {
+      const steps = {
+        department: document.getElementById('step_department'),
+        general: document.getElementById('step_general'),
+        minister: document.getElementById('step_minister')
+      };
+      
+      // Reset all steps
+      Object.values(steps).forEach(step => {
+        step.classList.remove('completed', 'pending');
+        step.querySelector('i').className = 'bi bi-circle';
+      });
+      
+      // Update steps based on status
+      switch(status) {
+        case 'department':
+          steps.department.classList.add('completed');
+          steps.department.querySelector('i').className = 'bi bi-check-circle-fill';
+          steps.general.classList.add('pending');
+          break;
+        case 'general':
+          steps.department.classList.add('completed');
+          steps.department.querySelector('i').className = 'bi bi-check-circle-fill';
+          steps.general.classList.add('completed');
+          steps.general.querySelector('i').className = 'bi bi-check-circle-fill';
+          steps.minister.classList.add('pending');
+          break;
+        case 'minister':
+        case 'completed':
+          Object.values(steps).forEach(step => {
+            step.classList.add('completed');
+            step.querySelector('i').className = 'bi bi-check-circle-fill';
+          });
+          break;
+      }
+    }
+
+    function updateFactoryInfo() {
+      const select = document.querySelector('select[name="factory_name"]');
+      const selectedOption = select.options[select.selectedIndex];
+      
+      if (selectedOption.value) {
+        document.querySelector('input[name="sector"]').value = selectedOption.getAttribute('data-sector') || '';
+        document.querySelector('input[name="village"]').value = selectedOption.getAttribute('data-village') || '';
+        document.querySelector('input[name="commune"]').value = selectedOption.getAttribute('data-commune') || '';
+        document.querySelector('input[name="district"]').value = selectedOption.getAttribute('data-district') || '';
+        document.querySelector('input[name="province"]').value = selectedOption.getAttribute('data-province') || '';
+      }
+    }
+
+    function loadOriginalInspectionData() {
+      const select = document.getElementById('originalInspectionSelect');
+      if (!select) return;
+      
+      const inspectionId = select.value;
+      const infoDiv = document.getElementById('originalPenaltyInfo');
+      const companyInfoDiv = document.getElementById('companyInfoDisplay');
+      const penaltyDisplay = document.getElementById('penaltyDisplay');
+      
+      if (inspectionId) {
+        const inspection = window.inspectionManager.allInspections.find(i => i.id.toString() === inspectionId);
+        if (inspection) {
+          // Display company information
+          document.getElementById('display_factory_name').value = inspection.factory_name || '';
+          document.getElementById('display_sector').value = inspection.sector || '';
+          document.getElementById('display_case_subject').value = inspection.case_subject || '';
+          document.getElementById('display_village').value = inspection.village || '';
+          document.getElementById('display_commune').value = inspection.commune || '';
+          document.getElementById('display_district').value = inspection.district || '';
+          document.getElementById('display_province').value = inspection.province || '';
+          companyInfoDiv.classList.remove('d-none');
+          
+          // Display penalty information if exists
+          if (inspection.has_penalty === 'មាន') {
+            penaltyDisplay.innerHTML = `
+              <p><strong>បែបបទ:</strong> <span>${inspection.penalty_format || 'N/A'}</span></p>
+              <p><strong>លក្ខខណ្ឌ:</strong> <span>${inspection.penalty_condition || 'N/A'}</span></p>
+              <p><strong>សុខភាពនិងសុវត្ថភាព:</strong> <span>${inspection.penalty_health || 'N/A'}</span></p>
+              <p><strong>វិជ្ជាជីវៈ:</strong> <span>${inspection.penalty_professional || 'N/A'}</span></p>
+            `;
+            infoDiv.classList.remove('d-none');
+          } else {
+            infoDiv.classList.add('d-none');
+            showMessage('ការត្រួតពិនិត្យដើមនេះមិនមានកំហិតទេ', 'Info');
+          }
+        }
+      } else {
+        companyInfoDiv.classList.add('d-none');
+        infoDiv.classList.add('d-none');
+      }
+    }
+
+    function loadFineOriginalInspectionData() {
+      const select = document.getElementById('fineOriginalInspectionSelect');
+      if (!select) return;
+      
+      const inspectionId = select.value;
+      const infoDiv = document.getElementById('originalFineInfo');
+      const companyInfoDiv = document.getElementById('fineCompanyInfoDisplay');
+      const fineDisplay = document.getElementById('fineDisplay');
+      
+      if (inspectionId) {
+        const inspection = window.inspectionManager.allInspections.find(i => i.id.toString() === inspectionId);
+        if (inspection) {
+          // Display company information
+          document.getElementById('fine_display_factory_name').value = inspection.factory_name || '';
+          document.getElementById('fine_display_sector').value = inspection.sector || '';
+          document.getElementById('fine_display_case_subject').value = inspection.case_subject || '';
+          companyInfoDiv.classList.remove('d-none');
+          
+          // Display fine information if exists
+          if (inspection.has_fine === 'មាន') {
+            fineDisplay.innerHTML = `
+              <p><strong>ចំនួនទឹកប្រាក់:</strong> <span>${inspection.fine_amount || 'N/A'} ${inspection.fine_type || ''}</span></p>
+              <p><strong>ហេតុផល:</strong> <span>${inspection.fine_reason || 'N/A'}</span></p>
+            `;
+            infoDiv.classList.remove('d-none');
+            
+            // Pre-fill fine amount and type
+            document.querySelector('#fineFollowupForm input[name="fine_amount"]').value = inspection.fine_amount || '';
+            document.querySelector('#fineFollowupForm input[name="fine_type"]').value = inspection.fine_type || '';
+          } else {
+            infoDiv.classList.add('d-none');
+            showMessage('ការត្រួតពិនិត្យដើមនេះមិនមានផាកទេ', 'Info');
+          }
+        }
+      } else {
+        companyInfoDiv.classList.add('d-none');
+        infoDiv.classList.add('d-none');
+      }
+    }
+
+    // Initialize when page loads
+    document.addEventListener('DOMContentLoaded', () => {
+      window.inspectionManager = new InspectionManager();
+      window.inspectionManager.init();
+    });
+  </script>
+</body>
+</html>
