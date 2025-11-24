@@ -1467,24 +1467,25 @@
         });
       }
 
-  async fetchInspect(){
-      try{
-        const res =await (fetch("https://uat-api-office2.thithabirdnest.com/inspect"));
+async fetchInspect() {
+  try {
+    const res = await fetch("http://localhost:4000/inspect");
 
-        if (!res.ok){
-          throw new Error(`HTTP error! status: ${res.status}`);
-        }
+    if (!res.ok) {
+      throw new Error(`HTTP error! status: ${res.status}`);
+    }
 
-        const data = await res.json();
-
+    const data = await res.json();
     
-        this.allInspections = data.data;    //get from local
-        console.log(this.allInspections);
-        this.renderInspections(this.allInspections);   //get to frontend
-      }catch(error){
 
-      }
+    this.allInspections = data.data;  // backend data
+    console.log("Inspections:", this.allInspections);
+
+    this.renderInspections(this.allInspections);
+  } catch (error) {
+    console.error("fetchInspect error:", error);
   }
+}
 
 
       // loadSampleData() {
@@ -1602,85 +1603,100 @@
         document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
       }
 
-      renderInspections(inspect) {
-        const tbody = document.getElementById('inspectionTableBody');
+      renderInspections() {
+  const tbody = document.getElementById('inspectionTableBody');
 
-        if (this.allInspections.length === 0) {
-          tbody.innerHTML = `
-            <tr>
-              <td colspan="8" class="text-center text-muted py-4">
-                មិនមានទិន្នន័យ
-              </td>
-            </tr>
-          `;
-          return;
-        }
+  if (!this.allInspections || this.allInspections.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="8" class="text-center text-muted py-4">
+          មិនមានទិន្នន័យ
+        </td>
+      </tr>
+    `;
+    return;
+  }
 
-        tbody.innerHTML = this.allInspections.map((inspection, index) => {
-          let status = '';
-          let statusClass = '';
-          
-          if (inspection.has_penalty === 'មាន') {
-            status = 'ត្រូវតាមដានកំហិត';
-            statusClass = 'status-pending';
-          } else if (inspection.has_fine === 'មាន') {
-            status = 'ត្រូវតាមដានផាក';
-            statusClass = 'status-warning';
-          } else {
-            status = 'បានបញ្ចប់';
-            statusClass = 'status-completed';
-          }
-          
-          return `
-          <tr data-id="${inspection.id}">
-            <td class="text-muted">${index + 1}</td>
-            <td>${inspection.no || ''}</td>
-            <td>
-              <div class="fw-semibold">${inspection.factory_name || ''}</div>
-              <div class="text-muted small">
-                <div>${inspection.case_subject || ''}</div>
-                <div>${inspection.group || ''}</div>
-                <div>${inspection.inspection_type || ''}</div>
-              </div>
-            </td>
-            <td>${inspection.inspection_date || ''}</td>
-            <td>
-              <span class="status-badge ${inspection.has_penalty === 'មាន' ? 'status-warning' : 'status-completed'}">
-                ${inspection.has_penalty || 'គ្មាន'}
-              </span>
-            </td>
-            <td>
-              <span class="status-badge ${inspection.has_fine === 'មាន' ? 'status-warning' : 'status-completed'}">
-                ${inspection.has_fine || 'គ្មាន'}
-              </span>
-            </td>
-            <td>
-              <span class="status-badge ${statusClass}">
-                ${status}
-              </span>
-            </td>
-            <td>
-              <div class="btn-group-vertical btn-group-sm">
-                <button class="btn btn-outline-primary" title="View">
-                  <i class="bi bi-eye"></i>
-                </button>
-                <button class="btn btn-outline-secondary" title="Edit">
-                  <i class="bi bi-pencil"></i>
-                </button>
-                <button class="btn btn-outline-info" title="Generate Document">
-                  <i class="bi bi-file-earmark-word"></i>
-                </button>
-                <button class="btn btn-outline-danger" title="Delete">
-                  <i class="bi bi-trash"></i>
-                </button>
-              </div>
-            </td>
-          </tr>
-        `}).join('');
+  tbody.innerHTML = this.allInspections.map((inspection, index) => {
 
-        this.updateStatistics();
-      }
+    // Backend now returns these:
+    const hasPenalty = inspection.isNonCompliance;   // boolean
+    const hasFine = inspection.isFine;               // boolean
 
+    let status = '';
+    let statusClass = '';
+
+    if (hasPenalty) {
+      status = 'ត្រូវតាមដានកំហិត';
+      statusClass = 'status-pending';
+    } else if (hasFine) {
+      status = 'ត្រូវតាមដានផាក';
+      statusClass = 'status-warning';
+    } else {
+      status = 'បានបញ្ចប់';
+      statusClass = 'status-completed';
+    }
+
+    return `
+      <tr data-id="${inspection.id}">
+        <td class="text-muted">${index + 1}</td>
+
+        <td>${inspection.no || ''}</td>
+
+        <td>
+          <div class="fw-semibold">
+            ${inspection.factory?.factoryname || ''}
+          </div>
+          <div class="text-muted small">
+            <div>${inspection.case_subject || ''}</div>
+            <div>${inspection.group || ''}</div>
+            <div>${inspection.inspection_type || ''}</div>
+          </div>
+        </td>
+
+        <td>${inspection.inspection_date || ''}</td>
+
+        <td>
+          <span class="status-badge ${hasPenalty ? 'status-warning' : 'status-completed'}">
+            ${hasPenalty ? 'មាន' : 'គ្មាន'}
+          </span>
+        </td>
+
+        <td>
+          <span class="status-badge ${hasFine ? 'status-warning' : 'status-completed'}">
+            ${hasFine ? 'មាន' : 'គ្មាន'}
+          </span>
+        </td>
+
+        <td>
+          <span class="status-badge ${statusClass}">
+            ${status}
+          </span>
+        </td>
+
+        <td>
+          <div class="btn-group-vertical btn-group-sm">
+            <button class="btn btn-outline-primary" title="View">
+              <i class="bi bi-eye"></i>
+            </button>
+            <button class="btn btn-outline-secondary" title="Edit">
+              <i class="bi bi-pencil"></i>
+            </button>
+            <button class="btn btn-outline-info" title="Generate Document">
+              <i class="bi bi-file-earmark-word"></i>
+            </button>
+            <button class="btn btn-outline-danger" title="Delete">
+              <i class="bi bi-trash"></i>
+            </button>
+          </div>
+        </td>
+      </tr>
+    `;
+
+  }).join('');
+
+  this.updateStatistics();
+}
       renderPenaltyFollowups() {
         const tbody = document.getElementById('penaltyFollowupTableBody');
 
