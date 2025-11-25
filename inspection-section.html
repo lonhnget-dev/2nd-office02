@@ -473,6 +473,7 @@
                   <th>#</th>
                   <th>លេខចូល</th>
                   <th>រោងចក្រ</th>
+                  <th>ក្រុម</th>
                   <th>កាលបរិច្ឆេទតាមដាន</th>
                   <th>កាលបរិច្ឆេទកំហិតដើម</th>
                   <th>ស្ថានភាពតាមដាន</th>
@@ -481,7 +482,7 @@
               </thead>
               <tbody id="penaltyFollowupTableBody">
                 <tr>
-                  <td colspan="7" class="text-center text-muted py-4">
+                  <td colspan="8" class="text-center text-muted py-4">
                     <div class="loading"></div> កំពុងផ្ទុកទិន្នន័យ...
                   </td>
                 </tr>
@@ -1292,6 +1293,7 @@
         this.bindEvents();
         this.fetchInspect();
         this.fetchNonCompliances();
+        this.fetchFines();
       }
 
       bindEvents() {
@@ -1477,6 +1479,28 @@
           console.error("Non compliance error:", error);
         }
       }
+
+      async fetchFines() {
+        try {
+          const res = await fetch(`${API_BASE_URL
+          }/fines`);
+
+          if (!res.ok) {
+            throw new Error(`HTTP error! status: ${res.status}`);
+          }
+
+          const data = await res.json();
+
+
+          this.allFineFollowups = data.data;  // backend data
+          console.log("allFineFollowups:", this.allFineFollowups);
+
+          this.renderFineFollowups(this.allFineFollowups);
+        } catch (error) {
+          console.error("allFineFollowups error:", error);
+        }
+      }
+
 
 
       // loadSampleData() {
@@ -1691,7 +1715,7 @@
         if (this.allPenaltyFollowups.length === 0) {
           tbody.innerHTML = `
             <tr>
-              <td colspan="7" class="text-center text-muted py-4">
+              <td colspan="8" class="text-center text-muted py-4">
                 មិនមានទិន្នន័យ
               </td>
             </tr>
@@ -1701,18 +1725,31 @@
 
         tbody.innerHTML = this.allPenaltyFollowups.map((followup, index) => {
           console.log("Foolow up", followup)
-          const original = followup.original_inspection_data || {};
           const statusClass = followup.status === 'អនុវត្ត' ? 'status-success' : 'status-warning';
+
+          // Build factory address
+          const addressParts = [];
+          if (followup.factory?.commune?.name) addressParts.push(followup.factory.commune.name);
+          if (followup.factory?.district?.name) addressParts.push(followup.factory.district.name);
+          if (followup.factory?.province?.name) addressParts.push(followup.factory.province.name);
+          const factoryAddress = addressParts.join(', ');
+
+          // Get original inspection date
+          const originalInspectionDate = followup.inspection?.inspectionDate
+            ? followup.inspection.inspectionDate.split("T")[0]
+            : '';
+
           return `
           <tr data-id="${followup.id}">
             <td class="text-muted">${index + 1}</td>
-            <td>${followup.no || ''}</td>
+            <td>${followup.inspection.no}</td>
             <td>
-              <div class="fw-semibold">${followup.factory.factoryname || ''}</div>
-              <div class="text-muted small">${original.case_subject || ''}</div>
+              <div class="fw-semibold">${followup.factory?.factoryname || ''}</div>
+              <div class="text-muted small">${factoryAddress}</div>
             </td>
-            <td> ''</td>
-            <td>${followup.date.split("T")[0] || ''}</td>
+            <td>${followup.inspection?.group || ''}</td>
+            <td>${followup.date ? followup.date.split("T")[0] : ''}</td>
+            <td>${originalInspectionDate}</td>
             <td>
               <span class="status-badge ${statusClass}">
                 ${followup.status || 'N/A'}
@@ -1753,9 +1790,15 @@
         }
 
         tbody.innerHTML = this.allFineFollowups.map((followup, index) => {
-          const original = followup.original_inspection_data || {};
           let statusText = '';
           let statusClass = '';
+
+          // Build factory address
+          const addressParts = [];
+          if (followup.factory?.commune?.name) addressParts.push(followup.factory.commune.name);
+          if (followup.factory?.district?.name) addressParts.push(followup.factory.district.name);
+          if (followup.factory?.province?.name) addressParts.push(followup.factory.province.name);
+          const factoryAddress = addressParts.join(', ');
 
           switch (followup.document_status) {
             case 'department':
@@ -1781,10 +1824,10 @@
           return `
           <tr data-id="${followup.id}">
             <td class="text-muted">${index + 1}</td>
-            <td>${followup.no || ''}</td>
+            <td>${followup.no || `F-${followup.id}`}</td>
             <td>
-              <div class="fw-semibold">${original.factory_name || ''}</div>
-              <div class="text-muted small">${original.case_subject || ''}</div>
+              <div class="fw-semibold">${followup.factory?.factoryname || ''}</div>
+              <div class="text-muted small">${factoryAddress}</div>
             </td>
             <td>${followup.document_date || ''}</td>
             <td>${followup.fine_amount || ''} ${followup.fine_type || ''}</td>
@@ -1914,7 +1957,7 @@
         if (filteredFollowups.length === 0) {
           tbody.innerHTML = `
             <tr>
-              <td colspan="7" class="text-center text-muted py-4">
+              <td colspan="8" class="text-center text-muted py-4">
                 មិនមានទិន្នន័យត្រូវនឹងការស្វែងរក
               </td>
             </tr>
@@ -1923,21 +1966,34 @@
         }
 
         tbody.innerHTML = filteredFollowups.map((followup, index) => {
-          const original = followup.original_inspection_data || {};
-          const statusClass = followup.penalty_implemented === 'អនុវត្ត' ? 'status-success' : 'status-warning';
+          const statusClass = followup.status === 'អនុវត្ត' ? 'status-success' : 'status-warning';
+
+          // Build factory address
+          const addressParts = [];
+          if (followup.factory?.commune?.name) addressParts.push(followup.factory.commune.name);
+          if (followup.factory?.district?.name) addressParts.push(followup.factory.district.name);
+          if (followup.factory?.province?.name) addressParts.push(followup.factory.province.name);
+          const factoryAddress = addressParts.join(', ');
+
+          // Get original inspection date
+          const originalInspectionDate = followup.inspection?.inspectionDate
+            ? followup.inspection.inspectionDate.split("T")[0]
+            : '';
+
           return `
           <tr data-id="${followup.id}">
             <td class="text-muted">${index + 1}</td>
-            <td>${followup.no || ''}</td>
+            <td>${followup.no || `NC-${followup.id}`}</td>
             <td>
-              <div class="fw-semibold">${original.factory_name || ''}</div>
-              <div class="text-muted small">${original.case_subject || ''}</div>
+              <div class="fw-semibold">${followup.factory?.factoryname || ''}</div>
+              <div class="text-muted small">${factoryAddress}</div>
             </td>
-            <td>${followup.followup_date || ''}</td>
-            <td>${original.inspection_date || ''}</td>
+            <td>${followup.inspection?.group || ''}</td>
+            <td>${followup.date ? followup.date.split("T")[0] : ''}</td>
+            <td>${originalInspectionDate}</td>
             <td>
               <span class="status-badge ${statusClass}">
-                ${followup.penalty_implemented || 'N/A'}
+                ${followup.status || 'N/A'}
               </span>
             </td>
             <td>
@@ -1984,9 +2040,15 @@
         }
 
         tbody.innerHTML = filteredFollowups.map((followup, index) => {
-          const original = followup.original_inspection_data || {};
           let statusText = '';
           let statusClass = '';
+
+          // Build factory address
+          const addressParts = [];
+          if (followup.factory?.commune?.name) addressParts.push(followup.factory.commune.name);
+          if (followup.factory?.district?.name) addressParts.push(followup.factory.district.name);
+          if (followup.factory?.province?.name) addressParts.push(followup.factory.province.name);
+          const factoryAddress = addressParts.join(', ');
 
           switch (followup.document_status) {
             case 'department':
@@ -2012,10 +2074,10 @@
           return `
           <tr data-id="${followup.id}">
             <td class="text-muted">${index + 1}</td>
-            <td>${followup.no || ''}</td>
+            <td>${followup.no || `F-${followup.id}`}</td>
             <td>
-              <div class="fw-semibold">${original.factory_name || ''}</div>
-              <div class="text-muted small">${original.case_subject || ''}</div>
+              <div class="fw-semibold">${followup.factory?.factoryname || ''}</div>
+              <div class="text-muted small">${factoryAddress}</div>
             </td>
             <td>${followup.document_date || ''}</td>
             <td>${followup.fine_amount || ''} ${followup.fine_type || ''}</td>
@@ -2488,26 +2550,112 @@
           showMessage('Follow-up not found', 'Error');
           return;
         }
-        const original = followup.original_inspection_data || {};
-        let detailHTML = `
-            <strong>លេខចូល:</strong> ${followup.no || ''}<br>
-            <strong>កាលបរិច្ឆេទតាមដាន:</strong> ${followup.followup_date || ''}<br>
-            <strong>ការត្រួតពិនិត្យដើម:</strong> ${original.no || ''} - ${original.factory_name || ''}<br>
-            <strong>លទ្ធផលតាមដាន:</strong> ${followup.penalty_implemented || ''}<br>
-        `;
 
-        if (followup.penalty_implemented === 'មិនអនុវត្ត') {
-          detailHTML += `
-                <strong>បែបបទ:</strong> ${followup.followup_format || ''}<br>
-                <strong>លក្ខខណ្ឌ:</strong> ${followup.followup_condition || ''}<br>
-                <strong>សុខភាពនិងសុវត្ថភាព:</strong> ${followup.followup_health || ''}<br>
-                <strong>វិជ្ជាជីវៈ:</strong> ${followup.followup_professional || ''}<br>
-            `;
+        // Open modal in view mode
+        const modal = new bootstrap.Modal(document.getElementById('penaltyFollowupModal'));
+        const modalTitle = document.getElementById('penaltyFollowupModalTitle');
+        const form = document.getElementById('penaltyFollowupForm');
+
+        modalTitle.textContent = 'មើលព័ត៌មានលម្អិតតាមដានកំហិត';
+
+        // Populate original inspections dropdown first
+        this.populateOriginalInspections();
+
+        // Populate form fields with backend data
+        const elements = form.elements;
+
+        // Basic information
+        elements['no'].value = followup.no || `NC-${followup.id}`;
+        elements['followup_date'].value = followup.date ? followup.date.split('T')[0] : '';
+
+        // Set original inspection dropdown
+        if (followup.inspectionId) {
+          elements['original_inspection'].value = followup.inspectionId;
         }
 
-        detailHTML += `<strong>សេចក្តីសន្និដ្ឋាន:</strong> ${followup.conclusion || ''}`;
+        // Display company information
+        const companyInfoDisplay = document.getElementById('companyInfoDisplay');
+        if (followup.factory) {
+          companyInfoDisplay.classList.remove('d-none');
+          const addressParts = [];
+          if (followup.factory.commune?.name) addressParts.push(followup.factory.commune.name);
+          if (followup.factory.district?.name) addressParts.push(followup.factory.district.name);
+          if (followup.factory.province?.name) addressParts.push(followup.factory.province.name);
 
-        showMessage(detailHTML, 'ព័ត៌មានលម្អិតតាមដានកំហិត');
+          companyInfoDisplay.innerHTML = `
+            <h5 class="mb-3"><i class="bi bi-building"></i> ព័ត៌មានរោងចក្រ</h5>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <strong>ឈ្មោះរោងចក្រ:</strong> ${followup.factory.factoryname || ''}
+              </div>
+              <div class="col-md-6">
+                <strong>អាសយដ្ឋាន:</strong> ${addressParts.join(', ')}
+              </div>
+            </div>
+          `;
+        }
+
+        // Display original inspection information
+        const originalPenaltyInfo = document.getElementById('originalPenaltyInfo');
+        if (followup.inspection) {
+          originalPenaltyInfo.classList.remove('d-none');
+          document.getElementById('penaltyDisplay').innerHTML = `
+            <div class="row g-2">
+              <div class="col-md-4"><strong>លេខចូល:</strong> ${followup.inspection.no || ''}</div>
+              <div class="col-md-4"><strong>ក្រុម:</strong> ${followup.inspection.group || ''}</div>
+              <div class="col-md-4"><strong>កាលបរិច្ឆេទ:</strong> ${followup.inspection.inspectionDate ? followup.inspection.inspectionDate.split('T')[0] : ''}</div>
+              <div class="col-12"><strong>ប្រធានបទ:</strong> ${followup.inspection.caseSubject || ''}</div>
+            </div>
+          `;
+        }
+
+        // Map status to penalty_implemented radio buttons
+        const statusMapping = {
+          'Pending': 'មិនអនុវត្ត',
+          'Completed': 'អនុវត្ត',
+          'អនុវត្ត': 'អនុវត្ត',
+          'មិនអនុវត្ត': 'មិនអនុវត្ត'
+        };
+
+        const penaltyImplemented = statusMapping[followup.status] || 'មិនអនុវត្ត';
+        const implementedRadio = form.querySelector(`input[name="penalty_implemented"][value="${penaltyImplemented}"]`);
+        if (implementedRadio) {
+          implementedRadio.checked = true;
+          // Trigger the change event to show/hide followup details
+          toggleFollowupDetails(penaltyImplemented === 'មិនអនុវត្ត');
+        }
+
+        // Populate followup details
+        elements['followup_format'].value = followup.requiredDoc || '';
+        elements['followup_condition'].value = followup.workingCondition || '';
+        elements['followup_health'].value = followup.osh || '';
+        elements['followup_professional'].value = followup.nsf || '';
+        elements['conclusion'].value = followup.remark || '';
+
+        // Make all form fields readonly
+        Array.from(elements).forEach(element => {
+          if (element.type !== 'button' && element.type !== 'submit') {
+            element.setAttribute('readonly', true);
+            element.setAttribute('disabled', true);
+          }
+        });
+
+        // Hide submit button, show only close button
+        document.getElementById('penaltyFollowupSubmitBtn').style.display = 'none';
+
+        modal.show();
+
+        // Reset form to editable state when modal is closed
+        document.getElementById('penaltyFollowupModal').addEventListener('hidden.bs.modal', function() {
+          Array.from(elements).forEach(element => {
+            element.removeAttribute('readonly');
+            element.removeAttribute('disabled');
+          });
+          document.getElementById('penaltyFollowupSubmitBtn').style.display = '';
+          form.reset();
+          companyInfoDisplay.classList.add('d-none');
+          originalPenaltyInfo.classList.add('d-none');
+        }, { once: true });
       }
 
       viewFineFollowup(id) {
@@ -2517,24 +2665,101 @@
           return;
         }
 
-        const original = followup.original_inspection_data || {};
-        let statusText = '';
-        switch (followup.document_status) {
-          case 'department': statusText = 'បានចេញលិខិតផាក ទៅនាយកដ្ឋាន'; break;
-          case 'general': statusText = 'ទៅអគ្គ'; break;
-          case 'minister': statusText = 'ទៅរដ្ឋមន្ត្រី'; break;
-          case 'completed': statusText = 'បានបញ្ចប់'; break;
-          default: statusText = 'មិនស្គាល់';
+        // Open modal in view mode
+        const modal = new bootstrap.Modal(document.getElementById('fineFollowupModal'));
+        const modalTitle = document.getElementById('fineFollowupModalTitle');
+        const form = document.getElementById('fineFollowupForm');
+
+        modalTitle.textContent = 'មើលព័ត៌មានលម្អិតតាមដានឯកសារផាក';
+
+        // Populate original inspections dropdown first
+        this.populateOriginalInspections();
+
+        // Populate form fields with backend data
+        const elements = form.elements;
+
+        // Basic information
+        elements['no'].value = followup.no || `F-${followup.id}`;
+        elements['document_date'].value = followup.document_date ? followup.document_date.split('T')[0] : '';
+
+        // Set original inspection dropdown
+        if (followup.inspectionId) {
+          elements['original_inspection'].value = followup.inspectionId;
         }
-        let detailHTML = `
-            <strong>លេខចូល:</strong> ${followup.no || ''}<br>
-            <strong>កាលបរិច្ឆេទចេញលិខិត:</strong> ${followup.document_date || ''}<br>
-            <strong>ការត្រួតពិនិត្យដើម:</strong> ${original.no || ''} - ${original.factory_name || ''}<br>
-            <strong>ចំនួនទឹកប្រាក់ផាក:</strong> ${followup.fine_amount || ''} ${followup.fine_type || ''}<br>
-            <strong>ស្ថានភាពឯកសារ:</strong> ${statusText}<br>
-            <strong>ផ្សេងៗ:</strong> ${followup.remarks || ''}
-        `;
-        showMessage(detailHTML, 'ព័ត៌មានលម្អិតតាមដានឯកសារផាក');
+
+        // Display company information
+        const fineCompanyInfoDisplay = document.getElementById('fineCompanyInfoDisplay');
+        if (followup.factory) {
+          fineCompanyInfoDisplay.classList.remove('d-none');
+          const addressParts = [];
+          if (followup.factory.commune?.name) addressParts.push(followup.factory.commune.name);
+          if (followup.factory.district?.name) addressParts.push(followup.factory.district.name);
+          if (followup.factory.province?.name) addressParts.push(followup.factory.province.name);
+
+          fineCompanyInfoDisplay.innerHTML = `
+            <h5 class="mb-3"><i class="bi bi-building"></i> ព័ត៌មានរោងចក្រ</h5>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <strong>ឈ្មោះរោងចក្រ:</strong> ${followup.factory.factoryname || ''}
+              </div>
+              <div class="col-md-6">
+                <strong>អាសយដ្ឋាន:</strong> ${addressParts.join(', ')}
+              </div>
+            </div>
+          `;
+        }
+
+        // Display original fine information
+        const originalFineInfo = document.getElementById('originalFineInfo');
+        if (followup.inspection) {
+          originalFineInfo.classList.remove('d-none');
+          document.getElementById('fineDisplay').innerHTML = `
+            <div class="row g-2">
+              <div class="col-md-4"><strong>លេខចូល:</strong> ${followup.inspection.no || ''}</div>
+              <div class="col-md-4"><strong>ក្រុម:</strong> ${followup.inspection.group || ''}</div>
+              <div class="col-md-4"><strong>កាលបរិច្ឆេទ:</strong> ${followup.inspection.inspectionDate ? followup.inspection.inspectionDate.split('T')[0] : ''}</div>
+              <div class="col-12"><strong>ប្រធានបទ:</strong> ${followup.inspection.caseSubject || ''}</div>
+            </div>
+          `;
+        }
+
+        // Fine amount and type
+        elements['fine_amount'].value = followup.fine_amount || '';
+        elements['fine_type'].value = followup.fine_type || '';
+
+        // Document status
+        if (followup.document_status) {
+          elements['document_status'].value = followup.document_status;
+          updateDocumentFlow(followup.document_status);
+        }
+
+        // Remarks
+        elements['remarks'].value = followup.remarks || '';
+
+        // Make all form fields readonly
+        Array.from(elements).forEach(element => {
+          if (element.type !== 'button' && element.type !== 'submit') {
+            element.setAttribute('readonly', true);
+            element.setAttribute('disabled', true);
+          }
+        });
+
+        // Hide submit button, show only close button
+        document.getElementById('fineFollowupSubmitBtn').style.display = 'none';
+
+        modal.show();
+
+        // Reset form to editable state when modal is closed
+        document.getElementById('fineFollowupModal').addEventListener('hidden.bs.modal', function() {
+          Array.from(elements).forEach(element => {
+            element.removeAttribute('readonly');
+            element.removeAttribute('disabled');
+          });
+          document.getElementById('fineFollowupSubmitBtn').style.display = '';
+          form.reset();
+          fineCompanyInfoDisplay.classList.add('d-none');
+          originalFineInfo.classList.add('d-none');
+        }, { once: true });
       }
 
       // Edit methods
