@@ -1,18 +1,9 @@
 <!DOCTYPE html>
 <html lang="km">
-<<<<<<< HEAD
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Inspection Management System</title>
-<<<<<<< HEAD
-  
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <!-- Bootstrap Icons -->
@@ -23,11 +14,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
   <!-- Docx for generating Word documents -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/docx/7.1.0/docx.min.js"></script>
-<<<<<<< HEAD
-  
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
   <style>
     :root {
       --primary-color: #3498db;
@@ -35,11 +21,6 @@
       --warning-color: #f39c12;
       --danger-color: #e74c3c;
     }
-<<<<<<< HEAD
-    
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
     body {
       font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
       background-color: #f8f9fa;
@@ -48,11 +29,6 @@
       margin: 0;
       padding: 20px;
     }
-<<<<<<< HEAD
-    
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
     .page-header {
       background: #fff;
       color: #2c3e50;
@@ -60,17 +36,10 @@
       border-radius: 10px;
       margin-bottom: 25px;
       text-align: center;
-<<<<<<< HEAD
-      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-      border: 1px solid #e1e5e9;
-    }
-    
-=======
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
       border: 1px solid #e1e5e9;
     }
 
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
     /* Statistics Cards */
     .stats-container {
       display: grid;
@@ -78,27 +47,11 @@
       gap: 20px;
       margin-bottom: 25px;
     }
-<<<<<<< HEAD
-    
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
     .stat-card {
       background: #fff;
       padding: 25px;
       border-radius: 10px;
       text-align: center;
-<<<<<<< HEAD
-      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-      border: 1px solid #e1e5e9;
-      transition: transform 0.3s ease;
-    }
-    
-    .stat-card:hover {
-      transform: translateY(-5px);
-    }
-    
-=======
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
       border: 1px solid #e1e5e9;
       transition: transform 0.3s ease;
@@ -108,20 +61,11 @@
       transform: translateY(-5px);
     }
 
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
     .stat-number {
       font-size: 2.5rem;
       font-weight: 700;
       margin-bottom: 5px;
     }
-<<<<<<< HEAD
-    
-    .stat-inspections { color: var(--primary-color); }
-    .stat-penalties { color: var(--warning-color); }
-    .stat-fines { color: var(--danger-color); }
-    .stat-followups { color: var(--success-color); }
-    
-=======
 
     .stat-inspections {
       color: var(--primary-color);
@@ -139,30 +83,16 @@
       color: var(--success-color);
     }
 
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
     .stat-label {
       font-size: 0.9rem;
       color: #6c757d;
       text-transform: uppercase;
       letter-spacing: 1px;
     }
-<<<<<<< HEAD
-    
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
     .stat-icon {
       font-size: 2rem;
       margin-bottom: 10px;
     }
-<<<<<<< HEAD
-    
-    .icon-inspections { color: var(--primary-color); }
-    .icon-penalties { color: var(--warning-color); }
-    .icon-fines { color: var(--danger-color); }
-    .icon-followups { color: var(--success-color); }
-    
-=======
 
     .icon-inspections {
       color: var(--primary-color);
@@ -180,25 +110,16 @@
       color: var(--success-color);
     }
 
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
     /* Inspection Tabs */
     .inspection-tabs {
       background: #fff;
       border-radius: 10px;
       margin-bottom: 25px;
-<<<<<<< HEAD
-      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-      border: 1px solid #e1e5e9;
-      overflow: hidden;
-    }
-    
-=======
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
       border: 1px solid #e1e5e9;
       overflow: hidden;
     }
 
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
     .inspection-tab {
       flex: 1;
       padding: 20px;
@@ -207,32 +128,12 @@
       transition: all 0.3s;
       border-bottom: 3px solid transparent;
     }
-<<<<<<< HEAD
-    
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
     .inspection-tab.active {
       background: #f8f9fa;
       border-bottom-color: var(--primary-color);
       font-weight: 600;
       color: var(--primary-color);
     }
-<<<<<<< HEAD
-    
-    .inspection-tab:hover {
-      background: #f8f9fa;
-    }
-    
-    .inspection-content {
-      display: none;
-    }
-    
-    .inspection-content.active {
-      display: block;
-    }
-    
-=======
 
     .inspection-tab:hover {
       background: #f8f9fa;
@@ -246,38 +147,20 @@
       display: block;
     }
 
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
     .control-section {
       background: #fff;
       padding: 25px;
       border-radius: 10px;
       margin-bottom: 25px;
-<<<<<<< HEAD
-      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-      border: 1px solid #e1e5e9;
-    }
-    
-=======
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
       border: 1px solid #e1e5e9;
     }
 
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
     .table-container {
       background: #fff;
       border-radius: 10px;
       overflow: hidden;
       margin-bottom: 25px;
-<<<<<<< HEAD
-      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-      border: 1px solid #e1e5e9;
-    }
-    
-    .table-wrapper {
-      overflow-x: auto;
-    }
-    
-=======
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
       border: 1px solid #e1e5e9;
     }
@@ -286,7 +169,6 @@
       overflow-x: auto;
     }
 
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
     /* Status badges */
     .status-badge {
       padding: 6px 12px;
@@ -296,79 +178,42 @@
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
-<<<<<<< HEAD
-    
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
     .status-pending {
       background: #fff3cd;
       color: #856404;
       border: 1px solid #ffeaa7;
     }
-<<<<<<< HEAD
-    
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
     .status-completed {
       background: #d1ecf1;
       color: #0c5460;
       border: 1px solid #b8e0e6;
     }
-<<<<<<< HEAD
-    
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
     .status-warning {
       background: #f8d7da;
       color: #721c24;
       border: 1px solid #f5c6cb;
     }
-<<<<<<< HEAD
-    
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
     .status-success {
       background: #d4edda;
       color: #155724;
       border: 1px solid #c3e6cb;
     }
-<<<<<<< HEAD
-    
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
     /* Penalty sections */
     .penalty-section {
       background: #fff;
       padding: 20px;
       border-radius: 10px;
       margin-bottom: 20px;
-<<<<<<< HEAD
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-      border: 1px solid #e1e5e9;
-    }
-    
-=======
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
       border: 1px solid #e1e5e9;
     }
 
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
     .penalty-options {
       display: flex;
       gap: 15px;
       margin-bottom: 15px;
       flex-wrap: wrap;
     }
-<<<<<<< HEAD
-    
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
     .penalty-option {
       display: flex;
       align-items: center;
@@ -380,21 +225,11 @@
       transition: all 0.3s;
       background: #f8f9fa;
     }
-<<<<<<< HEAD
-    
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
     .penalty-option.selected {
       background: var(--primary-color);
       border-color: var(--primary-color);
       color: white;
     }
-<<<<<<< HEAD
-    
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
     .penalty-details {
       display: none;
       background: #f8f9fa;
@@ -403,20 +238,10 @@
       margin-top: 15px;
       border: 1px solid #e1e5e9;
     }
-<<<<<<< HEAD
-    
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
     .penalty-details.active {
       display: block;
       animation: fadeIn 0.3s ease;
     }
-<<<<<<< HEAD
-    
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
     .company-info-section {
       background: #f8f9fa;
       padding: 20px;
@@ -424,11 +249,6 @@
       margin-bottom: 20px;
       border: 1px solid #e1e5e9;
     }
-<<<<<<< HEAD
-    
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
     .followup-info {
       background: #e8f5e8;
       padding: 15px;
@@ -436,11 +256,6 @@
       margin: 10px 0;
       border-left: 4px solid #2ecc71;
     }
-<<<<<<< HEAD
-    
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
     .document-flow {
       background: #e8f4fd;
       padding: 15px;
@@ -448,28 +263,12 @@
       margin: 10px 0;
       border-left: 4px solid #3498db;
     }
-<<<<<<< HEAD
-    
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
     .flow-step {
       display: flex;
       align-items: center;
       gap: 10px;
       padding: 8px 0;
     }
-<<<<<<< HEAD
-    
-    .flow-step.completed {
-      color: var(--success-color);
-    }
-    
-    .flow-step.pending {
-      color: var(--warning-color);
-    }
-    
-=======
 
     .flow-step.completed {
       color: var(--success-color);
@@ -479,7 +278,6 @@
       color: var(--warning-color);
     }
 
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
     .document-format-section {
       background: #f0f8ff;
       padding: 20px;
@@ -487,11 +285,6 @@
       margin: 15px 0;
       border: 1px dashed #3498db;
     }
-<<<<<<< HEAD
-    
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
     .format-preview {
       background: white;
       padding: 15px;
@@ -501,11 +294,6 @@
       max-height: 300px;
       overflow-y: auto;
     }
-<<<<<<< HEAD
-    
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
     .loading {
       display: inline-block;
       width: 18px;
@@ -515,16 +303,6 @@
       border-top-color: var(--primary-color);
       animation: spin 1s ease-in-out infinite;
     }
-<<<<<<< HEAD
-    
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-    
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-10px); }
-      to { opacity: 1; transform: translateY(0); }
-=======
 
     @keyframes spin {
       to {
@@ -542,27 +320,16 @@
         opacity: 1;
         transform: translateY(0);
       }
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
     }
 
     .btn-group-vertical .btn {
       margin-bottom: 5px;
     }
-<<<<<<< HEAD
-    
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
     .document-actions {
       display: flex;
       gap: 10px;
       margin-top: 15px;
     }
-<<<<<<< HEAD
-    
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
     .template-upload-area {
       border: 2px dashed #dee2e6;
       border-radius: 5px;
@@ -572,27 +339,16 @@
       cursor: pointer;
       transition: all 0.3s;
     }
-<<<<<<< HEAD
-    
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
     .template-upload-area:hover {
       border-color: var(--primary-color);
       background: #e3f2fd;
     }
   </style>
 </head>
-<<<<<<< HEAD
-<body>
-  <div class="container-fluid">
-    
-=======
 
 <body>
   <div class="container-fluid">
 
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
     <!-- Inspection Management Section -->
     <section id="inspectionmanagement-section">
       <header class="page-header">
@@ -609,11 +365,6 @@
           <div class="stat-number stat-inspections" id="totalInspections">0</div>
           <div class="stat-label">ការត្រួតពិនិត្យសរុប</div>
         </div>
-<<<<<<< HEAD
-        
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
         <div class="stat-card">
           <div class="stat-icon icon-penalties">
             <i class="bi bi-exclamation-triangle"></i>
@@ -621,11 +372,6 @@
           <div class="stat-number stat-penalties" id="inspectionsWithPenalties">0</div>
           <div class="stat-label">ការត្រួតពិនិត្យមានកំហិត</div>
         </div>
-<<<<<<< HEAD
-        
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
         <div class="stat-card">
           <div class="stat-icon icon-fines">
             <i class="bi bi-cash-coin"></i>
@@ -633,11 +379,6 @@
           <div class="stat-number stat-fines" id="inspectionsWithFines">0</div>
           <div class="stat-label">ការត្រួតពិនិត្យមានផាក</div>
         </div>
-<<<<<<< HEAD
-        
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
         <div class="stat-card">
           <div class="stat-icon icon-followups">
             <i class="bi bi-arrow-repeat"></i>
@@ -674,12 +415,8 @@
             <i class="bi bi-plus-circle"></i> ការត្រួតពិនិត្យថ្មី
           </button>
           <div class="d-flex flex-wrap gap-2 align-items-center">
-<<<<<<< HEAD
-            <input type="search" class="form-control" id="inspectionSearch" placeholder="ស្វែងរកការត្រួតពិនិត្យ..." style="width: auto;">
-=======
             <input type="search" class="form-control" id="inspectionSearch" placeholder="ស្វែងរកការត្រួតពិនិត្យ..."
               style="width: auto;">
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
             <button class="btn btn-outline-secondary" id="exportInspectionExcel">
               <i class="bi bi-download"></i> ទាញយក Excel
             </button>
@@ -720,12 +457,8 @@
             <i class="bi bi-plus-circle"></i> តាមដានកំហិតថ្មី
           </button>
           <div class="d-flex flex-wrap gap-2 align-items-center">
-<<<<<<< HEAD
-            <input type="search" class="form-control" id="penaltyFollowupSearch" placeholder="ស្វែងរកការតាមដាន..." style="width: auto;">
-=======
             <input type="search" class="form-control" id="penaltyFollowupSearch" placeholder="ស្វែងរកការតាមដាន..."
               style="width: auto;">
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
             <button class="btn btn-outline-secondary" id="exportPenaltyFollowupExcel">
               <i class="bi bi-download"></i> ទាញយក Excel
             </button>
@@ -765,12 +498,8 @@
             <i class="bi bi-plus-circle"></i> តាមដានឯកសារផាកថ្មី
           </button>
           <div class="d-flex flex-wrap gap-2 align-items-center">
-<<<<<<< HEAD
-            <input type="search" class="form-control" id="fineFollowupSearch" placeholder="ស្វែងរកការតាមដានឯកសារ..." style="width: auto;">
-=======
             <input type="search" class="form-control" id="fineFollowupSearch" placeholder="ស្វែងរកការតាមដានឯកសារ..."
               style="width: auto;">
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
             <button class="btn btn-outline-secondary" id="exportFineFollowupExcel">
               <i class="bi bi-download"></i> ទាញយក Excel
             </button>
@@ -924,11 +653,6 @@
                 <label class="form-label">កាលបរិច្ឆេទត្រួតពិនិត្យ *</label>
                 <input type="date" class="form-control" name="inspection_date" required>
               </div>
-<<<<<<< HEAD
-              
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
               <!-- Inspection Type -->
               <div class="col-md-6">
                 <label class="form-label">ប្រភេទអធិការកិច្ច *</label>
@@ -946,37 +670,15 @@
                   <div class="row g-3">
                     <div class="col-md-4">
                       <label class="form-label">ឈ្មោះរោងចក្រ *</label>
-<<<<<<< HEAD
-                      <select class="form-select" name="factory_name" required onchange="updateFactoryInfo()">
-                        <option value="">-- ជ្រើសរើសរោងចក្រ --</option>
-                        <option value="រោងចក្រ ក" data-sector="វិស័យ ក" data-village="ភូមិ ក" data-commune="ឃុំ ក" data-district="ស្រុក ក" data-province="ខេត្ត ក">រោងចក្រ ក</option>
-                        <option value="រោងចក្រ ខ" data-sector="វិស័យ ខ" data-village="ភូមិ ខ" data-commune="ឃុំ ខ" data-district="ស្រុក ខ" data-province="ខេត្ត ខ">រោងចក្រ ខ</option>
-                        <option value="រោងចក្រ គ" data-sector="វិស័យ គ" data-village="ភូមិ គ" data-commune="ឃុំ គ" data-district="ស្រុក គ" data-province="ខេត្ត គ">រោងចក្រ គ</option>
-                        <option value="រោងចក្រ ឃ" data-sector="វិស័យ ឃ" data-village="ភូមិ ឃ" data-commune="ឃុំ ឃ" data-district="ស្រុក ឃ" data-province="ខេត្ត ឃ">រោងចក្រ ឃ</option>
-                        <option value="រោងចក្រ ង" data-sector="វិស័យ ង" data-village="ភូមិ ង" data-commune="ឃុំ ង" data-district="ស្រុក ង" data-province="ខេត្ត ង">រោងចក្រ ង</option>
-                      </select>
-                    </div>
-                    
-=======
                       <select class="form-select" id="factorySelect" name="factory_name" required>
                         <option value="">-- ជ្រើសរើសរោងចក្រ --</option>
                       </select>
                     </div>
 
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
                     <div class="col-md-4">
                       <label class="form-label">វិស័យ *</label>
                       <input type="text" class="form-control" name="sector" required placeholder="បញ្ចូលវិស័យ...">
                     </div>
-<<<<<<< HEAD
-                    
-                    <div class="col-md-4">
-                      <label class="form-label">ប្រធានបទ *</label>
-                      <input type="text" class="form-control" name="case_subject" required placeholder="បញ្ចូលប្រធានបទ...">
-                    </div>
-                  </div>
-                  
-=======
 
                     <div class="col-md-4">
                       <label class="form-label">ប្រធានបទ *</label>
@@ -985,7 +687,6 @@
                     </div>
                   </div>
 
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
                   <!-- Address Fields -->
                   <div class="row g-3 mt-2">
                     <div class="col-md-3">
@@ -1022,11 +723,6 @@
                       <span>គ្មាន</span>
                     </label>
                   </div>
-<<<<<<< HEAD
-                  
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
                   <div class="penalty-details" id="penalty_details">
                     <div class="row g-3">
                       <div class="col-md-6">
@@ -1035,17 +731,6 @@
                       </div>
                       <div class="col-md-6">
                         <label class="form-label">លក្ខខណ្ឌ</label>
-<<<<<<< HEAD
-                        <input type="text" class="form-control" name="penalty_condition" placeholder="បញ្ចូលលក្ខខណ្ឌកំហិត...">
-                      </div>
-                      <div class="col-md-6">
-                        <label class="form-label">សុខភាពនិងសុវត្ថភាព</label>
-                        <textarea class="form-control" name="penalty_health" rows="3" placeholder="បញ្ចូលព័ត៌មានសុខភាពនិងសុវត្ថភាព..."></textarea>
-                      </div>
-                      <div class="col-md-6">
-                        <label class="form-label">វិជ្ជាជីវៈ</label>
-                        <textarea class="form-control" name="penalty_professional" rows="3" placeholder="បញ្ចូលព័ត៌មានវិជ្ជាជីវៈ..."></textarea>
-=======
                         <input type="text" class="form-control" name="penalty_condition"
                           placeholder="បញ្ចូលលក្ខខណ្ឌកំហិត...">
                       </div>
@@ -1058,7 +743,6 @@
                         <label class="form-label">វិជ្ជាជីវៈ</label>
                         <textarea class="form-control" name="penalty_professional" rows="3"
                           placeholder="បញ្ចូលព័ត៌មានវិជ្ជាជីវៈ..."></textarea>
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
                       </div>
                     </div>
                   </div>
@@ -1079,30 +763,10 @@
                       <span>គ្មាន</span>
                     </label>
                   </div>
-<<<<<<< HEAD
-                  
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
                   <div class="penalty-details" id="fine_details">
                     <div class="row g-3">
                       <div class="col-md-6">
                         <label class="form-label">បែបបទ</label>
-<<<<<<< HEAD
-                        <input type="text" class="form-control" name="penalty_format" placeholder="បញ្ចូលបែបបទត្រូវផាក ">
-                      </div>
-                      <div class="col-md-6">
-                        <label class="form-label">លក្ខខណ្ឌ</label>
-                        <input type="text" class="form-control" name="penalty_condition" placeholder="បញ្ចូលបែបបទត្រូវផាក ">
-                      </div>
-                      <div class="col-md-6">
-                        <label class="form-label">សុខភាពនិងសុវត្ថភាព</label>
-                        <textarea class="form-control" name="penalty_health" rows="3" placeholder="បញ្ចូលបែបបទត្រូវផាក "></textarea>
-                      </div>
-                      <div class="col-md-6">
-                        <label class="form-label">វិជ្ជាជីវៈ</label>
-                        <textarea class="form-control" name="penalty_professional" rows="3" placeholder="បញ្ចូលបែបបទត្រូវផាក "></textarea>
-=======
                         <input type="text" class="form-control" name="penalty_format"
                           placeholder="បញ្ចូលបែបបទត្រូវផាក ">
                       </div>
@@ -1120,7 +784,6 @@
                         <label class="form-label">វិជ្ជាជីវៈ</label>
                         <textarea class="form-control" name="penalty_professional" rows="3"
                           placeholder="បញ្ចូលបែបបទត្រូវផាក "></textarea>
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
                       </div>
                     </div>
                   </div>
@@ -1161,12 +824,8 @@
               </div>
               <div class="col-md-4">
                 <label class="form-label">ការត្រួតពិនិត្យដើម *</label>
-<<<<<<< HEAD
-                <select class="form-select" name="original_inspection" id="originalInspectionSelect" required onchange="loadOriginalInspectionData()">
-=======
                 <select class="form-select" name="original_inspection" id="originalInspectionSelect" required
                   onchange="loadOriginalInspectionData()">
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
                   <option value="">-- ជ្រើសរើសការត្រួតពិនិត្យដើម --</option>
                 </select>
               </div>
@@ -1174,54 +833,13 @@
                 <label class="form-label">កាលបរិច្ឆេទតាមដាន *</label>
                 <input type="date" class="form-control" name="followup_date" required>
               </div>
-<<<<<<< HEAD
-              
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
               <!-- Company Information Display (Read-only) -->
               <div class="col-12">
                 <div class="company-info-section d-none" id="companyInfoDisplay">
                   <h5 class="mb-3"><i class="bi bi-building"></i> ព័ត៌មានរោងចក្រ</h5>
-<<<<<<< HEAD
-                  <div class="row g-3">
-                    <div class="col-md-4">
-                      <label class="form-label">ឈ្មោះរោងចក្រ</label>
-                      <input type="text" class="form-control" id="display_factory_name" readonly style="background: #f8f9fa;">
-                    </div>
-                    <div class="col-md-4">
-                      <label class="form-label">វិស័យ</label>
-                      <input type="text" class="form-control" id="display_sector" readonly style="background: #f8f9fa;">
-                    </div>
-                    <div class="col-md-4">
-                      <label class="form-label">ប្រធានបទ</label>
-                      <input type="text" class="form-control" id="display_case_subject" readonly style="background: #f8f9fa;">
-                    </div>
-                  </div>
-                  
-                  <div class="row g-3 mt-2">
-                    <div class="col-md-3">
-                      <label class="form-label">ភូមិ</label>
-                      <input type="text" class="form-control" id="display_village" readonly style="background: #f8f9fa;">
-                    </div>
-                    <div class="col-md-3">
-                      <label class="form-label">ឃុំ</label>
-                      <input type="text" class="form-control" id="display_commune" readonly style="background: #f8f9fa;">
-                    </div>
-                    <div class="col-md-3">
-                      <label class="form-label">ស្រុក</label>
-                      <input type="text" class="form-control" id="display_district" readonly style="background: #f8f9fa;">
-                    </div>
-                    <div class="col-md-3">
-                      <label class="form-label">ខេត្ត</label>
-                      <input type="text" class="form-control" id="display_province" readonly style="background: #f8f9fa;">
-                    </div>
-                  </div>
-=======
                   <select class="form-select" id="factorySelect" name="factory_name" required>
                     <option value="">-- ជ្រើសរើសរោងចក្រ --</option>
                   </select>
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
                 </div>
               </div>
 
@@ -1239,17 +857,6 @@
                   <h5 class="mb-3"><i class="bi bi-clipboard-check"></i> លទ្ធផលតាមដាន</h5>
                   <div class="penalty-options">
                     <label class="penalty-option" id="implemented_yes_option">
-<<<<<<< HEAD
-                      <input type="radio" name="penalty_implemented" value="អនុវត្ត" onchange="toggleFollowupDetails(false)">
-                      <span>អនុវត្ត</span>
-                    </label>
-                    <label class="penalty-option" id="implemented_no_option">
-                      <input type="radio" name="penalty_implemented" value="មិនអនុវត្ត" onchange="toggleFollowupDetails(true)">
-                      <span>មិនអនុវត្ត</span>
-                    </label>
-                  </div>
-                  
-=======
                       <input type="radio" name="penalty_implemented" value="អនុវត្ត"
                         onchange="toggleFollowupDetails(false)">
                       <span>អនុវត្ត</span>
@@ -1261,26 +868,10 @@
                     </label>
                   </div>
 
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
                   <div class="penalty-details" id="followup_details">
                     <div class="row g-3">
                       <div class="col-md-6">
                         <label class="form-label">បែបបទ</label>
-<<<<<<< HEAD
-                        <input type="text" class="form-control" name="followup_format" placeholder="បញ្ចូលបែបបទតាមដាន...">
-                      </div>
-                      <div class="col-md-6">
-                        <label class="form-label">លក្ខខណ្ឌ</label>
-                        <input type="text" class="form-control" name="followup_condition" placeholder="បញ្ចូលលក្ខខណ្ឌតាមដាន...">
-                      </div>
-                      <div class="col-md-6">
-                        <label class="form-label">សុខភាពនិងសុវត្ថភាព</label>
-                        <textarea class="form-control" name="followup_health" rows="3" placeholder="បញ្ចូលព័ត៌មានសុខភាពនិងសុវត្ថភាពតាមដាន..."></textarea>
-                      </div>
-                      <div class="col-md-6">
-                        <label class="form-label">វិជ្ជាជីវៈ</label>
-                        <textarea class="form-control" name="followup_professional" rows="3" placeholder="បញ្ចូលព័ត៌មានវិជ្ជាជីវៈតាមដាន..."></textarea>
-=======
                         <input type="text" class="form-control" name="followup_format"
                           placeholder="បញ្ចូលបែបបទតាមដាន...">
                       </div>
@@ -1298,7 +889,6 @@
                         <label class="form-label">វិជ្ជាជីវៈ</label>
                         <textarea class="form-control" name="followup_professional" rows="3"
                           placeholder="បញ្ចូលព័ត៌មានវិជ្ជាជីវៈតាមដាន..."></textarea>
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
                       </div>
                     </div>
                   </div>
@@ -1307,12 +897,8 @@
 
               <div class="col-12">
                 <label class="form-label">សេចក្តីសន្និដ្ឋាន</label>
-<<<<<<< HEAD
-                <textarea class="form-control" name="conclusion" rows="3" placeholder="បញ្ចូលសេចក្តីសន្និដ្ឋាន..."></textarea>
-=======
                 <textarea class="form-control" name="conclusion" rows="3"
                   placeholder="បញ្ចូលសេចក្តីសន្និដ្ឋាន..."></textarea>
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
               </div>
             </div>
             <div class="modal-footer mt-4">
@@ -1344,12 +930,8 @@
               </div>
               <div class="col-md-4">
                 <label class="form-label">ការត្រួតពិនិត្យដើម *</label>
-<<<<<<< HEAD
-                <select class="form-select" name="original_inspection" id="fineOriginalInspectionSelect" required onchange="loadFineOriginalInspectionData()">
-=======
                 <select class="form-select" name="original_inspection" id="fineOriginalInspectionSelect" required
                   onchange="loadFineOriginalInspectionData()">
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
                   <option value="">-- ជ្រើសរើសការត្រួតពិនិត្យដើម --</option>
                 </select>
               </div>
@@ -1357,33 +939,10 @@
                 <label class="form-label">កាលបរិច្ឆេទចេញលិខិត *</label>
                 <input type="date" class="form-control" name="document_date" required>
               </div>
-<<<<<<< HEAD
-              
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
               <!-- Company Information Display (Read-only) -->
               <div class="col-12">
                 <div class="company-info-section d-none" id="fineCompanyInfoDisplay">
                   <h5 class="mb-3"><i class="bi bi-building"></i> ព័ត៌មានរោងចក្រ</h5>
-<<<<<<< HEAD
-                  <div class="row g-3">
-                    <div class="col-md-4">
-                      <label class="form-label">ឈ្មោះរោងចក្រ</label>
-                      <input type="text" class="form-control" id="fine_display_factory_name" readonly style="background: #f8f9fa;">
-                    </div>
-                    <div class="col-md-4">
-                      <label class="form-label">វិស័យ</label>
-                      <input type="text" class="form-control" id="fine_display_sector" readonly style="background: #f8f9fa;">
-                    </div>
-                    <div class="col-md-4">
-                      <label class="form-label">ប្រធានបទ</label>
-                      <input type="text" class="form-control" id="fine_display_case_subject" readonly style="background: #f8f9fa;">
-                    </div>
-                  </div>
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
                 </div>
               </div>
 
@@ -1398,12 +957,8 @@
               <!-- Fine Amount -->
               <div class="col-md-6">
                 <label class="form-label">ចំនួនទឹកប្រាក់ផាក *</label>
-<<<<<<< HEAD
-                <input type="text" class="form-control" name="fine_amount" required placeholder="បញ្ចូលចំនួនទឹកប្រាក់...">
-=======
                 <input type="text" class="form-control" name="fine_amount" required
                   placeholder="បញ្ចូលចំនួនទឹកប្រាក់...">
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
               </div>
               <div class="col-md-6">
                 <label class="form-label">ប្រភេទផាក *</label>
@@ -1428,11 +983,6 @@
                       <span>ទៅរដ្ឋមន្ត្រី</span>
                     </div>
                   </div>
-<<<<<<< HEAD
-                  
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
                   <div class="mt-3">
                     <label class="form-label">ធ្វើបច្ចុប្បន្នភាពស្ថានភាពឯកសារ</label>
                     <select class="form-select" name="document_status" onchange="updateDocumentFlow(this.value)">
@@ -1486,11 +1036,6 @@
 
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<<<<<<< HEAD
-  
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
   <!-- JavaScript for Inspection Management -->
   <script>
     // Global variables
@@ -1499,10 +1044,7 @@
     let allFineFollowups = [];
     let currentEditingId = null;
 
-<<<<<<< HEAD
-=======
     const API_BASE_URL = "http://localhost:4000"
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
     // Utility functions
     function showMessage(message, title = 'Information') {
       const messageModal = new bootstrap.Modal(document.getElementById('messageModal'));
@@ -1707,11 +1249,7 @@
       }
 
       getCompositeValue(type, data) {
-<<<<<<< HEAD
-        switch(type) {
-=======
         switch (type) {
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
           case 'address':
             return `${data.village || ''}, ${data.commune || ''}, ${data.district || ''}, ${data.province || ''}`;
           case 'original_inspection':
@@ -1720,11 +1258,7 @@
           case 'fine_amount':
             return `${data.fine_amount || ''} ${data.fine_type || ''}`;
           case 'document_status_display':
-<<<<<<< HEAD
-            switch(data.document_status) {
-=======
             switch (data.document_status) {
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
               case 'department': return 'បានចេញលិខិតផាក ទៅនាយកដ្ឋាន';
               case 'general': return 'ទៅអគ្គ';
               case 'minister': return 'ទៅរដ្ឋមន្ត្រី';
@@ -1757,6 +1291,7 @@
       init() {
         this.bindEvents();
         this.fetchInspect();
+        this.fetchNonCompliances();
       }
 
       bindEvents() {
@@ -1903,27 +1438,6 @@
         });
       }
 
-<<<<<<< HEAD
-async fetchInspect() {
-  try {
-    const res = await fetch("http://localhost:4000/inspect");
-
-    if (!res.ok) {
-      throw new Error(`HTTP error! status: ${res.status}`);
-    }
-
-    const data = await res.json();
-    
-
-    this.allInspections = data.data;  // backend data
-    console.log("Inspections:", this.allInspections);
-
-    this.renderInspections(this.allInspections);
-  } catch (error) {
-    console.error("fetchInspect error:", error);
-  }
-}
-=======
       async fetchInspect() {
         try {
           const res = await fetch("http://localhost:4000/inspections");
@@ -1943,7 +1457,26 @@ async fetchInspect() {
           console.error("fetchInspect error:", error);
         }
       }
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
+
+       async fetchNonCompliances() {
+        try {
+          const res = await fetch(`${API_BASE_URL}/non-compliances`);
+
+          if (!res.ok) {
+            throw new Error(`HTTP error! status: ${res.status}`);
+          }
+
+          const data = await res.json();
+
+
+          this.allPenaltyFollowups = data.data;  // backend data
+          console.log("Non compliance:", this.allPenaltyFollowups);
+
+          this.renderPenaltyFollowups(this.allPenaltyFollowups);
+        } catch (error) {
+          console.error("Non compliance error:", error);
+        }
+      }
 
 
       // loadSampleData() {
@@ -1995,13 +1528,8 @@ async fetchInspect() {
       //       remarks: 'ត្រូវបង់ផាកក្នុងរយៈពេល ១៥ថ្ងៃ'
       //     }
       //   ];
-<<<<<<< HEAD
-        
-        // Sample penalty followup data
-=======
 
       // Sample penalty followup data
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
       //   this.allPenaltyFollowups = [
       //     {
       //       id: 1,
@@ -2013,11 +1541,6 @@ async fetchInspect() {
       //       conclusion: 'រោងចក្របានកែលម្អតាមតម្រូវការគ្រប់ចំនុច'
       //     }
       //   ];
-<<<<<<< HEAD
-        
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
       //   // Sample fine followup data
       //   this.allFineFollowups = [
       //     {
@@ -2032,11 +1555,6 @@ async fetchInspect() {
       //       remarks: 'លិខិតកំពុងដំណើរការនៅអគ្គ'
       //     }
       //   ];
-<<<<<<< HEAD
-        
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
       //   this.renderInspections();
       //   this.renderPenaltyFollowups();
       //   this.renderFineFollowups();
@@ -2061,74 +1579,29 @@ async fetchInspect() {
         document.querySelectorAll('.inspection-content').forEach(content => {
           content.classList.remove('active');
         });
-<<<<<<< HEAD
-        
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
         // Remove active class from all tabs
         document.querySelectorAll('.inspection-tab').forEach(tab => {
           tab.classList.remove('active');
         });
-<<<<<<< HEAD
-        
-        // Show selected tab content
-        document.getElementById(`${tabName}-inspection`).classList.add('active');
-        
-=======
 
         // Show selected tab content
         document.getElementById(`${tabName}-inspection`).classList.add('active');
 
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
         // Activate selected tab
         document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
       }
 
       renderInspections() {
-<<<<<<< HEAD
-  const tbody = document.getElementById('inspectionTableBody');
-
-  if (!this.allInspections || this.allInspections.length === 0) {
-    tbody.innerHTML = `
-=======
         const tbody = document.getElementById('inspectionTableBody');
 
         if (!this.allInspections || this.allInspections.length === 0) {
           tbody.innerHTML = `
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
       <tr>
         <td colspan="8" class="text-center text-muted py-4">
           មិនមានទិន្នន័យ
         </td>
       </tr>
     `;
-<<<<<<< HEAD
-    return;
-  }
-
-  tbody.innerHTML = this.allInspections.map((inspection, index) => {
-
-    // Backend now returns these:
-    const hasPenalty = inspection.isNonCompliance;   // boolean
-    const hasFine = inspection.isFine;               // boolean
-
-    let status = '';
-    let statusClass = '';
-
-    if (hasPenalty) {
-      status = 'ត្រូវតាមដានកំហិត';
-      statusClass = 'status-pending';
-    } else if (hasFine) {
-      status = 'ត្រូវតាមដានផាក';
-      statusClass = 'status-warning';
-    } else {
-      status = 'បានបញ្ចប់';
-      statusClass = 'status-completed';
-    }
-
-    return `
-=======
           return;
         }
 
@@ -2153,7 +1626,6 @@ async fetchInspect() {
           }
 
           return `
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
       <tr data-id="${inspection.id}">
         <td class="text-muted">${index + 1}</td>
 
@@ -2209,17 +1681,10 @@ async fetchInspect() {
       </tr>
     `;
 
-<<<<<<< HEAD
-  }).join('');
-
-  this.updateStatistics();
-}
-=======
         }).join('');
 
         this.updateStatistics();
       }
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
       renderPenaltyFollowups() {
         const tbody = document.getElementById('penaltyFollowupTableBody');
 
@@ -2235,26 +1700,22 @@ async fetchInspect() {
         }
 
         tbody.innerHTML = this.allPenaltyFollowups.map((followup, index) => {
+          console.log("Foolow up", followup)
           const original = followup.original_inspection_data || {};
-          const statusClass = followup.penalty_implemented === 'អនុវត្ត' ? 'status-success' : 'status-warning';
-<<<<<<< HEAD
-          
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
+          const statusClass = followup.status === 'អនុវត្ត' ? 'status-success' : 'status-warning';
           return `
           <tr data-id="${followup.id}">
             <td class="text-muted">${index + 1}</td>
             <td>${followup.no || ''}</td>
             <td>
-              <div class="fw-semibold">${original.factory_name || ''}</div>
+              <div class="fw-semibold">${followup.factory.factoryname || ''}</div>
               <div class="text-muted small">${original.case_subject || ''}</div>
             </td>
-            <td>${followup.followup_date || ''}</td>
-            <td>${original.inspection_date || ''}</td>
+            <td> ''</td>
+            <td>${followup.date.split("T")[0] || ''}</td>
             <td>
               <span class="status-badge ${statusClass}">
-                ${followup.penalty_implemented || 'N/A'}
+                ${followup.status || 'N/A'}
               </span>
             </td>
             <td>
@@ -2295,13 +1756,8 @@ async fetchInspect() {
           const original = followup.original_inspection_data || {};
           let statusText = '';
           let statusClass = '';
-<<<<<<< HEAD
-          
-          switch(followup.document_status) {
-=======
 
           switch (followup.document_status) {
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
             case 'department':
               statusText = 'ទៅនាយកដ្ឋាន';
               statusClass = 'status-pending';
@@ -2322,11 +1778,6 @@ async fetchInspect() {
               statusText = 'មិនស្គាល់';
               statusClass = 'status-pending';
           }
-<<<<<<< HEAD
-          
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
           return `
           <tr data-id="${followup.id}">
             <td class="text-muted">${index + 1}</td>
@@ -2374,11 +1825,6 @@ async fetchInspect() {
             value && value.toString().toLowerCase().includes(query.toLowerCase())
           )
         );
-<<<<<<< HEAD
-        
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
         const tbody = document.getElementById('inspectionTableBody');
         if (filteredInspections.length === 0) {
           tbody.innerHTML = `
@@ -2395,11 +1841,6 @@ async fetchInspect() {
         tbody.innerHTML = filteredInspections.map((inspection, index) => {
           let status = '';
           let statusClass = '';
-<<<<<<< HEAD
-          
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
           if (inspection.has_penalty === 'មាន') {
             status = 'ត្រូវតាមដានកំហិត';
             statusClass = 'status-pending';
@@ -2410,11 +1851,6 @@ async fetchInspect() {
             status = 'បានបញ្ចប់';
             statusClass = 'status-completed';
           }
-<<<<<<< HEAD
-          
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
           return `
           <tr data-id="${inspection.id}">
             <td class="text-muted">${index + 1}</td>
@@ -2474,11 +1910,6 @@ async fetchInspect() {
             value && value.toString().toLowerCase().includes(query.toLowerCase())
           )
         );
-<<<<<<< HEAD
-        
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
         const tbody = document.getElementById('penaltyFollowupTableBody');
         if (filteredFollowups.length === 0) {
           tbody.innerHTML = `
@@ -2494,11 +1925,6 @@ async fetchInspect() {
         tbody.innerHTML = filteredFollowups.map((followup, index) => {
           const original = followup.original_inspection_data || {};
           const statusClass = followup.penalty_implemented === 'អនុវត្ត' ? 'status-success' : 'status-warning';
-<<<<<<< HEAD
-          
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
           return `
           <tr data-id="${followup.id}">
             <td class="text-muted">${index + 1}</td>
@@ -2545,11 +1971,6 @@ async fetchInspect() {
             value && value.toString().toLowerCase().includes(query.toLowerCase())
           )
         );
-<<<<<<< HEAD
-        
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
         const tbody = document.getElementById('fineFollowupTableBody');
         if (filteredFollowups.length === 0) {
           tbody.innerHTML = `
@@ -2566,13 +1987,8 @@ async fetchInspect() {
           const original = followup.original_inspection_data || {};
           let statusText = '';
           let statusClass = '';
-<<<<<<< HEAD
-          
-          switch(followup.document_status) {
-=======
 
           switch (followup.document_status) {
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
             case 'department':
               statusText = 'ទៅនាយកដ្ឋាន';
               statusClass = 'status-pending';
@@ -2593,11 +2009,6 @@ async fetchInspect() {
               statusText = 'មិនស្គាល់';
               statusClass = 'status-pending';
           }
-<<<<<<< HEAD
-          
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
           return `
           <tr data-id="${followup.id}">
             <td class="text-muted">${index + 1}</td>
@@ -2658,11 +2069,6 @@ async fetchInspect() {
 
         const form = document.getElementById('inspectionForm');
         const elements = form.elements;
-<<<<<<< HEAD
-        
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
         elements['no'].value = inspection.no || '';
         elements['group'].value = inspection.group || '';
         elements['inspection_date'].value = inspection.inspection_date || '';
@@ -2675,11 +2081,6 @@ async fetchInspect() {
         elements['district'].value = inspection.district || '';
         elements['province'].value = inspection.province || '';
         elements['remarks'].value = inspection.remarks || '';
-<<<<<<< HEAD
-        
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
         // Handle penalty section
         if (inspection.has_penalty === 'មាន') {
           togglePenaltyDetails(true);
@@ -2690,11 +2091,6 @@ async fetchInspect() {
         } else {
           togglePenaltyDetails(false);
         }
-<<<<<<< HEAD
-        
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
         // Handle fine section
         if (inspection.has_fine === 'មាន') {
           toggleFineDetails(true);
@@ -2730,20 +2126,10 @@ async fetchInspect() {
 
         const form = document.getElementById('penaltyFollowupForm');
         const elements = form.elements;
-<<<<<<< HEAD
-        
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
         elements['no'].value = followup.no || '';
         elements['original_inspection'].value = followup.original_inspection || '';
         elements['followup_date'].value = followup.followup_date || '';
         elements['conclusion'].value = followup.conclusion || '';
-<<<<<<< HEAD
-        
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
         // Handle follow-up result section
         if (followup.penalty_implemented === 'មិនអនុវត្ត') {
           toggleFollowupDetails(true);
@@ -2754,11 +2140,6 @@ async fetchInspect() {
         } else {
           toggleFollowupDetails(false);
         }
-<<<<<<< HEAD
-        
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
         // Load original inspection data
         loadOriginalInspectionData();
       }
@@ -2787,32 +2168,17 @@ async fetchInspect() {
 
         const form = document.getElementById('fineFollowupForm');
         const elements = form.elements;
-<<<<<<< HEAD
-        
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
         elements['no'].value = followup.no || '';
         elements['original_inspection'].value = followup.original_inspection || '';
         elements['document_date'].value = followup.document_date || '';
         elements['fine_amount'].value = followup.fine_amount || '';
         elements['fine_type'].value = followup.fine_type || '';
         elements['remarks'].value = followup.remarks || '';
-<<<<<<< HEAD
-        
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
         // Set document status
         if (followup.document_status) {
           elements['document_status'].value = followup.document_status;
           updateDocumentFlow(followup.document_status);
         }
-<<<<<<< HEAD
-        
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
         // Load original inspection data
         loadFineOriginalInspectionData();
       }
@@ -2826,52 +2192,6 @@ async fetchInspect() {
         });
       }
 
-<<<<<<< HEAD
-      async handleInspectionFormSubmit(e) {
-        e.preventDefault();
-        const formData = new FormData(e.target);
-        const data = Object.fromEntries(formData);
-        
-        if (!data.no || !data.factory_name || !data.group || !data.inspection_date || !data.sector || !data.case_subject || !data.inspection_type) {
-          showMessage('សូមបំពេញព័ត៌មានចាំបាច់ទាំងអស់', 'Error');
-          return;
-        }
-        
-        const submitBtn = document.getElementById('inspectionSubmitBtn');
-        const originalText = submitBtn.innerHTML;
-        submitBtn.innerHTML = '<span class="loading"></span> កំពុងរក្សាទុក...';
-        submitBtn.disabled = true;
-        
-        try {
-          if (currentEditingId) {
-            const index = this.allInspections.findIndex(i => i.id.toString() === currentEditingId.toString());
-            if (index !== -1) {
-              this.allInspections[index] = { ...this.allInspections[index], ...data, id: currentEditingId };
-            }
-            showMessage('ការត្រួតពិនិត្យត្រូវបានកែសម្រួលដោយជោគជ័យ!', 'Success');
-          } else {
-            const newInspection = {
-              id: Date.now(),
-              ...data,
-              created_at: new Date().toISOString()
-            };
-            this.allInspections.push(newInspection);
-            showMessage('ការត្រួតពិនិត្យត្រូវបានបង្កើតដោយជោគជ័យ!', 'Success');
-          }
-          
-          const modal = bootstrap.Modal.getInstance(document.getElementById('inspectionModal'));
-          modal.hide();
-          this.renderInspections();
-          this.populateOriginalInspections();
-        } catch (error) {
-          console.error('Save error:', error);
-          showMessage('មានបញ្ហាក្នុងការរក្សាទុកការត្រួតពិនិត្យ', 'Error');
-        } finally {
-          submitBtn.innerHTML = originalText;
-          submitBtn.disabled = false;
-        }
-      }
-=======
 
 
       async handleInspectionFormSubmit(e) {
@@ -2965,35 +2285,19 @@ async fetchInspect() {
     showMessage("Error saving inspection!", "Error");
   }
 }
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
 
       async handlePenaltyFollowupFormSubmit(e) {
         e.preventDefault();
         const formData = new FormData(e.target);
         const data = Object.fromEntries(formData);
-<<<<<<< HEAD
-        
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
         if (!data.no || !data.original_inspection || !data.followup_date) {
           showMessage('សូមបំពេញព័ត៌មានចាំបាច់ទាំងអស់', 'Error');
           return;
         }
-<<<<<<< HEAD
-        
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
         const submitBtn = document.getElementById('penaltyFollowupSubmitBtn');
         const originalText = submitBtn.innerHTML;
         submitBtn.innerHTML = '<span class="loading"></span> កំពុងរក្សាទុក...';
         submitBtn.disabled = true;
-<<<<<<< HEAD
-        
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
         try {
           if (currentEditingId) {
             const index = this.allPenaltyFollowups.findIndex(i => i.id.toString() === currentEditingId.toString());
@@ -3012,11 +2316,6 @@ async fetchInspect() {
             this.allPenaltyFollowups.push(newFollowup);
             showMessage('ការតាមដានត្រូវបានបង្កើតដោយជោគជ័យ!', 'Success');
           }
-<<<<<<< HEAD
-          
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
           const modal = bootstrap.Modal.getInstance(document.getElementById('penaltyFollowupModal'));
           modal.hide();
           this.renderPenaltyFollowups();
@@ -3033,29 +2332,14 @@ async fetchInspect() {
         e.preventDefault();
         const formData = new FormData(e.target);
         const data = Object.fromEntries(formData);
-<<<<<<< HEAD
-        
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
         if (!data.no || !data.original_inspection || !data.document_date || !data.fine_amount || !data.fine_type) {
           showMessage('សូមបំពេញព័ត៌មានចាំបាច់ទាំងអស់', 'Error');
           return;
         }
-<<<<<<< HEAD
-        
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
         const submitBtn = document.getElementById('fineFollowupSubmitBtn');
         const originalText = submitBtn.innerHTML;
         submitBtn.innerHTML = '<span class="loading"></span> កំពុងរក្សាទុក...';
         submitBtn.disabled = true;
-<<<<<<< HEAD
-        
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
         try {
           if (currentEditingId) {
             const index = this.allFineFollowups.findIndex(i => i.id.toString() === currentEditingId.toString());
@@ -3074,11 +2358,6 @@ async fetchInspect() {
             this.allFineFollowups.push(newFollowup);
             showMessage('ការតាមដានឯកសារផាកត្រូវបានបង្កើតដោយជោគជ័យ!', 'Success');
           }
-<<<<<<< HEAD
-          
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
           const modal = bootstrap.Modal.getInstance(document.getElementById('fineFollowupModal'));
           modal.hide();
           this.renderFineFollowups();
@@ -3098,11 +2377,6 @@ async fetchInspect() {
           showMessage('Inspection not found', 'Error');
           return;
         }
-<<<<<<< HEAD
-        
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
         try {
           const doc = await this.docxGenerator.generateDocument('inspection', inspection);
           await this.docxGenerator.downloadDocument(doc, `Inspection_${inspection.no}`);
@@ -3119,11 +2393,6 @@ async fetchInspect() {
           showMessage('Follow-up not found', 'Error');
           return;
         }
-<<<<<<< HEAD
-        
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
         try {
           const doc = await this.docxGenerator.generateDocument('penaltyFollowup', followup);
           await this.docxGenerator.downloadDocument(doc, `PenaltyFollowup_${followup.no}`);
@@ -3140,11 +2409,6 @@ async fetchInspect() {
           showMessage('Fine document follow-up not found', 'Error');
           return;
         }
-<<<<<<< HEAD
-        
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
         try {
           const doc = await this.docxGenerator.generateDocument('fineFollowup', followup);
           await this.docxGenerator.downloadDocument(doc, `FineFollowup_${followup.no}`);
@@ -3182,11 +2446,6 @@ async fetchInspect() {
           showMessage('Inspection not found', 'Error');
           return;
         }
-<<<<<<< HEAD
-        
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
         let detailHTML = `
             <strong>លេខចូល:</strong> ${inspection.no || ''}<br>
             <strong>ក្រុម:</strong> ${inspection.group || ''}<br>
@@ -3198,48 +2457,28 @@ async fetchInspect() {
             <strong>ទីតាំង:</strong> ${inspection.village || ''}, ${inspection.commune || ''}, ${inspection.district || ''}, ${inspection.province || ''}<br>
             <strong>កំហិត:</strong> ${inspection.has_penalty || ''}<br>
         `;
-<<<<<<< HEAD
-        
-        if (inspection.has_penalty === 'មាន') {
-            detailHTML += `
-=======
 
         if (inspection.has_penalty === 'មាន') {
           detailHTML += `
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
                 <strong>បែបបទ:</strong> ${inspection.penalty_format || ''}<br>
                 <strong>លក្ខខណ្ឌ:</strong> ${inspection.penalty_condition || ''}<br>
                 <strong>សុខភាពនិងសុវត្ថភាព:</strong> ${inspection.penalty_health || ''}<br>
                 <strong>វិជ្ជាជីវៈ:</strong> ${inspection.penalty_professional || ''}<br>
             `;
         }
-<<<<<<< HEAD
-        
-        detailHTML += `<strong>ផាក:</strong> ${inspection.has_fine || ''}<br>`;
-        
-        if (inspection.has_fine === 'មាន') {
-            detailHTML += `
-=======
 
         detailHTML += `<strong>ផាក:</strong> ${inspection.has_fine || ''}<br>`;
 
         if (inspection.has_fine === 'មាន') {
           detailHTML += `
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
                 <strong>ចំនួនទឹកប្រាក់:</strong> ${inspection.fine_amount || ''}<br>
                 <strong>ប្រភេទផាក:</strong> ${inspection.fine_type || ''}<br>
                 <strong>ហេតុផល:</strong> ${inspection.fine_reason || ''}<br>
             `;
         }
-<<<<<<< HEAD
-        
-        detailHTML += `<strong>ផ្សេងៗ:</strong> ${inspection.remarks || ''}`;
-        
-=======
 
         detailHTML += `<strong>ផ្សេងៗ:</strong> ${inspection.remarks || ''}`;
 
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
         showMessage(detailHTML, 'ព័ត៌មានលម្អិតការត្រួតពិនិត្យ');
       }
 
@@ -3249,11 +2488,6 @@ async fetchInspect() {
           showMessage('Follow-up not found', 'Error');
           return;
         }
-<<<<<<< HEAD
-        
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
         const original = followup.original_inspection_data || {};
         let detailHTML = `
             <strong>លេខចូល:</strong> ${followup.no || ''}<br>
@@ -3261,30 +2495,18 @@ async fetchInspect() {
             <strong>ការត្រួតពិនិត្យដើម:</strong> ${original.no || ''} - ${original.factory_name || ''}<br>
             <strong>លទ្ធផលតាមដាន:</strong> ${followup.penalty_implemented || ''}<br>
         `;
-<<<<<<< HEAD
-        
-        if (followup.penalty_implemented === 'មិនអនុវត្ត') {
-            detailHTML += `
-=======
 
         if (followup.penalty_implemented === 'មិនអនុវត្ត') {
           detailHTML += `
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
                 <strong>បែបបទ:</strong> ${followup.followup_format || ''}<br>
                 <strong>លក្ខខណ្ឌ:</strong> ${followup.followup_condition || ''}<br>
                 <strong>សុខភាពនិងសុវត្ថភាព:</strong> ${followup.followup_health || ''}<br>
                 <strong>វិជ្ជាជីវៈ:</strong> ${followup.followup_professional || ''}<br>
             `;
         }
-<<<<<<< HEAD
-        
-        detailHTML += `<strong>សេចក្តីសន្និដ្ឋាន:</strong> ${followup.conclusion || ''}`;
-        
-=======
 
         detailHTML += `<strong>សេចក្តីសន្និដ្ឋាន:</strong> ${followup.conclusion || ''}`;
 
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
         showMessage(detailHTML, 'ព័ត៌មានលម្អិតតាមដានកំហិត');
       }
 
@@ -3294,28 +2516,16 @@ async fetchInspect() {
           showMessage('Fine document follow-up not found', 'Error');
           return;
         }
-<<<<<<< HEAD
-        
-        const original = followup.original_inspection_data || {};
-        let statusText = '';
-        switch(followup.document_status) {
-=======
 
         const original = followup.original_inspection_data || {};
         let statusText = '';
         switch (followup.document_status) {
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
           case 'department': statusText = 'បានចេញលិខិតផាក ទៅនាយកដ្ឋាន'; break;
           case 'general': statusText = 'ទៅអគ្គ'; break;
           case 'minister': statusText = 'ទៅរដ្ឋមន្ត្រី'; break;
           case 'completed': statusText = 'បានបញ្ចប់'; break;
           default: statusText = 'មិនស្គាល់';
         }
-<<<<<<< HEAD
-        
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
         let detailHTML = `
             <strong>លេខចូល:</strong> ${followup.no || ''}<br>
             <strong>កាលបរិច្ឆេទចេញលិខិត:</strong> ${followup.document_date || ''}<br>
@@ -3324,11 +2534,6 @@ async fetchInspect() {
             <strong>ស្ថានភាពឯកសារ:</strong> ${statusText}<br>
             <strong>ផ្សេងៗ:</strong> ${followup.remarks || ''}
         `;
-<<<<<<< HEAD
-        
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
         showMessage(detailHTML, 'ព័ត៌មានលម្អិតតាមដានឯកសារផាក');
       }
 
@@ -3402,17 +2607,10 @@ async fetchInspect() {
       populateOriginalInspections() {
         const select = document.getElementById('originalInspectionSelect');
         const fineSelect = document.getElementById('fineOriginalInspectionSelect');
-<<<<<<< HEAD
-        
-        if (select) {
-          select.innerHTML = '<option value="">-- ជ្រើសរើសការត្រួតពិនិត្យដើម --</option>';
-          
-=======
 
         if (select) {
           select.innerHTML = '<option value="">-- ជ្រើសរើសការត្រួតពិនិត្យដើម --</option>';
 
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
           this.allInspections.filter(inspection => inspection.has_penalty === 'មាន').forEach(inspection => {
             const option = document.createElement('option');
             option.value = inspection.id;
@@ -3420,17 +2618,10 @@ async fetchInspect() {
             select.appendChild(option);
           });
         }
-<<<<<<< HEAD
-        
-        if (fineSelect) {
-          fineSelect.innerHTML = '<option value="">-- ជ្រើសរើសការត្រួតពិនិត្យដើម --</option>';
-          
-=======
 
         if (fineSelect) {
           fineSelect.innerHTML = '<option value="">-- ជ្រើសរើសការត្រួតពិនិត្យដើម --</option>';
 
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
           this.allInspections.filter(inspection => inspection.has_fine === 'មាន').forEach(inspection => {
             const option = document.createElement('option');
             option.value = inspection.id;
@@ -3505,11 +2696,6 @@ async fetchInspect() {
       const detailsElement = document.getElementById('penalty_details');
       const yesOption = document.getElementById('penalty_yes_option');
       const noOption = document.getElementById('penalty_no_option');
-<<<<<<< HEAD
-      
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
       if (showDetails) {
         yesOption.classList.add('selected');
         noOption.classList.remove('selected');
@@ -3525,11 +2711,6 @@ async fetchInspect() {
       const detailsElement = document.getElementById('fine_details');
       const yesOption = document.getElementById('fine_yes_option');
       const noOption = document.getElementById('fine_no_option');
-<<<<<<< HEAD
-      
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
       if (showDetails) {
         yesOption.classList.add('selected');
         noOption.classList.remove('selected');
@@ -3545,11 +2726,6 @@ async fetchInspect() {
       const detailsElement = document.getElementById('followup_details');
       const yesOption = document.getElementById('implemented_yes_option');
       const noOption = document.getElementById('implemented_no_option');
-<<<<<<< HEAD
-      
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
       if (showDetails) {
         yesOption.classList.remove('selected');
         noOption.classList.add('selected');
@@ -3567,25 +2743,14 @@ async fetchInspect() {
         general: document.getElementById('step_general'),
         minister: document.getElementById('step_minister')
       };
-<<<<<<< HEAD
-      
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
       // Reset all steps
       Object.values(steps).forEach(step => {
         step.classList.remove('completed', 'pending');
         step.querySelector('i').className = 'bi bi-circle';
       });
-<<<<<<< HEAD
-      
-      // Update steps based on status
-      switch(status) {
-=======
 
       // Update steps based on status
       switch (status) {
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
         case 'department':
           steps.department.classList.add('completed');
           steps.department.querySelector('i').className = 'bi bi-check-circle-fill';
@@ -3611,11 +2776,6 @@ async fetchInspect() {
     function updateFactoryInfo() {
       const select = document.querySelector('select[name="factory_name"]');
       const selectedOption = select.options[select.selectedIndex];
-<<<<<<< HEAD
-      
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
       if (selectedOption.value) {
         document.querySelector('input[name="sector"]').value = selectedOption.getAttribute('data-sector') || '';
         document.querySelector('input[name="village"]').value = selectedOption.getAttribute('data-village') || '';
@@ -3628,20 +2788,10 @@ async fetchInspect() {
     function loadOriginalInspectionData() {
       const select = document.getElementById('originalInspectionSelect');
       if (!select) return;
-<<<<<<< HEAD
-      
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
       const inspectionId = select.value;
       const infoDiv = document.getElementById('originalPenaltyInfo');
       const companyInfoDiv = document.getElementById('companyInfoDisplay');
       const penaltyDisplay = document.getElementById('penaltyDisplay');
-<<<<<<< HEAD
-      
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
       if (inspectionId) {
         const inspection = window.inspectionManager.allInspections.find(i => i.id.toString() === inspectionId);
         if (inspection) {
@@ -3654,11 +2804,6 @@ async fetchInspect() {
           document.getElementById('display_district').value = inspection.district || '';
           document.getElementById('display_province').value = inspection.province || '';
           companyInfoDiv.classList.remove('d-none');
-<<<<<<< HEAD
-          
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
           // Display penalty information if exists
           if (inspection.has_penalty === 'មាន') {
             penaltyDisplay.innerHTML = `
@@ -3682,20 +2827,10 @@ async fetchInspect() {
     function loadFineOriginalInspectionData() {
       const select = document.getElementById('fineOriginalInspectionSelect');
       if (!select) return;
-<<<<<<< HEAD
-      
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
       const inspectionId = select.value;
       const infoDiv = document.getElementById('originalFineInfo');
       const companyInfoDiv = document.getElementById('fineCompanyInfoDisplay');
       const fineDisplay = document.getElementById('fineDisplay');
-<<<<<<< HEAD
-      
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
       if (inspectionId) {
         const inspection = window.inspectionManager.allInspections.find(i => i.id.toString() === inspectionId);
         if (inspection) {
@@ -3704,11 +2839,6 @@ async fetchInspect() {
           document.getElementById('fine_display_sector').value = inspection.sector || '';
           document.getElementById('fine_display_case_subject').value = inspection.case_subject || '';
           companyInfoDiv.classList.remove('d-none');
-<<<<<<< HEAD
-          
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
           // Display fine information if exists
           if (inspection.has_fine === 'មាន') {
             fineDisplay.innerHTML = `
@@ -3716,11 +2846,6 @@ async fetchInspect() {
               <p><strong>ហេតុផល:</strong> <span>${inspection.fine_reason || 'N/A'}</span></p>
             `;
             infoDiv.classList.remove('d-none');
-<<<<<<< HEAD
-            
-=======
-
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
             // Pre-fill fine amount and type
             document.querySelector('#fineFollowupForm input[name="fine_amount"]').value = inspection.fine_amount || '';
             document.querySelector('#fineFollowupForm input[name="fine_type"]').value = inspection.fine_type || '';
@@ -3735,8 +2860,6 @@ async fetchInspect() {
       }
     }
 
-<<<<<<< HEAD
-=======
     async function loadFactories() {
       try {
         const res = await fetch(`${API_BASE_URL}/fac/list`); // Example: /api/factories
@@ -3780,21 +2903,14 @@ async fetchInspect() {
     document.getElementById("factorySelect").addEventListener("change", updateFactoryInfo);
 
 
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
     // Initialize when page loads
     document.addEventListener('DOMContentLoaded', () => {
       window.inspectionManager = new InspectionManager();
       window.inspectionManager.init();
-<<<<<<< HEAD
-    });
-  </script>
-</body>
-=======
 
       loadFactories()
     });
   </script>
 </body>
 
->>>>>>> aea69b628d94202646457a132fe45f633f8d092d
 </html>
