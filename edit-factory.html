@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Factory</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eaeaea;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .factory-name {
+            color: #3498db;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+        }
+        
+        textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+        }
+        
+        .button-group {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-update {
+            background-color: #2ecc71;
+            color: white;
+        }
+        
+        .btn-update:hover {
+            background-color: #27ae60;
+        }
+        
+        .btn-cancel {
+            background-color: #e74c3c;
+            color: white;
+        }
+        
+        .btn-cancel:hover {
+            background-color: #c0392b;
+        }
+        
+        .status-message {
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            text-align: center;
+            display: none;
+        }
+        
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .section-title {
+            font-size: 1.2em;
+            color: #2c3e50;
+            margin: 25px 0 15px 0;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #eaeaea;
+        }
+        
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Edit Factory Information</h1>
+            <p>Editing: <span class="factory-name" id="factoryNameDisplay">Loading...</span></p>
+        </header>
+        
+        <div id="statusMessage" class="status-message"></div>
+        
+        <form id="factoryForm">
+            <h3 class="section-title">Basic Information</h3>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="no">លេខចូល (Entry No)</label>
+                    <input type="text" id="no" name="no" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="factoryname">ឈ្មោះរោងចក្រ (Factory Name)</label>
+                    <input type="text" id="factoryname" name="factoryname" required>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="factoryname_en">Factory Name (English)</label>
+                <input type="text" id="factoryname_en" name="factoryname_en" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="sector">Sector</label>
+                <input type="text" id="sector" name="sector" required>
+            </div>
+            
+            <h3 class="section-title">Location Information</h3>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="village">Village</label>
+                    <input type="text" id="village" name="village" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="commune">Commune</label>
+                    <input type="text" id="commune" name="commune" required>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="district">District</label>
+                    <input type="text" id="district" name="district" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="province">Province</label>
+                    <input type="text" id="province" name="province" required>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="address">Address</label>
+                <textarea id="address" name="address" required></textarea>
+            </div>
+            
+            <h3 class="section-title">Workforce Information</h3>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="total_workers">Total Workers</label>
+                    <input type="number" id="total_workers" name="total_workers" min="0" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="female_workers">Female Workers</label>
+                    <input type="number" id="female_workers" name="female_workers" min="0" required>
+                </div>
+            </div>
+            
+            <h3 class="section-title">Administration</h3>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="admin_name">Admin Name</label>
+                    <input type="text" id="admin_name" name="admin_name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="admin_phone">Admin Phone</label>
+                    <input type="tel" id="admin_phone" name="admin_phone" required>
+                </div>
+            </div>
+            
+            <div class="button-group">
+                <button type="button" class="btn btn-cancel" id="cancelBtn">Cancel</button>
+                <button type="submit" class="btn btn-update">Update Factory</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get factory name from URL parameter
+            const urlParams = new URLSearchParams(window.location.search);
+            const factoryParam = urlParams.get('factory');
+            const factoryName = factoryParam ? decodeURIComponent(factoryParam) : 'Unknown Factory';
+            
+            // Display factory name
+            document.getElementById('factoryNameDisplay').textContent = factoryName;
+            
+            // Fetch factory data based on name
+            fetchFactoryData(factoryName);
+            
+            // Form submission handler
+            document.getElementById('factoryForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                updateFactoryData();
+            });
+            
+            // Cancel button handler
+            document.getElementById('cancelBtn').addEventListener('click', function() {
+                if (confirm('Are you sure you want to cancel? Any unsaved changes will be lost.')) {
+                    window.history.back();
+                }
+            });
+            
+            // Function to fetch factory data
+            async function fetchFactoryData(factoryName) {
+                try {
+                    showStatusMessage('Loading factory data...', 'success');
+                    document.getElementById('factoryForm').classList.add('loading');
+                    
+                    // First, let's check if we have factories data in localStorage or use a fallback
+                    let factories = await getFactoriesData();
+                    
+                    // Find factory by English name (factoryname_en)
+                    const factoryData = factories.find(factory => 
+                        factory.factoryname_en && factory.factoryname_en.toLowerCase() === factoryName.toLowerCase()
+                    );
+                    
+                    if (!factoryData) {
+                        throw new Error(`Factory "${factoryName}" not found in database`);
+                    }
+                    
+                    // Populate form with data
+                    populateForm(factoryData);
+                    
+                    document.getElementById('factoryForm').classList.remove('loading');
+                    showStatusMessage('Factory data loaded successfully!', 'success');
+                    setTimeout(() => {
+                        document.getElementById('statusMessage').style.display = 'none';
+                    }, 2000);
+                    
+                } catch (error) {
+                    console.error('Error fetching factory data:', error);
+                    document.getElementById('factoryForm').classList.remove('loading');
+                    showStatusMessage('Error: ' + error.message, 'error');
+                }
+            }
+            
+            // Function to get factories data
+            async function getFactoriesData() {
+                // Try to fetch from API first
+                try {
+                    const response = await fetch('/api/factories');
+                    if (response.ok) {
+                        return await response.json();
+                    }
+                } catch (error) {
+                    console.log('API not available, checking localStorage...');
+                }
+                
+                // Fallback to localStorage or sample data
+                const storedData = localStorage.getItem('factoriesData');
+                if (storedData) {
+                    return JSON.parse(storedData);
+                }
+                
+                // If no data exists, return empty array
+                return [];
+            }
+            
+            // Function to populate form with data
+            function populateForm(factoryData) {
+                document.getElementById('no').value = factoryData.no || '';
+                document.getElementById('factoryname').value = factoryData.factoryname || '';
+                document.getElementById('factoryname_en').value = factoryData.factoryname_en || '';
+                document.getElementById('sector').value = factoryData.sector || '';
+                document.getElementById('village').value = factoryData.village || '';
+                document.getElementById('commune').value = factoryData.commune || '';
+                document.getElementById('district').value = factoryData.district || '';
+                document.getElementById('province').value = factoryData.province || '';
+                document.getElementById('address').value = factoryData.address || '';
+                document.getElementById('total_workers').value = factoryData.total_workers || '';
+                document.getElementById('female_workers').value = factoryData.female_workers || '';
+                document.getElementById('admin_name').value = factoryData.admin_name || '';
+                document.getElementById('admin_phone').value = factoryData.admin_phone || '';
+            }
+            
+            // Function to update factory data
+            async function updateFactoryData() {
+                try {
+                    // Collect form data
+                    const formData = {
+                        no: document.getElementById('no').value,
+                        factoryname: document.getElementById('factoryname').value,
+                        factoryname_en: document.getElementById('factoryname_en').value,
+                        sector: document.getElementById('sector').value,
+                        village: document.getElementById('village').value,
+                        commune: document.getElementById('commune').value,
+                        district: document.getElementById('district').value,
+                        province: document.getElementById('province').value,
+                        address: document.getElementById('address').value,
+                        total_workers: parseInt(document.getElementById('total_workers').value),
+                        female_workers: parseInt(document.getElementById('female_workers').value),
+                        admin_name: document.getElementById('admin_name').value,
+                        admin_phone: document.getElementById('admin_phone').value
+                    };
+                    
+                    // Validate female workers don't exceed total workers
+                    if (formData.female_workers > formData.total_workers) {
+                        showStatusMessage('Error: Female workers cannot exceed total workers', 'error');
+                        return;
+                    }
+                    
+                    showStatusMessage('Updating factory information...', 'success');
+                    document.getElementById('factoryForm').classList.add('loading');
+                    
+                    // Try to update via API first
+                    try {
+                        const response = await fetch(`/api/factories/${encodeURIComponent(factoryName)}`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(formData)
+                        });
+                        
+                        if (response.ok) {
+                            document.getElementById('factoryForm').classList.remove('loading');
+                            showStatusMessage('Factory information updated successfully!', 'success');
+                            return;
+                        }
+                    } catch (error) {
+                        console.log('API update failed, using localStorage fallback...');
+                    }
+                    
+                    // Fallback: Update in localStorage
+                    let factories = await getFactoriesData();
+                    const factoryIndex = factories.findIndex(factory => 
+                        factory.factoryname_en && factory.factoryname_en.toLowerCase() === factoryName.toLowerCase()
+                    );
+                    
+                    if (factoryIndex !== -1) {
+                        factories[factoryIndex] = { ...factories[factoryIndex], ...formData };
+                        localStorage.setItem('factoriesData', JSON.stringify(factories));
+                        document.getElementById('factoryForm').classList.remove('loading');
+                        showStatusMessage('Factory information updated successfully! (Local storage)', 'success');
+                    } else {
+                        throw new Error('Factory not found for update');
+                    }
+                    
+                } catch (error) {
+                    console.error('Error updating factory data:', error);
+                    document.getElementById('factoryForm').classList.remove('loading');
+                    showStatusMessage('Error updating factory data: ' + error.message, 'error');
+                }
+            }
+            
+            // Function to show status messages
+            function showStatusMessage(message, type) {
+                const statusElement = document.getElementById('statusMessage');
+                statusElement.textContent = message;
+                statusElement.className = 'status-message ' + type;
+                statusElement.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>
