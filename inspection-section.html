@@ -1053,7 +1053,7 @@
     let allFineFollowups = [];
     let currentEditingId = null;
 
-    const API_BASE_URL = "http://localhost:4000"
+    const API_BASE_URL = "https://uat-api-office2.thithabirdnest.com"
     // Utility functions
     function showMessage(message, title = 'Information') {
       const messageModal = new bootstrap.Modal(document.getElementById('messageModal'));
@@ -1450,7 +1450,7 @@
 
       async fetchInspect() {
         try {
-          const res = await fetch("http://localhost:4000/inspections");
+          const res = await fetch("https://uat-api-office2.thithabirdnest.com/inspections");
 
           if (!res.ok) {
             throw new Error(`HTTP error! status: ${res.status}`);

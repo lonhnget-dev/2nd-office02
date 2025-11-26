@@ -342,7 +342,7 @@
   <!-- JavaScript for User Management -->
   <script>
     // Configuration
-    const USER_API = "http://localhost:4000/user";
+    const USER_API = "https://uat-api-office2.thithabirdnest.com/user";
     
     // Global variables
     let allUsers = [];
@@ -758,7 +758,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const sangkatSelect = document.getElementById("sangkatSelect");
 
   try {
-    const response = await fetch("http://localhost:4000/get_commune");
+    const response = await fetch("https://uat-api-office2.thithabirdnest.com/get_commune");
     const data = await response.json();
     const communes = data.data;
     // Assuming your backend returns an array of communes like:
