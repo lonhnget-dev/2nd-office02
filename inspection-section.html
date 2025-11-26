@@ -764,26 +764,26 @@
                       <span>គ្មាន</span>
                     </label>
                   </div>
-                  <div class="penalty-details" id="fine_details">
+                  <div class="fine-details" id="fine_details">
                     <div class="row g-3">
                       <div class="col-md-6">
                         <label class="form-label">បែបបទ</label>
-                        <input type="text" class="form-control" name="penalty_format"
+                        <input type="text" class="form-control" name="fine_format"
                           placeholder="បញ្ចូលបែបបទត្រូវផាក ">
                       </div>
                       <div class="col-md-6">
                         <label class="form-label">លក្ខខណ្ឌ</label>
-                        <input type="text" class="form-control" name="penalty_condition"
+                        <input type="text" class="form-control" name="fine_condition"
                           placeholder="បញ្ចូលបែបបទត្រូវផាក ">
                       </div>
                       <div class="col-md-6">
                         <label class="form-label">សុខភាពនិងសុវត្ថភាព</label>
-                        <textarea class="form-control" name="penalty_health" rows="3"
+                        <textarea class="form-control" name="fine_health" rows="3"
                           placeholder="បញ្ចូលបែបបទត្រូវផាក "></textarea>
                       </div>
                       <div class="col-md-6">
                         <label class="form-label">វិជ្ជាជីវៈ</label>
-                        <textarea class="form-control" name="penalty_professional" rows="3"
+                        <textarea class="form-control" name="fine_professional" rows="3"
                           placeholder="បញ្ចូលបែបបទត្រូវផាក "></textarea>
                       </div>
                     </div>
@@ -900,6 +900,14 @@
                 <label class="form-label">សេចក្តីសន្និដ្ឋាន</label>
                 <textarea class="form-control" name="conclusion" rows="3"
                   placeholder="បញ្ចូលសេចក្តីសន្និដ្ឋាន..."></textarea>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">ស្ថានភាព *</label>
+                <select class="form-select" name="status" required>
+                  <option value="">-- ជ្រើសរើសស្ថានភាព --</option>
+                  <option value="ចុះ">ចុះ</option>
+                  <option value="មិនទាន់ចុះ">មិនទាន់ចុះ</option>
+                </select>
               </div>
             </div>
             <div class="modal-footer mt-4">
@@ -1455,6 +1463,7 @@
           console.log("Inspections:", this.allInspections);
 
           this.renderInspections(this.allInspections);
+          this.populateOriginalInspections(); // Populate dropdowns after fetching
         } catch (error) {
           console.error("fetchInspect error:", error);
         }
@@ -1475,6 +1484,7 @@
           console.log("Non compliance:", this.allPenaltyFollowups);
 
           this.renderPenaltyFollowups(this.allPenaltyFollowups);
+          this.updateStatistics(); // Update statistics after fetching
         } catch (error) {
           console.error("Non compliance error:", error);
         }
@@ -1482,8 +1492,7 @@
 
       async fetchFines() {
         try {
-          const res = await fetch(`${API_BASE_URL
-          }/fines`);
+          const res = await fetch(`${API_BASE_URL}/fines`);
 
           if (!res.ok) {
             throw new Error(`HTTP error! status: ${res.status}`);
@@ -1496,6 +1505,7 @@
           console.log("allFineFollowups:", this.allFineFollowups);
 
           this.renderFineFollowups(this.allFineFollowups);
+          this.updateStatistics(); // Update statistics after fetching
         } catch (error) {
           console.error("allFineFollowups error:", error);
         }
@@ -1588,8 +1598,8 @@
 
       updateStatistics() {
         const totalInspections = this.allInspections.length;
-        const inspectionsWithPenalties = this.allInspections.filter(i => i.has_penalty === 'មាន').length;
-        const inspectionsWithFines = this.allInspections.filter(i => i.has_fine === 'មាន').length;
+        const inspectionsWithPenalties = this.allInspections.filter(i => i.isNonCompliance === true).length;
+        const inspectionsWithFines = this.allInspections.filter(i => i.isFine === true).length;
         const totalFollowups = this.allPenaltyFollowups.length + this.allFineFollowups.length;
 
         document.getElementById('totalInspections').textContent = formatNumber(totalInspections);
@@ -1724,8 +1734,16 @@
         }
 
         tbody.innerHTML = this.allPenaltyFollowups.map((followup, index) => {
-          console.log("Foolow up", followup)
-          const statusClass = followup.status === 'អនុវត្ត' ? 'status-success' : 'status-warning';
+      
+          const status = followup.status;
+
+          const statusText =
+            status === "ចុះ" ? "ចុះ" :
+            status === "មិនទាន់ចុះ" ? "មិនទាន់ចុះ" :
+            "មិនទាន់ចុះ";
+
+          const statusClass =
+            status === "ចុះ" ? "status-success" : "status-warning";
 
           // Build factory address
           const addressParts = [];
@@ -1752,7 +1770,7 @@
             <td>${originalInspectionDate}</td>
             <td>
               <span class="status-badge ${statusClass}">
-                ${followup.status || 'N/A'}
+                ${status}
               </span>
             </td>
             <td>
@@ -1966,7 +1984,10 @@
         }
 
         tbody.innerHTML = filteredFollowups.map((followup, index) => {
-          const statusClass = followup.status === 'អនុវត្ត' ? 'status-success' : 'status-warning';
+          // Determine status based on isPractice field
+          const isPracticed = followup.isPractice === true;
+          const statusText = isPracticed ? 'អនុវត្ត' : 'មិនអនុវត្ត';
+          const statusClass = isPracticed ? 'status-success' : 'status-warning';
 
           // Build factory address
           const addressParts = [];
@@ -1993,7 +2014,7 @@
             <td>${originalInspectionDate}</td>
             <td>
               <span class="status-badge ${statusClass}">
-                ${followup.status || 'N/A'}
+                ${statusText}
               </span>
             </td>
             <td>
@@ -2183,27 +2204,85 @@
       }
 
       populatePenaltyFollowupForm(id) {
+        // Find the followup in the already-loaded data
         const followup = this.allPenaltyFollowups.find(f => f.id.toString() === id.toString());
-        if (!followup) return;
+
+        if (!followup) {
+          showMessage('មិនរកឃើញការតាមដានកំហិត', 'Error');
+          return;
+        }
 
         const form = document.getElementById('penaltyFollowupForm');
         const elements = form.elements;
-        elements['no'].value = followup.no || '';
-        elements['original_inspection'].value = followup.original_inspection || '';
-        elements['followup_date'].value = followup.followup_date || '';
-        elements['conclusion'].value = followup.conclusion || '';
-        // Handle follow-up result section
-        if (followup.penalty_implemented === 'មិនអនុវត្ត') {
-          toggleFollowupDetails(true);
-          elements['followup_format'].value = followup.followup_format || '';
-          elements['followup_condition'].value = followup.followup_condition || '';
-          elements['followup_health'].value = followup.followup_health || '';
-          elements['followup_professional'].value = followup.followup_professional || '';
-        } else {
-          toggleFollowupDetails(false);
+
+        // Basic information
+        elements['no'].value = followup.no || `NC-${followup.id}`;
+        elements['followup_date'].value = followup.date ? followup.date.split('T')[0] : '';
+        elements['conclusion'].value = followup.remark || '';
+
+        // Set status field
+        if (followup.status) {
+          elements['status'].value = followup.status;
         }
-        // Load original inspection data
-        loadOriginalInspectionData();
+
+        // Set original inspection dropdown
+        if (followup.inspectionId) {
+          elements['original_inspection'].value = followup.inspectionId;
+        }
+
+        // Display company information
+        const companyInfoDisplay = document.getElementById('companyInfoDisplay');
+        if (followup.factory) {
+          companyInfoDisplay.classList.remove('d-none');
+          const addressParts = [];
+          if (followup.factory.commune?.name) addressParts.push(followup.factory.commune.name);
+          if (followup.factory.district?.name) addressParts.push(followup.factory.district.name);
+          if (followup.factory.province?.name) addressParts.push(followup.factory.province.name);
+
+          companyInfoDisplay.innerHTML = `
+            <h5 class="mb-3"><i class="bi bi-building"></i> ព័ត៌មានរោងចក្រ</h5>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <strong>ឈ្មោះរោងចក្រ:</strong> ${followup.factory.factoryname || ''}
+              </div>
+              <div class="col-md-6">
+                <strong>អាសយដ្ឋាន:</strong> ${addressParts.join(', ')}
+              </div>
+            </div>
+          `;
+        }
+
+        // Display original penalty information
+        const originalPenaltyInfo = document.getElementById('originalPenaltyInfo');
+        if (followup.inspection) {
+          originalPenaltyInfo.classList.remove('d-none');
+          document.getElementById('penaltyDisplay').innerHTML = `
+            <div class="row g-2">
+              <div class="col-md-4"><strong>លេខចូល:</strong> ${followup.inspection.no || ''}</div>
+              <div class="col-md-4"><strong>ក្រុម:</strong> ${followup.inspection.group || ''}</div>
+              <div class="col-md-4"><strong>កាលបរិច្ឆេទ:</strong> ${followup.inspection.inspectionDate ? followup.inspection.inspectionDate.split('T')[0] : ''}</div>
+              <div class="col-12"><strong>ប្រធានបទ:</strong> ${followup.inspection.caseSubject || ''}</div>
+            </div>
+          `;
+        }
+
+        // Determine penalty implementation status based on isPractice field
+        const penaltyImplemented = followup.isPractice === true ? 'អនុវត្ត' : 'មិនអនុវត្ត';
+
+        // Select the appropriate radio button
+        const implementedRadio = form.querySelector(`input[name="penalty_implemented"][value="${penaltyImplemented}"]`);
+        if (implementedRadio) {
+          implementedRadio.checked = true;
+          toggleFollowupDetails(penaltyImplemented === 'មិនអនុវត្ត');
+        }
+
+        // Populate followup details (only if not implemented / isPractice is false)
+        if (followup.isPractice !== true) {
+          elements['followup_format'].value = followup.requiredDoc || '';
+          elements['followup_condition'].value = followup.workingCondition || '';
+          elements['followup_health'].value = followup.osh || '';
+          elements['followup_professional'].value = followup.nsf || '';
+        }
       }
 
       openFineFollowupForm(editId = null) {
@@ -2225,24 +2304,70 @@
       }
 
       populateFineFollowupForm(id) {
+        // Find the followup in the already-loaded data
         const followup = this.allFineFollowups.find(f => f.id.toString() === id.toString());
-        if (!followup) return;
+
+        if (!followup) {
+          showMessage('មិនរកឃើញការតាមដានឯកសារផាក', 'Error');
+          return;
+        }
 
         const form = document.getElementById('fineFollowupForm');
         const elements = form.elements;
-        elements['no'].value = followup.no || '';
-        elements['original_inspection'].value = followup.original_inspection || '';
-        elements['document_date'].value = followup.document_date || '';
+
+        // Basic information
+        elements['no'].value = followup.no || `F-${followup.id}`;
+        elements['document_date'].value = followup.document_date ? followup.document_date.split('T')[0] : '';
         elements['fine_amount'].value = followup.fine_amount || '';
         elements['fine_type'].value = followup.fine_type || '';
         elements['remarks'].value = followup.remarks || '';
+
+        // Set original inspection dropdown
+        if (followup.inspectionId) {
+          elements['original_inspection'].value = followup.inspectionId;
+        }
+
+        // Display company information
+        const fineCompanyInfoDisplay = document.getElementById('fineCompanyInfoDisplay');
+        if (followup.factory) {
+          fineCompanyInfoDisplay.classList.remove('d-none');
+          const addressParts = [];
+          if (followup.factory.commune?.name) addressParts.push(followup.factory.commune.name);
+          if (followup.factory.district?.name) addressParts.push(followup.factory.district.name);
+          if (followup.factory.province?.name) addressParts.push(followup.factory.province.name);
+
+          fineCompanyInfoDisplay.innerHTML = `
+            <h5 class="mb-3"><i class="bi bi-building"></i> ព័ត៌មានរោងចក្រ</h5>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <strong>ឈ្មោះរោងចក្រ:</strong> ${followup.factory.factoryname || ''}
+              </div>
+              <div class="col-md-6">
+                <strong>អាសយដ្ឋាន:</strong> ${addressParts.join(', ')}
+              </div>
+            </div>
+          `;
+        }
+
+        // Display original fine information
+        const originalFineInfo = document.getElementById('originalFineInfo');
+        if (followup.inspection) {
+          originalFineInfo.classList.remove('d-none');
+          document.getElementById('fineDisplay').innerHTML = `
+            <div class="row g-2">
+              <div class="col-md-4"><strong>លេខចូល:</strong> ${followup.inspection.no || ''}</div>
+              <div class="col-md-4"><strong>ក្រុម:</strong> ${followup.inspection.group || ''}</div>
+              <div class="col-md-4"><strong>កាលបរិច្ឆេទ:</strong> ${followup.inspection.inspectionDate ? followup.inspection.inspectionDate.split('T')[0] : ''}</div>
+              <div class="col-12"><strong>ប្រធានបទ:</strong> ${followup.inspection.caseSubject || ''}</div>
+            </div>
+          `;
+        }
+
         // Set document status
         if (followup.document_status) {
           elements['document_status'].value = followup.document_status;
           updateDocumentFlow(followup.document_status);
         }
-        // Load original inspection data
-        loadFineOriginalInspectionData();
       }
 
       resetAllSelections() {
@@ -2262,9 +2387,7 @@
   const formData = new FormData(e.target);
   const form = Object.fromEntries(formData);
 
-  // -----------------------------------------------------
-  // STEP 1: Build Inspection payload (backend format)
-  // -----------------------------------------------------
+  // STEP 1 — Build the complete inspection payload
   const inspectionPayload = {
     no: form.no,
     factoryId: Number(form.factory_name),
@@ -2272,74 +2395,58 @@
     group: form.group,
     inspectionType: form.inspection_type,
     inspectionDate: form.inspection_date,
-    status: "Checked"
+    status: "Checked",
+
+    // -------------------------------
+    // Non-compliance snapshot
+    // -------------------------------
+    isNonCompliance: form.has_penalty === "មាន",   // TRUE or FALSE
+
+    ncRequiredDoc:
+      form.has_penalty === "មាន" ? form.penalty_format : null,
+    ncWorkingCondition:
+      form.has_penalty === "មាន" ? form.penalty_condition : null,
+    ncOsh:
+      form.has_penalty === "មាន" ? form.penalty_health : null,
+    ncNsf:
+      form.has_penalty === "មាន" ? form.penalty_professional : null,
+
+    // -------------------------------
+    // Fine snapshot
+    // -------------------------------
+    isFine: form.has_fine === "មាន",  // TRUE or FALSE
+
+    fineRequiredDoc:
+      form.has_fine === "មាន" ? form.fine_format : null,
+    fineWorkingCondition:
+      form.has_fine === "មាន" ? form.fine_condition : null,
+    fineOsh:
+      form.has_fine === "មាន" ? form.fine_health : null,
+    fineNsf:
+      form.has_fine === "មាន" ? form.fine_professional : null,
   };
 
+  console.log("Sending payload → ", inspectionPayload);
+
   try {
-    // 1️⃣ CREATE INSPECTION
-    const res1 = await fetch(`${API_BASE_URL}/inspections`, {
+    // POST to your new inspection API
+    const res = await fetch(`${API_BASE_URL}/inspections`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(inspectionPayload)
+      body: JSON.stringify(inspectionPayload),
     });
 
-    const inspectionRes = await res1.json();
-    const inspectionId = inspectionRes.data.id;
+    const result = await res.json();
 
-    // -----------------------------------------------------
-    // STEP 2: Build Non-Compliance payload (map HTML → API)
-    // -----------------------------------------------------
-    if (form.has_penalty === "មាន") {
-      const nonCompliancePayload = {
-        factoryId: Number(form.factory_name),
-        inspectionId: inspectionId,
-
-        // Map existing HTML fields to backend fields
-        requiredDoc: form.penalty_format,
-        workingCondition: form.penalty_condition,
-        osh: form.penalty_health,
-        nsf: form.penalty_professional,
-        remark: form.penalty_format + " / " + form.penalty_condition, // optional mapping
-
-        status: "Pending",
-        date: new Date().toISOString()
-      };
-
-      await fetch(`${API_BASE_URL}/non-compliances`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(nonCompliancePayload)
-      });
-    }
-
-    // -----------------------------------------------------
-    // STEP 3: Build Fine payload (map HTML → API)
-    // -----------------------------------------------------
-    if (form.has_fine === "មាន") {
-      const finePayload = {
-        factoryId: Number(form.factory_name),
-        inspectionId: inspectionId,
-
-        // Map existing HTML fields to backend fields
-        requiredDoc: form.penalty_format,
-        workingCondition: form.penalty_condition,
-        osh: form.penalty_health,
-        nsf: form.penalty_professional,
-        remark: form.penalty_health + " / " + form.penalty_professional, // if you want
-
-        status: "Pending",
-        date: new Date().toISOString()
-      };
-
-      await fetch(`${API_BASE_URL}/fines`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(finePayload)
-      });
+    if (!result.data) {
+      showMessage("Saving failed!", "Error");
+      return;
     }
 
     showMessage("Inspection saved successfully!", "Success");
-    bootstrap.Modal.getInstance(document.getElementById("inspectionModal")).hide();
+    bootstrap.Modal.getInstance(
+      document.getElementById("inspectionModal")
+    ).hide();
     this.renderInspections();
 
   } catch (err) {
@@ -2352,35 +2459,88 @@
         e.preventDefault();
         const formData = new FormData(e.target);
         const data = Object.fromEntries(formData);
+
         if (!data.no || !data.original_inspection || !data.followup_date) {
           showMessage('សូមបំពេញព័ត៌មានចាំបាច់ទាំងអស់', 'Error');
           return;
         }
+
         const submitBtn = document.getElementById('penaltyFollowupSubmitBtn');
         const originalText = submitBtn.innerHTML;
         submitBtn.innerHTML = '<span class="loading"></span> កំពុងរក្សាទុក...';
         submitBtn.disabled = true;
+
         try {
+          // Check if "អនុវត្ត" (Implemented) is selected
+          const isImplemented = data.penalty_implemented === 'អនុវត្ត';
+
+          // Build payload based on implementation status
+          const payload = {
+            no: data.no,
+            inspectionId: Number(data.original_inspection),
+            date: data.followup_date,
+            remark: data.conclusion || '',
+            status: data.status,
+            isPractice: isImplemented, // Set isPractice to true if implemented
+
+            // If implemented, set these fields to null/empty
+            // If not implemented, include the detail fields
+            requiredDoc: isImplemented ? null : (data.followup_format || null),
+            workingCondition: isImplemented ? null : (data.followup_condition || null),
+            osh: isImplemented ? null : (data.followup_health || null),
+            nsf: isImplemented ? null : (data.followup_professional || null)
+          };
+
+          console.log('Penalty Followup Payload:', payload);
+
           if (currentEditingId) {
-            const index = this.allPenaltyFollowups.findIndex(i => i.id.toString() === currentEditingId.toString());
-            if (index !== -1) {
-              this.allPenaltyFollowups[index] = { ...this.allPenaltyFollowups[index], ...data, id: currentEditingId };
+            // UPDATE existing penalty followup
+            const res = await fetch(`${API_BASE_URL}/non-compliances/${currentEditingId}`, {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload)
+            });
+
+            if (!res.ok) {
+              throw new Error(`HTTP error! status: ${res.status}`);
             }
+
+            const result = await res.json();
+
+            if (!result.data) {
+              showMessage('មានបញ្ហាក្នុងការកែសម្រួល!', 'Error');
+              return;
+            }
+
             showMessage('ការតាមដានត្រូវបានកែសម្រួលដោយជោគជ័យ!', 'Success');
           } else {
-            const originalInspection = this.allInspections.find(i => i.id.toString() === data.original_inspection);
-            const newFollowup = {
-              id: Date.now(),
-              ...data,
-              original_inspection_data: originalInspection,
-              created_at: new Date().toISOString()
-            };
-            this.allPenaltyFollowups.push(newFollowup);
+            // CREATE new penalty followup
+            const res = await fetch(`${API_BASE_URL}/non-compliances`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload)
+            });
+
+            if (!res.ok) {
+              throw new Error(`HTTP error! status: ${res.status}`);
+            }
+
+            const result = await res.json();
+
+            if (!result.data) {
+              showMessage('មានបញ្ហាក្នុងការបង្កើត!', 'Error');
+              return;
+            }
+
             showMessage('ការតាមដានត្រូវបានបង្កើតដោយជោគជ័យ!', 'Success');
           }
+
           const modal = bootstrap.Modal.getInstance(document.getElementById('penaltyFollowupModal'));
           modal.hide();
-          this.renderPenaltyFollowups();
+
+          // Refresh the penalty followups list
+          await this.fetchNonCompliances();
+
         } catch (error) {
           console.error('Save error:', error);
           showMessage('មានបញ្ហាក្នុងការរក្សាទុកការតាមដាន', 'Error');
@@ -2609,15 +2769,10 @@
           `;
         }
 
-        // Map status to penalty_implemented radio buttons
-        const statusMapping = {
-          'Pending': 'មិនអនុវត្ត',
-          'Completed': 'អនុវត្ត',
-          'អនុវត្ត': 'អនុវត្ត',
-          'មិនអនុវត្ត': 'មិនអនុវត្ត'
-        };
+        // Determine penalty implementation status based on isPractice field
+        const penaltyImplemented = followup.isPractice === true ? 'អនុវត្ត' : 'មិនអនុវត្ត';
 
-        const penaltyImplemented = statusMapping[followup.status] || 'មិនអនុវត្ត';
+        // Select the appropriate radio button
         const implementedRadio = form.querySelector(`input[name="penalty_implemented"][value="${penaltyImplemented}"]`);
         if (implementedRadio) {
           implementedRadio.checked = true;
@@ -2625,12 +2780,20 @@
           toggleFollowupDetails(penaltyImplemented === 'មិនអនុវត្ត');
         }
 
-        // Populate followup details
-        elements['followup_format'].value = followup.requiredDoc || '';
-        elements['followup_condition'].value = followup.workingCondition || '';
-        elements['followup_health'].value = followup.osh || '';
-        elements['followup_professional'].value = followup.nsf || '';
+        // Populate followup details (only if not implemented)
+        if (followup.isPractice !== true) {
+          elements['followup_format'].value = followup.requiredDoc || '';
+          elements['followup_condition'].value = followup.workingCondition || '';
+          elements['followup_health'].value = followup.osh || '';
+          elements['followup_professional'].value = followup.nsf || '';
+        }
+
         elements['conclusion'].value = followup.remark || '';
+
+        // Set status field if available
+        if (followup.status && elements['status']) {
+          elements['status'].value = followup.status;
+        }
 
         // Make all form fields readonly
         Array.from(elements).forEach(element => {
@@ -2836,10 +2999,13 @@
         if (select) {
           select.innerHTML = '<option value="">-- ជ្រើសរើសការត្រួតពិនិត្យដើម --</option>';
 
-          this.allInspections.filter(inspection => inspection.has_penalty === 'មាន').forEach(inspection => {
+          // Filter inspections that have non-compliance (isNonCompliance === true)
+          this.allInspections.filter(inspection => inspection.isNonCompliance === true).forEach(inspection => {
             const option = document.createElement('option');
             option.value = inspection.id;
-            option.textContent = `${inspection.no} - ${inspection.factory_name} (${inspection.inspection_date})`;
+            const factoryName = inspection.factory?.factoryname || inspection.factory_name || '';
+            const inspectionDate = inspection.inspection_date || inspection.inspectionDate || '';
+            option.textContent = `${inspection.no} - ${factoryName} (${inspectionDate})`;
             select.appendChild(option);
           });
         }
@@ -2847,10 +3013,13 @@
         if (fineSelect) {
           fineSelect.innerHTML = '<option value="">-- ជ្រើសរើសការត្រួតពិនិត្យដើម --</option>';
 
-          this.allInspections.filter(inspection => inspection.has_fine === 'មាន').forEach(inspection => {
+          // Filter inspections that have fines (isFine === true)
+          this.allInspections.filter(inspection => inspection.isFine === true).forEach(inspection => {
             const option = document.createElement('option');
             option.value = inspection.id;
-            option.textContent = `${inspection.no} - ${inspection.factory_name} (${inspection.inspection_date})`;
+            const factoryName = inspection.factory?.factoryname || inspection.factory_name || '';
+            const inspectionDate = inspection.inspection_date || inspection.inspectionDate || '';
+            option.textContent = `${inspection.no} - ${factoryName} (${inspectionDate})`;
             fineSelect.appendChild(option);
           });
         }
