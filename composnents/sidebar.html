@@ -14,7 +14,6 @@
 
         body {
             display: flex;
-            min-height: 100vh;
             background-color: #f5f7fa;
             transition: margin-left 0.3s ease;
         }
@@ -320,7 +319,7 @@
                     <p>កំពុងផ្ទុកទិន្នន័យ...</p>
                     <small style="color: #6c757d;" id="documentFileName">Checking file...</small>
                 </div>
-                <iframe src="" width="100%" height="100%" style="border: none; border-radius: 8px;" 
+                <iframe src="" width="100%" height="100" style="border: none; border-radius: 8px;" 
                         id="documentFrame"></iframe>
             </div>
         </div>
@@ -333,7 +332,7 @@
                     <p>កំពុងផ្ទុកទិន្នន័យ...</p>
                     <small style="color: #6c757d;" id="factoryFileName">Checking file...</small>
                 </div>
-                <iframe src="" width="100%" height="100%" style="border: none; border-radius: 8px;" 
+                <iframe src="" width="100%" height="100" style="border: none; border-radius: 8px;" 
                         id="factoryFrame"></iframe>
             </div>
         </div>
@@ -346,7 +345,7 @@
                     <p>កំពុងផ្ទុកទិន្នន័យ...</p>
                     <small style="color: #6c757d;" id="inspectionFileName">Checking file...</small>
                 </div>
-                <iframe src="" width="100%" height="100%" style="border: none; border-radius: 8px;" 
+                <iframe src="" width="100%" height="100" style="border: none; border-radius: 8px;" 
                         id="inspectionFrame"></iframe>
             </div>
         </div>
@@ -359,7 +358,7 @@
                     <p>កំពុងផ្ទុកទិន្នន័យ...</p>
                     <small style="color: #6c757d;" id="userFileName">Checking file...</small>
                 </div>
-                <iframe src="" width="100%" height="100%" style="border: none; border-radius: 8px;" 
+                <iframe src="" width="100%" height="100" style="border: none; border-radius: 8px;" 
                         id="userFrame"></iframe>
             </div>
         </div>
@@ -560,7 +559,7 @@
                     iframe.style.height = Math.max(height, 800) + 'px';
                     debug(`Adjusted iframe height for ${pageId}: ${height}px`);
                 } catch (e) {
-                    iframe.style.height = '100%';
+                    iframe.style.height = '100';
                     debug(`Using default height for ${pageId}`);
                 }
             }
