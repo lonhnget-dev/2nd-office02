@@ -262,6 +262,193 @@
       color: #6c757d;
       text-align: center;
     }
+
+    /* Document View Styles */
+    .document-view-container {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .document-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 15px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #e9ecef;
+    }
+
+    .document-title h4 {
+      margin: 0;
+      color: #2c3e50;
+    }
+
+    .document-id {
+      color: #6c757d;
+      font-size: 0.9rem;
+    }
+
+    /* Process Flow Styles */
+    .document-process-flow {
+      margin-bottom: 25px;
+    }
+
+    .process-title {
+      color: #2c3e50;
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+
+    .process-steps {
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+      margin: 0 20px;
+    }
+
+    .process-steps::before {
+      content: '';
+      position: absolute;
+      top: 30px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background-color: #e9ecef;
+      z-index: 1;
+    }
+
+    .process-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+      flex: 1;
+      text-align: center;
+    }
+
+    .step-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 10px;
+      background-color: #e9ecef;
+      color: #6c757d;
+      font-size: 1.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .process-step.completed .step-icon {
+      background-color: #28a745;
+      color: white;
+      box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
+    }
+
+    .step-content h6 {
+      margin: 0 0 5px 0;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #2c3e50;
+    }
+
+    .step-content p {
+      margin: 0;
+      font-size: 0.8rem;
+      color: #6c757d;
+    }
+
+    .step-officer {
+      font-size: 0.75rem !important;
+      font-style: italic;
+      margin-top: 3px !important;
+    }
+
+    /* Document Details Grid */
+    .document-details-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .detail-section {
+      background: #f8f9fa;
+      padding: 15px;
+      border-radius: 8px;
+      border: 1px solid #e9ecef;
+    }
+
+    .detail-section h6 {
+      margin-bottom: 15px;
+      color: #2c3e50;
+      font-weight: 600;
+      border-bottom: 1px solid #dee2e6;
+      padding-bottom: 8px;
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .detail-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .detail-item.full-width {
+      grid-column: 1 / -1;
+    }
+
+    .detail-item label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #495057;
+      margin-bottom: 4px;
+    }
+
+    .detail-item span {
+      font-size: 0.9rem;
+      color: #2c3e50;
+      padding: 6px 0;
+    }
+
+    .reason-text {
+      background: white;
+      padding: 10px;
+      border-radius: 4px;
+      border: 1px solid #dee2e6;
+      min-height: 60px;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 992px) {
+      .document-details-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .process-steps {
+        flex-direction: column;
+        gap: 20px;
+      }
+      
+      .process-steps::before {
+        display: none;
+      }
+      
+      .process-step {
+        flex-direction: row;
+        text-align: left;
+        gap: 15px;
+      }
+      
+      .step-icon {
+        margin-bottom: 0;
+        flex-shrink: 0;
+      }
+    }
   </style>
 </head>
 
@@ -1190,33 +1377,170 @@
           return;
         }
 
-        let detailHTML = `
-          <div class="row">
-            <div class="col-md-6">
-              <strong>1. លេខចូល:</strong> ${doc.no || ''}<br>
-              <strong>2. លេខលិខិត (IR):</strong> ${doc.ir || ''}<br>
-              <strong>3. លេខចេញ:</strong> ${doc.outNo || ''}<br>
-              <strong>4. ថ្ងៃខែលិខិតចូល/ចេញ:</strong> ${formatDate(doc.submitDate)}<br>
-              <strong>5. អង្គភាព/ប្រភពលិខិត:</strong> ${doc.source || ''}<br>
-              <strong>6. ប្រភេទឯកសារ:</strong> ${doc.doc || ''}<br>
-              <strong>7. ថ្ងៃខែមុខការិ.២:</strong> ${formatDate(doc.officeDate2)}<br>
-              <strong>8. មន្រ្តីទទួលមុខការ:</strong> ${doc.officer || ''}<br>
-              <strong>9. ថ្ងៃខែឆ្នាំទទួល:</strong> ${formatDate(doc.receiveDate)}
+        // Create a modern document view with process flow
+        const detailHTML = `
+          <div class="document-view-container">
+            <div class="document-header">
+              <div class="document-title">
+                <h4><i class="bi bi-file-earmark-text"></i> ព័ត៌មានលម្អិតឯកសារ</h4>
+                <span class="document-id">លេខឯកសារ: ${doc.no || 'N/A'}</span>
+              </div>
+              <div class="document-status">
+                <span class="status-badge ${doc.progress === 'បានធ្វើចេញរួចរាល់' ? 'status-completed' : 'status-pending'}">
+                  ${doc.progress || ''}
+                </span>
+              </div>
             </div>
-            <div class="col-md-6">
-              <strong>10. ស្ថានភាព:</strong> ${doc.progress || ''}<br>
-              <strong>11. ចំនួនថ្ងៃទាន់បានធ្វើចេញ:</strong> ${doc.duration || ''}<br>
-              <strong>12. ចូលប្រធានការិ.:</strong> ${doc.toChiefOffice || ''}<br>
-              <strong>13. ចូលអនុ.នាយកដ្ឋាន:</strong> ${doc.toDeputy || ''}<br>
-              <strong>14. ចូលប្រធាននាយកដ្ឋាន:</strong> ${doc.toHeadDept || ''}<br>
-              <strong>15. ថ្ងៃខែឆ្នាំចេញលិខិត:</strong> ${formatDate(doc.outDate)}<br>
-              <strong>16. ស្ថានភាពបញ្ជិកា:</strong> ${doc.registryStatus || ''}<br>
-              <strong>17. មូលហេតុ/ផ្សេងៗ:</strong> ${doc.reason || ''}
+            
+            <div class="document-process-flow">
+              <h5 class="process-title"><i class="bi bi-diagram-3"></i> ដំណើរការឯកសារ</h5>
+              <div class="process-steps">
+                <div class="process-step ${doc.receiveDate ? 'completed' : ''}">
+                  <div class="step-icon">
+                    <i class="bi bi-inbox"></i>
+                  </div>
+                  <div class="step-content">
+                    <h6>ទទួលឯកសារ</h6>
+                    <p>${formatDate(doc.receiveDate) || 'មិនទាន់ទទួល'}</p>
+                    <p class="step-officer">${doc.officer || 'មិនទាន់កំណត់'}</p>
+                  </div>
+                </div>
+                
+                <div class="process-step ${doc.toChiefOffice ? 'completed' : ''}">
+                  <div class="step-icon">
+                    <i class="bi bi-person-check"></i>
+                  </div>
+                  <div class="step-content">
+                    <h6>ចូលប្រធានការិយាល័យ</h6>
+                    <p>${doc.toChiefOffice || 'មិនទាន់ដាក់ចូល'}</p>
+                  </div>
+                </div>
+                
+                <div class="process-step ${doc.toDeputy ? 'completed' : ''}">
+                  <div class="step-icon">
+                    <i class="bi bi-person-badge"></i>
+                  </div>
+                  <div class="step-content">
+                    <h6>ចូលអនុនាយកដ្ឋាន</h6>
+                    <p>${doc.toDeputy || 'មិនទាន់ដាក់ចូល'}</p>
+                  </div>
+                </div>
+                
+                <div class="process-step ${doc.toHeadDept ? 'completed' : ''}">
+                  <div class="step-icon">
+                    <i class="bi bi-person-gear"></i>
+                  </div>
+                  <div class="step-content">
+                    <h6>ចូលប្រធាននាយកដ្ឋាន</h6>
+                    <p>${doc.toHeadDept || 'មិនទាន់ដាក់ចូល'}</p>
+                  </div>
+                </div>
+                
+                <div class="process-step ${doc.outDate ? 'completed' : ''}">
+                  <div class="step-icon">
+                    <i class="bi bi-send-check"></i>
+                  </div>
+                  <div class="step-content">
+                    <h6>ចេញលិខិត</h6>
+                    <p>${formatDate(doc.outDate) || 'មិនទាន់ចេញ'}</p>
+                    <p class="step-officer">${doc.registryStatus || 'មិនទាន់កំណត់'}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="document-details-grid">
+              <div class="detail-section">
+                <h6><i class="bi bi-info-circle"></i> ព័ត៌មានមូលដ្ឋាន</h6>
+                <div class="detail-grid">
+                  <div class="detail-item">
+                    <label>លេខលិខិត (IR)</label>
+                    <span>${doc.ir || 'N/A'}</span>
+                  </div>
+                  <div class="detail-item">
+                    <label>លេខចេញ</label>
+                    <span>${doc.outNo || 'N/A'}</span>
+                  </div>
+                  <div class="detail-item">
+                    <label>ថ្ងៃខែលិខិត</label>
+                    <span>${formatDate(doc.submitDate) || 'N/A'}</span>
+                  </div>
+                  <div class="detail-item">
+                    <label>អង្គភាព/ប្រភព</label>
+                    <span>${doc.source || 'N/A'}</span>
+                  </div>
+                  <div class="detail-item">
+                    <label>ប្រភេទឯកសារ</label>
+                    <span>${doc.doc || 'N/A'}</span>
+                  </div>
+                  <div class="detail-item">
+                    <label>ថ្ងៃមុខការិ.២</label>
+                    <span>${formatDate(doc.officeDate2) || 'N/A'}</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="detail-section">
+                <h6><i class="bi bi-clock-history"></i> ព័ត៌មានបន្ថែម</h6>
+                <div class="detail-grid">
+                  <div class="detail-item">
+                    <label>ចំនួនថ្ងៃ</label>
+                    <span>${doc.duration || 'N/A'}</span>
+                  </div>
+                  <div class="detail-item">
+                    <label>ស្ថានភាពបញ្ជិកា</label>
+                    <span>${doc.registryStatus || 'N/A'}</span>
+                  </div>
+                  <div class="detail-item full-width">
+                    <label>មូលហេតុ/ផ្សេងៗ</label>
+                    <span class="reason-text">${doc.reason || 'មិនមាន'}</span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         `;
 
-        showMessage(detailHTML, 'ព័ត៌មានលម្អិតឯកសារ');
+        // Create a custom modal for document view
+        const modalHTML = `
+          <div class="modal fade" id="documentViewModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+              <div class="modal-content">
+                <div class="modal-header bg-light">
+                  <h5 class="modal-title"><i class="bi bi-file-earmark-text"></i> ព័ត៌មានលម្អិតឯកសារ</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  ${detailHTML}
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">បិទ</button>
+                  <button type="button" class="btn btn-primary" onclick="window.documentsManager.editDocument('${id}')" data-bs-dismiss="modal">
+                    <i class="bi bi-pencil"></i> កែសម្រួល
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+
+        // Remove existing modal if any
+        const existingModal = document.getElementById('documentViewModal');
+        if (existingModal) {
+          existingModal.remove();
+        }
+
+        // Add the modal to the page
+        document.body.insertAdjacentHTML('beforeend', modalHTML);
+
+        // Show the modal
+        const modal = new bootstrap.Modal(document.getElementById('documentViewModal'));
+        modal.show();
+
+        // Remove the modal from DOM when hidden
+        document.getElementById('documentViewModal').addEventListener('hidden.bs.modal', function() {
+          this.remove();
+        });
       }
 
       editDocument(id) {
@@ -1229,47 +1553,43 @@
         }
       }
 
-
-      ////
-
-async deleteDocument(id) {
-    try {
-        const docToDelete = this.allDocs.find(d => d.id.toString() === id.toString());
-        if (!docToDelete) {
+      async deleteDocument(id) {
+        try {
+          const docToDelete = this.allDocs.find(d => d.id.toString() === id.toString());
+          if (!docToDelete) {
             showMessage('Document not found', 'Error');
             return;
-        }
+          }
 
-        // Delete from backend API
-        const response = await fetch(`${DOC_API}/${id}`, {
+          // Delete from backend API
+          const response = await fetch(`${DOC_API}/${id}`, {
             method: 'DELETE',
             headers: {
-                'Content-Type': 'application/json',
+              'Content-Type': 'application/json',
             }
-        });
+          });
 
-        if (!response.ok) {
+          if (!response.ok) {
             const errorText = await response.text();
             throw new Error(`HTTP error! status: ${response.status}: ${errorText}`);
-        }
+          }
 
-         await this.fetchDocuments();
-        
-        showMessage('ឯកសារត្រូវបានលុបដោយជោគជ័យ', 'Success');
+          await this.fetchDocuments();
+          
+          showMessage('ឯកសារត្រូវបានលុបដោយជោគជ័យ', 'Success');
 
-    } catch (error) {
-        console.error('Delete error:', error);
-        
-        // User-friendly error messages
-    } finally {
-        // Reset button state if we modified it
-        if (event?.target) {
+        } catch (error) {
+          console.error('Delete error:', error);
+          
+          // User-friendly error messages
+        } finally {
+          // Reset button state if we modified it
+          if (event?.target) {
             event.target.innerHTML = originalButtonText;
             event.target.disabled = false;
+          }
         }
-    }
-}
-
+      }
 
       exportToExcel() {
         try {
