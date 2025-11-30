@@ -515,9 +515,9 @@
                   <th>#</th>
                   <th>លេខចូល</th>
                   <th>រោងចក្រ</th>
-                  <th>កាលបរិច្ឆេទចេញលិខិត</th>
-                  <th>ចំនួនទឹកប្រាក់</th>
-                  <th>ស្ថានភាពឯកសារ</th>
+                  <th>កាលបរិច្ឆេទ</th>
+                  <th>ព័ត៌មានផាក</th>
+                  <th>ស្ថានភាព</th>
                   <th>សកម្មភាព</th>
                 </tr>
               </thead>
@@ -945,8 +945,8 @@
                 </select>
               </div>
               <div class="col-md-4">
-                <label class="form-label">កាលបរិច្ឆេទចេញលិខិត *</label>
-                <input type="date" class="form-control" name="document_date" required>
+                <label class="form-label">កាលបរិច្ឆេទ</label>
+                <input type="date" class="form-control" name="date">
               </div>
               <!-- Company Information Display (Read-only) -->
               <div class="col-12">
@@ -963,51 +963,48 @@
                 </div>
               </div>
 
-              <!-- Fine Amount -->
-              <div class="col-md-6">
-                <label class="form-label">ចំនួនទឹកប្រាក់ផាក *</label>
-                <input type="text" class="form-control" name="fine_amount" required
-                  placeholder="បញ្ចូលចំនួនទឹកប្រាក់...">
-              </div>
-              <div class="col-md-6">
-                <label class="form-label">ប្រភេទផាក *</label>
-                <input type="text" class="form-control" name="fine_type" required placeholder="បញ្ចូលប្រភេទផាក...">
-              </div>
-
-              <!-- Document Flow Status -->
+              <!-- Fine Details Section -->
               <div class="col-12">
                 <div class="penalty-section">
-                  <h5 class="mb-3"><i class="bi bi-diagram-3"></i> ស្ថានភាពលំហូរឯកសារ</h5>
-                  <div class="document-flow">
-                    <div class="flow-step" id="step_department">
-                      <i class="bi bi-circle"></i>
-                      <span>បានចេញលិខិតផាក ទៅនាយកដ្ឋាន</span>
+                  <h5 class="mb-3"><i class="bi bi-file-earmark-text"></i> ព័ត៌មានផាកលម្អិត</h5>
+                  <div class="row g-3">
+                    <div class="col-md-6">
+                      <label class="form-label">ឯកសារតម្រូវការ (Required Doc)</label>
+                      <textarea class="form-control" name="requiredDoc" rows="3"
+                        placeholder="បញ្ចូលឯកសារតម្រូវការ..."></textarea>
                     </div>
-                    <div class="flow-step" id="step_general">
-                      <i class="bi bi-circle"></i>
-                      <span>ទៅអគ្គ</span>
+                    <div class="col-md-6">
+                      <label class="form-label">លក្ខខណ្ឌការងារ (Working Condition)</label>
+                      <textarea class="form-control" name="workingCondition" rows="3"
+                        placeholder="បញ្ចូលលក្ខខណ្ឌការងារ..."></textarea>
                     </div>
-                    <div class="flow-step" id="step_minister">
-                      <i class="bi bi-circle"></i>
-                      <span>ទៅរដ្ឋមន្ត្រី</span>
+                    <div class="col-md-6">
+                      <label class="form-label">សុខភាពនិងសុវត្ថិភាព (OSH)</label>
+                      <textarea class="form-control" name="osh" rows="3"
+                        placeholder="បញ្ចូលព័ត៌មានសុខភាពនិងសុវត្ថិភាព..."></textarea>
                     </div>
-                  </div>
-                  <div class="mt-3">
-                    <label class="form-label">ធ្វើបច្ចុប្បន្នភាពស្ថានភាពឯកសារ</label>
-                    <select class="form-select" name="document_status" onchange="updateDocumentFlow(this.value)">
-                      <option value="">-- ជ្រើសរើសស្ថានភាព --</option>
-                      <option value="department">បានចេញលិខិតផាក ទៅនាយកដ្ឋាន</option>
-                      <option value="general">ទៅអគ្គ</option>
-                      <option value="minister">ទៅរដ្ឋមន្ត្រី</option>
-                      <option value="completed">បានបញ្ចប់</option>
-                    </select>
+                    <div class="col-md-6">
+                      <label class="form-label">វិជ្ជាជីវៈ (NSF)</label>
+                      <textarea class="form-control" name="nsf" rows="3"
+                        placeholder="បញ្ចូលព័ត៌មានវិជ្ជាជីវៈ..."></textarea>
+                    </div>
                   </div>
                 </div>
               </div>
 
+              <!-- Status Section -->
+              <div class="col-md-6">
+                <label class="form-label">ស្ថានភាព</label>
+                <select class="form-select" name="status">
+                  <option value="">-- ជ្រើសរើសស្ថានភាព --</option>
+                  <option value="ចុះ">ចុះ</option>
+                  <option value="មិនទាន់ចុះ">មិនទាន់ចុះ</option>
+                </select>
+              </div>
+
               <div class="col-12">
                 <label class="form-label">ផ្សេងៗ</label>
-                <textarea class="form-control" name="remarks" rows="3" placeholder="បញ្ចូលផ្សេងៗ..."></textarea>
+                <textarea class="form-control" name="remark" rows="3" placeholder="បញ្ចូលផ្សេងៗ..."></textarea>
               </div>
             </div>
             <div class="modal-footer mt-4">
@@ -1795,6 +1792,10 @@
             statusClass = 'status-completed';
           }
 
+          // Format inspection date
+          const inspectionDate = inspection.inspectionDate || inspection.inspection_date;
+          const formattedDate = inspectionDate ? inspectionDate.split('T')[0] : '';
+
           return `
       <tr data-id="${inspection.id}">
         <td class="text-muted">${index + 1}</td>
@@ -1806,13 +1807,13 @@
             ${inspection.factory?.factoryname || ''}
           </div>
           <div class="text-muted small">
-            <div>${inspection.case_subject || ''}</div>
+            <div>${inspection.caseSubject || inspection.case_subject || ''}</div>
             <div>${inspection.group || ''}</div>
-            <div>${inspection.inspection_type || ''}</div>
+            <div>${inspection.inspectionType || inspection.inspection_type || ''}</div>
           </div>
         </td>
 
-        <td>${inspection.inspection_date || ''}</td>
+        <td>${formattedDate}</td>
 
         <td>
           <span class="status-badge ${hasPenalty ? 'status-warning' : 'status-completed'}">
@@ -1944,9 +1945,6 @@
         }
 
         tbody.innerHTML = this.allFineFollowups.map((followup, index) => {
-          let statusText = '';
-          let statusClass = '';
-
           // Build factory address
           const addressParts = [];
           if (followup.factory?.commune?.name) addressParts.push(followup.factory.commune.name);
@@ -1954,37 +1952,26 @@
           if (followup.factory?.province?.name) addressParts.push(followup.factory.province.name);
           const factoryAddress = addressParts.join(', ');
 
-          switch (followup.document_status) {
-            case 'department':
-              statusText = 'ទៅនាយកដ្ឋាន';
-              statusClass = 'status-pending';
-              break;
-            case 'general':
-              statusText = 'ទៅអគ្គ';
-              statusClass = 'status-warning';
-              break;
-            case 'minister':
-              statusText = 'ទៅរដ្ឋមន្ត្រី';
-              statusClass = 'status-warning';
-              break;
-            case 'completed':
-              statusText = 'បានបញ្ចប់';
-              statusClass = 'status-success';
-              break;
-            default:
-              statusText = 'មិនស្គាល់';
-              statusClass = 'status-pending';
-          }
+          // Determine status based on the status field
+          const status = followup.status;
+          const statusText = status === "ចុះ" ? "ចុះ" : status === "មិនទាន់ចុះ" ? "មិនទាន់ចុះ" : "មិនទាន់ចុះ";
+          const statusClass = status === "ចុះ" ? "status-success" : "status-warning";
+
           return `
           <tr data-id="${followup.id}">
             <td class="text-muted">${index + 1}</td>
-            <td>${followup.no || `F-${followup.id}`}</td>
+            <td>${followup.no || followup.inspection?.no || `F-${followup.id}`}</td>
             <td>
               <div class="fw-semibold">${followup.factory?.factoryname || ''}</div>
               <div class="text-muted small">${factoryAddress}</div>
             </td>
-            <td>${followup.document_date || ''}</td>
-            <td>${followup.fine_amount || ''} ${followup.fine_type || ''}</td>
+            <td>${followup.date ? followup.date.split('T')[0] : ''}</td>
+            <td>
+              <div class="text-muted small">
+                ${followup.requiredDoc ? `<div><strong>Required Doc:</strong> ${followup.requiredDoc}</div>` : ''}
+                ${followup.osh ? `<div><strong>OSH:</strong> ${followup.osh}</div>` : ''}
+              </div>
+            </td>
             <td>
               <span class="status-badge ${statusClass}">
                 ${statusText}
@@ -2036,39 +2023,48 @@
 
         // Re-render with filtered data
         tbody.innerHTML = filteredInspections.map((inspection, index) => {
+          // Backend now returns these:
+          const hasPenalty = inspection.isNonCompliance;
+          const hasFine = inspection.isFine;
+
           let status = '';
           let statusClass = '';
-          if (inspection.has_penalty === 'មាន') {
+          if (hasPenalty) {
             status = 'ត្រូវតាមដានកំហិត';
             statusClass = 'status-pending';
-          } else if (inspection.has_fine === 'មាន') {
+          } else if (hasFine) {
             status = 'ត្រូវតាមដានផាក';
             statusClass = 'status-warning';
           } else {
             status = 'បានបញ្ចប់';
             statusClass = 'status-completed';
           }
+
+          // Format inspection date
+          const inspectionDate = inspection.inspectionDate || inspection.inspection_date;
+          const formattedDate = inspectionDate ? inspectionDate.split('T')[0] : '';
+
           return `
           <tr data-id="${inspection.id}">
             <td class="text-muted">${index + 1}</td>
             <td>${inspection.no || ''}</td>
             <td>
-              <div class="fw-semibold">${inspection.factory_name || ''}</div>
+              <div class="fw-semibold">${inspection.factory?.factoryname || inspection.factory_name || ''}</div>
               <div class="text-muted small">
-                <div>${inspection.case_subject || ''}</div>
+                <div>${inspection.caseSubject || inspection.case_subject || ''}</div>
                 <div>${inspection.group || ''}</div>
-                <div>${inspection.inspection_type || ''}</div>
+                <div>${inspection.inspectionType || inspection.inspection_type || ''}</div>
               </div>
             </td>
-            <td>${inspection.inspection_date || ''}</td>
+            <td>${formattedDate}</td>
             <td>
-              <span class="status-badge ${inspection.has_penalty === 'មាន' ? 'status-warning' : 'status-completed'}">
-                ${inspection.has_penalty || 'គ្មាន'}
+              <span class="status-badge ${hasPenalty ? 'status-warning' : 'status-completed'}">
+                ${hasPenalty ? 'មាន' : 'គ្មាន'}
               </span>
             </td>
             <td>
-              <span class="status-badge ${inspection.has_fine === 'មាន' ? 'status-warning' : 'status-completed'}">
-                ${inspection.has_fine || 'គ្មាន'}
+              <span class="status-badge ${hasFine ? 'status-warning' : 'status-completed'}">
+                ${hasFine ? 'មាន' : 'គ្មាន'}
               </span>
             </td>
             <td>
@@ -2197,9 +2193,6 @@
         }
 
         tbody.innerHTML = filteredFollowups.map((followup, index) => {
-          let statusText = '';
-          let statusClass = '';
-
           // Build factory address
           const addressParts = [];
           if (followup.factory?.commune?.name) addressParts.push(followup.factory.commune.name);
@@ -2207,37 +2200,26 @@
           if (followup.factory?.province?.name) addressParts.push(followup.factory.province.name);
           const factoryAddress = addressParts.join(', ');
 
-          switch (followup.document_status) {
-            case 'department':
-              statusText = 'ទៅនាយកដ្ឋាន';
-              statusClass = 'status-pending';
-              break;
-            case 'general':
-              statusText = 'ទៅអគ្គ';
-              statusClass = 'status-warning';
-              break;
-            case 'minister':
-              statusText = 'ទៅរដ្ឋមន្ត្រី';
-              statusClass = 'status-warning';
-              break;
-            case 'completed':
-              statusText = 'បានបញ្ចប់';
-              statusClass = 'status-success';
-              break;
-            default:
-              statusText = 'មិនស្គាល់';
-              statusClass = 'status-pending';
-          }
+          // Determine status based on the status field
+          const status = followup.status;
+          const statusText = status === "ចុះ" ? "ចុះ" : status === "មិនទាន់ចុះ" ? "មិនទាន់ចុះ" : "មិនទាន់ចុះ";
+          const statusClass = status === "ចុះ" ? "status-success" : "status-warning";
+
           return `
           <tr data-id="${followup.id}">
             <td class="text-muted">${index + 1}</td>
-            <td>${followup.no || `F-${followup.id}`}</td>
+            <td>${followup.no || followup.inspection?.no || `F-${followup.id}`}</td>
             <td>
               <div class="fw-semibold">${followup.factory?.factoryname || ''}</div>
               <div class="text-muted small">${factoryAddress}</div>
             </td>
-            <td>${followup.document_date || ''}</td>
-            <td>${followup.fine_amount || ''} ${followup.fine_type || ''}</td>
+            <td>${followup.date ? followup.date.split('T')[0] : ''}</td>
+            <td>
+              <div class="text-muted small">
+                ${followup.requiredDoc ? `<div><strong>Required Doc:</strong> ${followup.requiredDoc}</div>` : ''}
+                ${followup.osh ? `<div><strong>OSH:</strong> ${followup.osh}</div>` : ''}
+              </div>
+            </td>
             <td>
               <span class="status-badge ${statusClass}">
                 ${statusText}
@@ -2453,10 +2435,7 @@
 
         // Basic information
         elements['no'].value = followup.no || `F-${followup.id}`;
-        elements['document_date'].value = followup.document_date ? followup.document_date.split('T')[0] : '';
-        elements['fine_amount'].value = followup.fine_amount || '';
-        elements['fine_type'].value = followup.fine_type || '';
-        elements['remarks'].value = followup.remarks || '';
+        elements['date'].value = followup.date ? followup.date.split('T')[0] : '';
 
         // Set original inspection dropdown
         if (followup.inspectionId) {
@@ -2499,11 +2478,19 @@
           `;
         }
 
-        // Set document status
-        if (followup.document_status) {
-          elements['document_status'].value = followup.document_status;
-          updateDocumentFlow(followup.document_status);
+        // Populate fine detail fields
+        elements['requiredDoc'].value = followup.requiredDoc || '';
+        elements['workingCondition'].value = followup.workingCondition || followup.workingCondition || '';
+        elements['osh'].value = followup.osh || '';
+        elements['nsf'].value = followup.nsf || '';
+
+        // Set status field
+        if (followup.status) {
+          elements['status'].value = followup.status;
         }
+
+        // Set remark
+        elements['remark'].value = followup.remark || '';
       }
 
       resetAllSelections() {
@@ -2648,7 +2635,52 @@
               return;
             }
 
-            showMessage('ការតាមដានត្រូវបានកែសម្រួលដោយជោគជ័យ!', 'Success');
+            // If penalty is NOT implemented (មិនអនុវត្ត), create a fine entry
+            if (!isImplemented) {
+              console.log('Creating fine entry because penalty was not implemented...');
+
+              // Get factory ID from the original inspection
+              const originalInspection = this.allInspections.find(i => i.id.toString() === data.original_inspection);
+              const factoryId = originalInspection?.factoryId || originalInspection?.factory?.id;
+
+              if (!factoryId) {
+                console.error('Factory ID not found for inspection');
+                showMessage('ការតាមដានត្រូវបានកែសម្រួល ប៉ុន្តែមិនអាចបង្កើតផាក (រកមិនឃើញរោងចក្រ)!', 'Warning');
+              } else {
+                const finePayload = {
+                  factoryId: Number(factoryId),
+                  inspectionId: Number(data.original_inspection),
+                  requiredDoc: data.followup_format || null,
+                  workingCondition: data.followup_condition || null,
+                  osh: data.followup_health || null,
+                  nsf: data.followup_professional || null,
+                  remark: data.conclusion || null,
+                  status: null,
+                  date: data.followup_date || null
+                };
+
+                console.log('Fine Payload:', finePayload);
+
+                const fineRes = await fetch(`${API_BASE_URL}/fines`, {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify(finePayload)
+                });
+
+                if (!fineRes.ok) {
+                  console.error('Failed to create fine entry');
+                  showMessage('ការតាមដានត្រូវបានកែសម្រួល ប៉ុន្តែមានបញ្ហាក្នុងការបង្កើតផាក!', 'Warning');
+                } else {
+                  const fineResult = await fineRes.json();
+                  if (fineResult.data) {
+                    console.log('Fine entry created successfully');
+                    showMessage('ការតាមដានត្រូវបានកែសម្រួល និងបានបង្កើតផាកដោយជោគជ័យ!', 'Success');
+                  }
+                }
+              }
+            } else {
+              showMessage('ការតាមដានត្រូវបានកែសម្រួលដោយជោគជ័យ!', 'Success');
+            }
           } else {
             // CREATE new penalty followup
             const res = await fetch(`${API_BASE_URL}/non-compliances`, {
@@ -2668,7 +2700,52 @@
               return;
             }
 
-            showMessage('ការតាមដានត្រូវបានបង្កើតដោយជោគជ័យ!', 'Success');
+            // If penalty is NOT implemented (មិនអនុវត្ត), create a fine entry
+            if (!isImplemented) {
+              console.log('Creating fine entry because penalty was not implemented...');
+
+              // Get factory ID from the original inspection
+              const originalInspection = this.allInspections.find(i => i.id.toString() === data.original_inspection);
+              const factoryId = originalInspection?.factoryId || originalInspection?.factory?.id;
+
+              if (!factoryId) {
+                console.error('Factory ID not found for inspection');
+                showMessage('ការតាមដានត្រូវបានបង្កើត ប៉ុន្តែមិនអាចបង្កើតផាក (រកមិនឃើញរោងចក្រ)!', 'Warning');
+              } else {
+                const finePayload = {
+                  factoryId: Number(factoryId),
+                  inspectionId: Number(data.original_inspection),
+                  requiredDoc: data.followup_format || null,
+                  workingCondition: data.followup_condition || null,
+                  osh: data.followup_health || null,
+                  nsf: data.followup_professional || null,
+                  remark: data.conclusion || null,
+                  status: null,
+                  date: data.followup_date || null
+                };
+
+                console.log('Fine Payload:', finePayload);
+
+                const fineRes = await fetch(`${API_BASE_URL}/fines`, {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify(finePayload)
+                });
+
+                if (!fineRes.ok) {
+                  console.error('Failed to create fine entry');
+                  showMessage('ការតាមដានត្រូវបានបង្កើត ប៉ុន្តែមានបញ្ហាក្នុងការបង្កើតផាក!', 'Warning');
+                } else {
+                  const fineResult = await fineRes.json();
+                  if (fineResult.data) {
+                    console.log('Fine entry created successfully');
+                    showMessage('ការតាមដានត្រូវបានបង្កើត និងបានបង្កើតផាកដោយជោគជ័យ!', 'Success');
+                  }
+                }
+              }
+            } else {
+              showMessage('ការតាមដានត្រូវបានបង្កើតដោយជោគជ័យ!', 'Success');
+            }
           }
 
           const modal = bootstrap.Modal.getInstance(document.getElementById('penaltyFollowupModal'));
@@ -2676,6 +2753,10 @@
 
           // Refresh the penalty followups list
           await this.fetchNonCompliances();
+          // Also refresh fines list if a fine was created
+          if (!isImplemented) {
+            await this.fetchFines();
+          }
 
         } catch (error) {
           console.error('Save error:', error);
@@ -2690,35 +2771,92 @@
         e.preventDefault();
         const formData = new FormData(e.target);
         const data = Object.fromEntries(formData);
-        if (!data.no || !data.original_inspection || !data.document_date || !data.fine_amount || !data.fine_type) {
+
+        if (!data.no || !data.original_inspection) {
           showMessage('សូមបំពេញព័ត៌មានចាំបាច់ទាំងអស់', 'Error');
           return;
         }
+
         const submitBtn = document.getElementById('fineFollowupSubmitBtn');
         const originalText = submitBtn.innerHTML;
         submitBtn.innerHTML = '<span class="loading"></span> កំពុងរក្សាទុក...';
         submitBtn.disabled = true;
+
         try {
+          // Get factory ID from the original inspection
+          const originalInspection = this.allInspections.find(i => i.id.toString() === data.original_inspection);
+          const factoryId = originalInspection?.factoryId || originalInspection?.factory?.id;
+
+          if (!factoryId) {
+            showMessage('រកមិនឃើញព័ត៌មានរោងចក្រ!', 'Error');
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+            return;
+          }
+
+          // Build payload for fine followup
+          const payload = {
+            factoryId: Number(factoryId),
+            inspectionId: Number(data.original_inspection),
+            requiredDoc: data.requiredDoc || null,
+            workingCondition: data.workingCondition || null,
+            osh: data.osh || null,
+            nsf: data.nsf || null,
+            remark: data.remark || null,
+            status: data.status || null,
+            date: data.date || null
+          };
+
+          console.log('Fine Followup Payload:', payload);
+
           if (currentEditingId) {
-            const index = this.allFineFollowups.findIndex(i => i.id.toString() === currentEditingId.toString());
-            if (index !== -1) {
-              this.allFineFollowups[index] = { ...this.allFineFollowups[index], ...data, id: currentEditingId };
+            // UPDATE existing fine followup
+            const res = await fetch(`${API_BASE_URL}/fines/${currentEditingId}`, {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload)
+            });
+
+            if (!res.ok) {
+              throw new Error(`HTTP error! status: ${res.status}`);
             }
+
+            const result = await res.json();
+
+            if (!result.data) {
+              showMessage('មានបញ្ហាក្នុងការកែសម្រួល!', 'Error');
+              return;
+            }
+
             showMessage('ការតាមដានឯកសារផាកត្រូវបានកែសម្រួលដោយជោគជ័យ!', 'Success');
           } else {
-            const originalInspection = this.allInspections.find(i => i.id.toString() === data.original_inspection);
-            const newFollowup = {
-              id: Date.now(),
-              ...data,
-              original_inspection_data: originalInspection,
-              created_at: new Date().toISOString()
-            };
-            this.allFineFollowups.push(newFollowup);
+            // CREATE new fine followup
+            const res = await fetch(`${API_BASE_URL}/fines`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload)
+            });
+
+            if (!res.ok) {
+              throw new Error(`HTTP error! status: ${res.status}`);
+            }
+
+            const result = await res.json();
+
+            if (!result.data) {
+              showMessage('មានបញ្ហាក្នុងការបង្កើត!', 'Error');
+              return;
+            }
+
             showMessage('ការតាមដានឯកសារផាកត្រូវបានបង្កើតដោយជោគជ័យ!', 'Success');
           }
+
           const modal = bootstrap.Modal.getInstance(document.getElementById('fineFollowupModal'));
           modal.hide();
-          this.renderFineFollowups();
+
+          // Refresh the fine followups list
+          await this.fetchFines();
+
         } catch (error) {
           console.error('Save error:', error);
           showMessage('មានបញ្ហាក្នុងការរក្សាទុកការតាមដានឯកសារផាក', 'Error');
@@ -3023,7 +3161,7 @@
 
         // Basic information
         elements['no'].value = followup.no || `F-${followup.id}`;
-        elements['document_date'].value = followup.document_date ? followup.document_date.split('T')[0] : '';
+        elements['date'].value = followup.date ? followup.date.split('T')[0] : '';
 
         // Set original inspection dropdown
         if (followup.inspectionId) {
@@ -3066,18 +3204,19 @@
           `;
         }
 
-        // Fine amount and type
-        elements['fine_amount'].value = followup.fine_amount || '';
-        elements['fine_type'].value = followup.fine_type || '';
+        // Populate fine detail fields
+        elements['requiredDoc'].value = followup.requiredDoc || '';
+        elements['workingCondition'].value = followup.workingCondition || followup.workingCondition || '';
+        elements['osh'].value = followup.osh || '';
+        elements['nsf'].value = followup.nsf || '';
 
-        // Document status
-        if (followup.document_status) {
-          elements['document_status'].value = followup.document_status;
-          updateDocumentFlow(followup.document_status);
+        // Set status field
+        if (followup.status) {
+          elements['status'].value = followup.status;
         }
 
-        // Remarks
-        elements['remarks'].value = followup.remarks || '';
+        // Set remark
+        elements['remark'].value = followup.remark || '';
 
         // Make all form fields readonly
         Array.from(elements).forEach(element => {
@@ -3161,11 +3300,20 @@
         }
       }
 
-      deleteFineFollowup(id) {
+      async deleteFineFollowup(id) {
         try {
-          this.allFineFollowups = this.allFineFollowups.filter(f => f.id.toString() !== id.toString());
-          this.renderFineFollowups();
+          const res = await fetch(`${API_BASE_URL}/fines/${id}`, {
+            method: 'DELETE'
+          });
+
+          if (!res.ok) {
+            throw new Error(`HTTP error! status: ${res.status}`);
+          }
+
           showMessage('ការតាមដានឯកសារផាកត្រូវបានលុបដោយជោគជ័យ!', 'Success');
+
+          // Refresh the fine followups list
+          await this.fetchFines();
         } catch (error) {
           console.error('Delete error:', error);
           showMessage('មានបញ្ហាក្នុងការលុបការតាមដានឯកសារផាក', 'Error');
@@ -3244,13 +3392,15 @@
       exportFineFollowupsToExcel() {
         try {
           const exportData = this.allFineFollowups.map(followup => ({
-            'លេខចូល': followup.no,
-            'រោងចក្រ': followup.original_inspection_data?.factory_name || '',
-            'កាលបរិច្ឆេទចេញលិខិត': followup.document_date,
-            'ចំនួនទឹកប្រាក់': followup.fine_amount,
-            'ប្រភេទផាក': followup.fine_type,
-            'ស្ថានភាពឯកសារ': followup.document_status,
-            'ផ្សេងៗ': followup.remarks
+            'លេខចូល': followup.no || followup.inspection?.no || '',
+            'រោងចក្រ': followup.factory?.factoryname || '',
+            'កាលបរិច្ឆេទ': followup.date ? followup.date.split('T')[0] : '',
+            'ឯកសារតម្រូវការ': followup.requiredDoc || '',
+            'លក្ខខណ្ឌការងារ': followup.workingCondition || followup.workingCondition || '',
+            'សុខភាពនិងសុវត្ថិភាព': followup.osh || '',
+            'វិជ្ជាជីវៈ': followup.nsf || '',
+            'ស្ថានភាព': followup.status || '',
+            'ផ្សេងៗ': followup.remark || ''
           }));
 
           const ws = XLSX.utils.json_to_sheet(exportData);
