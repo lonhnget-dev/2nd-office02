@@ -1022,6 +1022,142 @@
     </div>
   </div>
 
+  <!-- View Inspection Details Modal -->
+  <div class="modal fade" id="viewInspectionModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header bg-light">
+          <h5 class="modal-title" id="viewInspectionModalTitle">ព័ត៌មានលម្អិតការត្រួតពិនិត្យ</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div id="inspectionDetail">
+            <div class="row g-3">
+              <!-- Basic Information -->
+              <div class="col-12">
+                <h6 class="border-bottom pb-2"><i class="bi bi-info-circle"></i> ព័ត៌មានមូលដ្ឋាន</h6>
+              </div>
+              <div class="col-md-3">
+                <label class="form-label fw-bold">លេខចូល:</label>
+                <p id="view_no" class="form-control-plaintext"></p>
+              </div>
+              <div class="col-md-3">
+                <label class="form-label fw-bold">ក្រុម:</label>
+                <p id="view_group" class="form-control-plaintext"></p>
+              </div>
+              <div class="col-md-3">
+                <label class="form-label fw-bold">កាលបរិច្ឆេទត្រួតពិនិត្យ:</label>
+                <p id="view_inspection_date" class="form-control-plaintext"></p>
+              </div>
+              <div class="col-md-3">
+                <label class="form-label fw-bold">ប្រភេទអធិការកិច្ច:</label>
+                <p id="view_inspection_type" class="form-control-plaintext"></p>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-bold">ឈ្មោះរោងចក្រ:</label>
+                <p id="view_factory_name" class="form-control-plaintext"></p>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-bold">ប្រធានបទ:</label>
+                <p id="view_case_subject" class="form-control-plaintext"></p>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-bold">ស្ថានភាព:</label>
+                <p id="view_status" class="form-control-plaintext"></p>
+              </div>
+
+              <!-- Non-Compliance Section -->
+              <div class="col-12">
+                <h6 class="border-bottom pb-2 mt-3"><i class="bi bi-exclamation-triangle"></i> កំហិត (Non-Compliance)</h6>
+              </div>
+              <div class="col-md-12">
+                <label class="form-label fw-bold">មានកំហិត:</label>
+                <p id="view_has_noncompliance" class="form-control-plaintext"></p>
+              </div>
+              <div id="view_noncompliance_details" class="col-12 d-none">
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <label class="form-label fw-bold">ឯកសារតម្រូវការ (Required Doc):</label>
+                    <p id="view_nc_required_doc" class="form-control-plaintext"></p>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label fw-bold">លក្ខខណ្ឌការងារ (Working Condition):</label>
+                    <p id="view_nc_working_condition" class="form-control-plaintext"></p>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label fw-bold">សុខភាពនិងសុវត្ថិភាព (OSH):</label>
+                    <p id="view_nc_osh" class="form-control-plaintext"></p>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label fw-bold">វិជ្ជាជីវៈ (NSF):</label>
+                    <p id="view_nc_nsf" class="form-control-plaintext"></p>
+                  </div>
+                </div>
+                <div class="mt-3">
+                  <label class="form-label fw-bold">បញ្ជីកំហិតលម្អិត:</label>
+                  <div id="view_noncompliance_list" class="border rounded p-2 bg-light">
+                    <!-- Non-compliance items will be listed here -->
+                  </div>
+                </div>
+              </div>
+
+              <!-- Fine Section -->
+              <div class="col-12">
+                <h6 class="border-bottom pb-2 mt-3"><i class="bi bi-cash-coin"></i> ផាក (Fine)</h6>
+              </div>
+              <div class="col-md-12">
+                <label class="form-label fw-bold">មានផាក:</label>
+                <p id="view_has_fine" class="form-control-plaintext"></p>
+              </div>
+              <div id="view_fine_details" class="col-12 d-none">
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <label class="form-label fw-bold">ឯកសារតម្រូវការ (Required Doc):</label>
+                    <p id="view_fine_required_doc" class="form-control-plaintext"></p>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label fw-bold">លក្ខខណ្ឌការងារ (Working Condition):</label>
+                    <p id="view_fine_working_condition" class="form-control-plaintext"></p>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label fw-bold">សុខភាពនិងសុវត្ថិភាព (OSH):</label>
+                    <p id="view_fine_osh" class="form-control-plaintext"></p>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label fw-bold">វិជ្ជាជីវៈ (NSF):</label>
+                    <p id="view_fine_nsf" class="form-control-plaintext"></p>
+                  </div>
+                </div>
+                <div class="mt-3">
+                  <label class="form-label fw-bold">បញ្ជីផាកលម្អិត:</label>
+                  <div id="view_fine_list" class="border rounded p-2 bg-light">
+                    <!-- Fine items will be listed here -->
+                  </div>
+                </div>
+              </div>
+
+              <!-- Timestamps -->
+              <div class="col-12">
+                <h6 class="border-bottom pb-2 mt-3"><i class="bi bi-clock-history"></i> ព័ត៌មានបន្ថែម</h6>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-bold">បង្កើតនៅ:</label>
+                <p id="view_created_at" class="form-control-plaintext"></p>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-bold">ធ្វើបច្ចុប្បន្នភាពនៅ:</label>
+                <p id="view_updated_at" class="form-control-plaintext"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">បិទ</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Message Modal -->
   <div class="modal fade" id="messageModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
@@ -2668,40 +2804,84 @@
           showMessage('Inspection not found', 'Error');
           return;
         }
-        let detailHTML = `
-            <strong>លេខចូល:</strong> ${inspection.no || ''}<br>
-            <strong>ក្រុម:</strong> ${inspection.group || ''}<br>
-            <strong>កាលបរិច្ឆេទត្រួតពិនិត្យ:</strong> ${inspection.inspection_date || ''}<br>
-            <strong>ប្រភេទអធិការកិច្ច:</strong> ${inspection.inspection_type || ''}<br>
-            <strong>ឈ្មោះរោងចក្រ:</strong> ${inspection.factory_name || ''}<br>
-            <strong>វិស័យ:</strong> ${inspection.sector || ''}<br>
-            <strong>ប្រធានបទ:</strong> ${inspection.case_subject || ''}<br>
-            <strong>ទីតាំង:</strong> ${inspection.village || ''}, ${inspection.commune || ''}, ${inspection.district || ''}, ${inspection.province || ''}<br>
-            <strong>កំហិត:</strong> ${inspection.has_penalty || ''}<br>
-        `;
 
-        if (inspection.has_penalty === 'មាន') {
-          detailHTML += `
-                <strong>បែបបទ:</strong> ${inspection.penalty_format || ''}<br>
-                <strong>លក្ខខណ្ឌ:</strong> ${inspection.penalty_condition || ''}<br>
-                <strong>សុខភាពនិងសុវត្ថភាព:</strong> ${inspection.penalty_health || ''}<br>
-                <strong>វិជ្ជាជីវៈ:</strong> ${inspection.penalty_professional || ''}<br>
-            `;
+        // Helper function to format date
+        const formatDate = (dateString) => {
+          if (!dateString) return 'N/A';
+          const date = new Date(dateString);
+          return date.toLocaleDateString('km-KH', { year: 'numeric', month: 'long', day: 'numeric' });
+        };
+
+        // Populate basic information
+        document.getElementById('view_no').textContent = inspection.no || 'N/A';
+        document.getElementById('view_group').textContent = inspection.group || 'N/A';
+        document.getElementById('view_inspection_date').textContent = formatDate(inspection.inspectionDate);
+        document.getElementById('view_inspection_type').textContent = inspection.inspectionType || 'N/A';
+        document.getElementById('view_factory_name').textContent = inspection.factory?.factoryname || inspection.factory?.factoryname_en || 'N/A';
+        document.getElementById('view_case_subject').textContent = inspection.caseSubject || 'N/A';
+        document.getElementById('view_status').textContent = inspection.status || 'N/A';
+
+        // Populate Non-Compliance section
+        const hasNonCompliance = inspection.isNonCompliance;
+        document.getElementById('view_has_noncompliance').textContent = hasNonCompliance ? 'មាន' : 'គ្មាន';
+
+        const nonComplianceDetails = document.getElementById('view_noncompliance_details');
+        if (hasNonCompliance) {
+          nonComplianceDetails.classList.remove('d-none');
+          document.getElementById('view_nc_required_doc').textContent = inspection.ncRequiredDoc || 'N/A';
+          document.getElementById('view_nc_working_condition').textContent = inspection.ncWorkingCondition || 'N/A';
+          document.getElementById('view_nc_osh').textContent = inspection.ncOsh || 'N/A';
+          document.getElementById('view_nc_nsf').textContent = inspection.ncNsf || 'N/A';
+
+          // Display non-compliance list
+          const ncList = document.getElementById('view_noncompliance_list');
+          if (inspection.nonCompliance && inspection.nonCompliance.length > 0) {
+            ncList.innerHTML = inspection.nonCompliance.map((nc, index) => `
+              <div class="mb-2 p-2 border-start border-3 border-warning">
+                <strong>${index + 1}.</strong> ${nc.description || nc.title || JSON.stringify(nc)}
+              </div>
+            `).join('');
+          } else {
+            ncList.innerHTML = '<p class="text-muted mb-0">គ្មានកំហិតលម្អិត</p>';
+          }
+        } else {
+          nonComplianceDetails.classList.add('d-none');
         }
 
-        detailHTML += `<strong>ផាក:</strong> ${inspection.has_fine || ''}<br>`;
+        // Populate Fine section
+        const hasFine = inspection.isFine;
+        document.getElementById('view_has_fine').textContent = hasFine ? 'មាន' : 'គ្មាន';
 
-        if (inspection.has_fine === 'មាន') {
-          detailHTML += `
-                <strong>ចំនួនទឹកប្រាក់:</strong> ${inspection.fine_amount || ''}<br>
-                <strong>ប្រភេទផាក:</strong> ${inspection.fine_type || ''}<br>
-                <strong>ហេតុផល:</strong> ${inspection.fine_reason || ''}<br>
-            `;
+        const fineDetails = document.getElementById('view_fine_details');
+        if (hasFine) {
+          fineDetails.classList.remove('d-none');
+          document.getElementById('view_fine_required_doc').textContent = inspection.fineRequiredDoc || 'N/A';
+          document.getElementById('view_fine_working_condition').textContent = inspection.fineWorkingCondition || 'N/A';
+          document.getElementById('view_fine_osh').textContent = inspection.fineOsh || 'N/A';
+          document.getElementById('view_fine_nsf').textContent = inspection.fineNsf || 'N/A';
+
+          // Display fine list
+          const fineList = document.getElementById('view_fine_list');
+          if (inspection.fines && inspection.fines.length > 0) {
+            fineList.innerHTML = inspection.fines.map((fine, index) => `
+              <div class="mb-2 p-2 border-start border-3 border-danger">
+                <strong>${index + 1}.</strong> ${fine.description || fine.amount || JSON.stringify(fine)}
+              </div>
+            `).join('');
+          } else {
+            fineList.innerHTML = '<p class="text-muted mb-0">គ្មានផាកលម្អិត</p>';
+          }
+        } else {
+          fineDetails.classList.add('d-none');
         }
 
-        detailHTML += `<strong>ផ្សេងៗ:</strong> ${inspection.remarks || ''}`;
+        // Populate timestamps
+        document.getElementById('view_created_at').textContent = formatDate(inspection.createdAt);
+        document.getElementById('view_updated_at').textContent = formatDate(inspection.updatedAt);
 
-        showMessage(detailHTML, 'ព័ត៌មានលម្អិតការត្រួតពិនិត្យ');
+        // Open the modal
+        const modal = new bootstrap.Modal(document.getElementById('viewInspectionModal'));
+        modal.show();
       }
 
       viewPenaltyFollowup(id) {
